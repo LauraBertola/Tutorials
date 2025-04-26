@@ -6,3 +6,4 @@ This section relies heavily on resources created for [RADcamp](https://radcamp.g
 
 :camera: Cheetah coalition in the Masai Mara, Kenya
 ![cheetahs](./Images/DSC_3251.jpg)
+©Laura Bertola
