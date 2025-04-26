@@ -5,3 +5,4 @@ This section will use data from lions from [Bertola et al. (2022)](https://bmcge
 
 :camera: Lion in the Masai Mara, Kenya
 ![lion](./Images/DSC_2556.jpg)
+©Laura Bertola
