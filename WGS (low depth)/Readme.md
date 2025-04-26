@@ -3,6 +3,6 @@ This part will deal with processing of whole genome sequencing data (WGS) of low
 
 This section will use data from lions from [Bertola et al. (2022)](https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-022-08510-y). Note that the data are downsampled, so these steps can be run quickly, for educational purposes only.
 
-:camera: Lion in the Masai Mara, Kenya
-![lion](./Images/DSC_2556.jpg)
+:camera: Lion in Okavango Delta, Botswana
+![lion](./Images/174_Okavango - Lion (Panthera leo melanochaita).jpg)
 ©Laura Bertola
