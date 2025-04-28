@@ -6,7 +6,7 @@ Go to the folder where the data are stored, using `cd`, and use `ls` to display 
 
 Now let's take a look at what's inside these files. Type the following command:
 ```
-user@cluster:$ zcat yourfile.fq.gz | less -S
+zcat yourfile.fq.gz | less -S
 ```
 
 The `zcat` command is used to unzip the file (note it ends with .gz), and `less` allows you to view it. Here we add `-S` to chop off long lines. Otherwise it wraps around and becomes messy. Try scrolling right and down, using the arrow keys. To quit `less` type q. 
@@ -31,7 +31,7 @@ This figure depicts a common artifact of current Illumina chemistry, whereby qua
 
 Now, let's run FastQC on our data. First make an output folder, where you will store the results in. Use `mkdir` to do this. Then run the `fastqc` command, and direct it to your newly created output folder by using -o.
 ```
-user@cluster:$ /softwares/FastQC/fastqc ~/input_files/* -o ~/output_files/
+/softwares/FastQC/fastqc ~/input_files/* -o ~/output_files/
 ```
 
 On the screen, you'll see the progress of your FastQC run. 
@@ -48,7 +48,7 @@ Open one of the html file in your browser. You'll see plots like the one above. 
 
 Often, you'll have a large number of samples, and you don't want to waste time looking at tons of individual html files. [MultiQC](https://docs.seqera.io/multiqc) can help you summarize the results of multiple fastqc files. You can do this by navigating into your output folder with the FastQC results, and do:
 ```
-user@cluster:$ multiqc .
+multiqc .
 ```
 
 ![multiqc](Images/multiqc.png)
@@ -65,11 +65,10 @@ There are multiple softwares to trim your data, e.g. [Trimmomatic](http://www.us
 
 Run the following command:
 ```
-user@cluster:$ for file in input_files/*_1.fq.gz
-                do
-                    mate="${file/_1.fq.gz/_2.fq.gz}"
-                    /softwares/TrimGalore/trim_galore --paired --illumina "$file" "$mate" --output_dir output_files
-                done
+for file in input_files/*_1.fq.gz; do
+  mate="${file/_1.fq.gz/_2.fq.gz}"
+  /softwares/TrimGalore/trim_galore --paired --illumina "$file" "$mate" --output_dir output_files
+done
 ```
 
 TrimGalore! does not like wildcards (*), so we have to loop over our files instead. For each file in the input_files directory which ends with _1.fq.gz, it finds the accompanying reverse reads file (mate="${file/_1.fq.gz/_2.fq.gz}"), and it runs TrimGalore over both files. You tell it that there are --paired data, it should use --ilumina adapters for trimming (check the manual for more options, in case you're using different adapters), and you also tell it to store the results in the --output_dir. Finally, you can add & to make it run in parallel.
@@ -88,12 +87,12 @@ If we're happy with the quality of the reads that have made it through the trimm
 
 We'll use [this reference genome](https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_021130815.1/) to map our data to. It's already downloaded and also in the input_files folder. Copy it to your own folder using `cp`. You can also look into the file, using `less`. You probably don't want to scroll to an entire genome, so you can also look at the different scaffolds. They conveniently all start with a line, which starts with a >, so you can use `grep` to take a look at only those lines.
 ```
-user@cluster:$ grep ">" GCA_021130815.1_PanTigT.MC.v3_genomic.fna
+grep ">" GCA_021130815.1_PanTigT.MC.v3_genomic.fna
 ```
 
 Now we want to map our reads to this reference genome, but before we can use it, we need to index it. This is already done, because this step takes some time. Just for completeness sake, the command is given below.
 ```
-user@cluster:$ bwa index GCA_021130815.1_PanTigT.MC.v3_genomic.fna
+bwa index GCA_021130815.1_PanTigT.MC.v3_genomic.fna
 ```
 
 This creates the following files:
@@ -105,21 +104,21 @@ This creates the following files:
 
 For the mapping, we'll use [BWA MEM](https://github.com/lh3/bwa) and a for loop to make it loop over all samples. The idea is the same as in the trimming step. We need to tell it which forward (_sub_1_val_1.fq.gz) and reverse (_sub_2_val_2.fq.gz) reads go together, tell it which reference genome to use, and where to store the output. The flag -t tells it how many cores it can use, so if you have a larger cluster and don't have a lot of people running things simultaneously, you can probably request more cores.
 ```
-user@cluster:$ for file1 in output_files/*_sub_1_val_1.fq.gz; do
-                  file2=${file1/_sub_1_val_1.fq.gz/_sub_2_val_2.fq.gz}
-                  sample_name=$(basename "$file1" _sub_1_val_1.fq.gz)
-                  bwa mem input_files/GCA_021130815.1_PanTigT.MC.v3_genomic.fna -t 2 "$file1" "$file2" > "output_files/${sample_name}_aligned_reads.sam"
-                done
+for file1 in output_files/*_sub_1_val_1.fq.gz; do
+  file2=${file1/_sub_1_val_1.fq.gz/_sub_2_val_2.fq.gz}
+  sample_name=$(basename "$file1" _sub_1_val_1.fq.gz)
+  bwa mem input_files/GCA_021130815.1_PanTigT.MC.v3_genomic.fna -t 2 "$file1" "$file2" > "output_files/${sample_name}_aligned_reads.sam"
+done
 ```
 
 Also this step will take some time... :hourglass:
 
 If the mapping is finished, take a look at the files that were created using `ls`. Most downstream analyses use .bam files instead of .sam files. Also, most analyses like reads to be sorted by the order they occur on the genome, not by the order in which they were processed (which is the default .sam and .bam output). To convert .sam to .bam, and order the reads do:
 ```
-user@cluster:$ for file in output_files/*.sam; do 
-                      filename=$(basename "$file" .sam)
-                      samtools view -S -b "$file" | samtools sort -o "output_files/${filename}_sorted.bam"
-                done
+for file in output_files/*.sam; do 
+  filename=$(basename "$file" .sam)
+  /softwares/samtools1.12/samtools view -S -b "$file" | /softwares/samtools1.12/samtools sort -o "output_files/${filename}_sorted.bam"
+done
 ```
 
 You'll see that there are two commands, separated by a pipe (|). The first part tells samtools to extract (view) the .sam (-S) reads and convert them to a .bam (-b) format. Those data are then piped into the next command, where samtools is told to sort (-sort) the reads and save the result as an output file (-o).
@@ -128,27 +127,28 @@ Bam is a binary format, which is much faster to process. But because it is binar
 
 Next, we need to remove duplicates. Duplicates here refer to PCR replicates and optical replicates which falsely infale the sequencing depth, affecting downstream variant calling. PCR duplicates are identical reads which result from the overamplification during PCR step of library preparation. Optical duplicates arise from sequencing machine artifacts, when a cluster is wrongly interpreted as multiple nearby clusters. We use [GATK4](https://gatk.broadinstitute.org/hc/en-us/articles/360036194592-Getting-started-with-GATK4) for this step. Run the following:
 ```
-user@cluster:$ for file in output_files/*_sorted.bam; do
-                    base=$(basename "$file" _sorted.bam)
-                    /softwares/GATK-3.7/GenomeAnalysisTK.jar MarkDuplicates \
-                    -I "$file" \
-                    -O "output_files/${base}_deduplicated.bam" \
-                    -M "output_files/${base}_duplication_metrics.txt" \
-                    --REMOVE_DUPLICATES true
-                done
+for file in output_files/*_sorted.bam; do
+  base=$(basename "$file" _sorted.bam)
+  /softwares/GATK-3.7/GenomeAnalysisTK.jar MarkDuplicates \
+  -I "$file" \
+  -O "output_files/${base}_deduplicated.bam" \
+  -M "output_files/${base}_duplication_metrics.txt" \
+  --REMOVE_DUPLICATES true
+done
 ```
 
 We use a for loop again, and the command needs an input file (-I), some information about the output file it should generate (-O), as well as a metrics file (-M). --REMOVE_DUPLICATES tells GATK4 to remove the duplicate reads, instead of just marking them. Check if the expected output files are generated, using `ls`.
 
 We also have index the .bam file again. This time we use [samtools](https://www.htslib.org/).
 ```
-user@cluster:$ for bam in output_files/*_deduplicated.bam; do /software/samtools1.12/samtools index "$bam"; 
-                done
+for bam in output_files/*_deduplicated.bam; do
+  /software/samtools1.12/samtools index "$bam"; 
+done
 ```
 
 We now have .bam files which have been completely ready to go for downstream processing. But we haven't really looked at the mapping quality yet. We can do so with the tool [Qualimap](https://qualimap.conesalab.org/). Run the following:
 ```
-user@cluster:$ /softwares/qualimap_v2.2.1/qualimap bamqc -bam output_files/*_deduplicated.bam -outdir output_files/qualimap_results -outformat HTML
+/softwares/qualimap_v2.2.1/qualimap bamqc -bam output_files/*_deduplicated.bam -outdir output_files/qualimap_results -outformat HTML
 ```
 
 It will create an html file, similar as what FastQC did before. Download the file and look at it in your browser.
