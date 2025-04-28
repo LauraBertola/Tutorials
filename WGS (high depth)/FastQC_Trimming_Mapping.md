@@ -30,7 +30,6 @@ In contrast, here is a somewhat typical base sequence quality report for R1 of a
 This figure depicts a common artifact of current Illumina chemistry, whereby quality scores per base drop off precipitously toward the ends of reads, with the effect being magnified for read lengths >150bp. The purpose of using FastQC to examine reads is to determine whether and how much to trim our reads to reduce sequencing error interfering with basecalling. In the above figure, as in most real dataset, we can see there is a tradeoff between throwing out data to increase overall quality by trimming for shorter length, and retaining data to increase value obtained from sequencing with the result of increasing noise toward the ends of reads.
 
 Now, let's run FastQC on our data. First make an output folder, where you will store the results in. Use `mkdir` to do this. Then run the `fastqc` command, and direct it to your newly created output folder by using -o.
-
 ```
 user@cluster:$ /softwares/FastQC/fastqc ~/input_files/* -o ~/output_files/
 ```
@@ -88,13 +87,11 @@ If we're happy with the quality of the reads that have made it through the trimm
 ## Mapping
 
 We'll use [this reference genome](https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_021130815.1/) to map our data to. It's already downloaded and also in the input_files folder. Copy it to your own folder using `cp`. You can also look into the file, using `less`. You probably don't want to scroll to an entire genome, so you can also look at the different scaffolds. They conveniently all start with a line, which starts with a >, so you can use `grep` to take a look at only those lines.
-
 ```
 user@cluster:$ grep ">" GCA_021130815.1_PanTigT.MC.v3_genomic.fna
 ```
 
 Now we want to map our reads to this reference genome, but before we can use it, we need to index it. This is already done, because this step takes some time. Just for completeness sake, the command is given below.
-
 ```
 user@cluster:$ bwa index GCA_021130815.1_PanTigT.MC.v3_genomic.fna
 ```
@@ -107,7 +104,6 @@ This creates the following files:
 - GCA_021130815.1_PanTigT.MC.v3_genomic.fna.sa
 
 For the mapping, we'll use [BWA MEM](https://github.com/lh3/bwa) and a for loop to make it loop over all samples. The idea is the same as in the trimming step. We need to tell it which forward (_sub_1_val_1.fq.gz) and reverse (_sub_2_val_2.fq.gz) reads go together, tell it which reference genome to use, and where to store the output. The flag -t tells it how many cores it can use, so if you have a larger cluster and don't have a lot of people running things simultaneously, you can probably request more cores.
-
 ```
 user@cluster:$ for file1 in output_files/*_sub_1_val_1.fq.gz; do
                   file2=${file1/_sub_1_val_1.fq.gz/_sub_2_val_2.fq.gz}
@@ -119,7 +115,6 @@ user@cluster:$ for file1 in output_files/*_sub_1_val_1.fq.gz; do
 Also this step will take some time... :hourglass:
 
 If the mapping is finished, take a look at the files that were created using `ls`. Most downstream analyses use .bam files instead of .sam files. Also, most analyses like reads to be sorted by the order they occur on the genome, not by the order in which they were processed (which is the default .sam and .bam output). To convert .sam to .bam, and order the reads do:
-
 ```
 user@cluster:$ for file in output_files/*.sam; do 
                       filename=$(basename "$file" .sam)
@@ -129,7 +124,35 @@ user@cluster:$ for file in output_files/*.sam; do
 
 You'll see that there are two commands, separated by a pipe (|). The first part tells samtools to extract (view) the .sam (-S) reads and convert them to a .bam (-b) format. Those data are then piped into the next command, where samtools is told to sort (-sort) the reads and save the result as an output file (-o).
 
-Bam is a binary format, which is much faster to process. But because it is binary it is not human-readable anymore. If you'd like to see what it looks like, take a peak into the .sam and .bam files using 'less'. The first one should look somewhat familiar, the second one should look like complete chaos.
+Bam is a binary format, which is much faster to process. But because it is binary it is not human-readable anymore. If you'd like to see what it looks like, take a peak into the .sam and .bam files using 'less'. The first one should look somewhat familiar, the second one should look like complete chaos. :scream:
+
+Next, we need to remove duplicates. Duplicates here refer to PCR replicates and optical replicates which falsely infale the sequencing depth, affecting downstream variant calling. PCR duplicates are identical reads which result from the overamplification during PCR step of library preparation. Optical duplicates arise from sequencing machine artifacts, when a cluster is wrongly interpreted as multiple nearby clusters. We use [GATK4](https://gatk.broadinstitute.org/hc/en-us/articles/360036194592-Getting-started-with-GATK4) for this step. Run the following:
+```
+user@cluster:$ for file in output_files/*_sorted.bam; do
+                    base=$(basename "$file" _sorted.bam)
+                    /softwares/GATK-3.7/GenomeAnalysisTK.jar MarkDuplicates \
+                    -I "$file" \
+                    -O "output_files/${base}_deduplicated.bam" \
+                    -M "output_files/${base}_duplication_metrics.txt" \
+                    --REMOVE_DUPLICATES true
+                done
+```
+
+We use a for loop again, and the command needs an input file (-I), some information about the output file it should generate (-O), as well as a metrics file (-M). --REMOVE_DUPLICATES tells GATK4 to remove the duplicate reads, instead of just marking them. Check if the expected output files are generated, using `ls`.
+
+We also have index the .bam file again. This time we use [samtools](https://www.htslib.org/).
+```
+user@cluster:$ for bam in output_files/*_deduplicated.bam; do /software/samtools1.12/samtools index "$bam"; 
+                done
+```
+
+We now have .bam files which have been completely ready to go for downstream processing. But we haven't really looked at the mapping quality yet. We can do so with the tool [Qualimap](https://qualimap.conesalab.org/). Run the following:
+```
+user@cluster:$ /softwares/qualimap_v2.2.1/qualimap bamqc -bam output_files/*_deduplicated.bam -outdir output_files/qualimap_results -outformat HTML
+```
+
+It will create an html file, similar as what FastQC did before. Download the file and look at it in your browser.
+
+*Housekeeping*: we have created quite a few large files, and it is good practice to delete what you don't need anymore. You could for example delete the .sam files, and the _sorted.bam files which were later deduplicated. Always keep the raw data, and keep the final .bam files as they will be needed for the variant calling.
 
 
-[samtools](https://www.htslib.org/)
