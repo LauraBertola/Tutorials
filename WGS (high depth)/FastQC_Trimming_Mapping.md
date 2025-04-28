@@ -43,7 +43,10 @@ You'll see that for each input file, FastQC created an .html and a .zip file. Yo
 scp user@cluster:~/path_to_your_folder/output_files/*.html ~/
 ```
 
-Open one of the html file in your browser. You'll see plots like the one above.
+Open one of the html file in your browser. You'll see plots like the one above. On the left side there is a summary of the results, highlighting those sections which require your attention. Is there anything in our data we should be concerned about?
+![fastqc_summary](Images/fastqc-summary.png)
+
+
 
 
 
