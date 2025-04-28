@@ -123,36 +123,41 @@ done
 
 You'll see that there are two commands, separated by a pipe (|). The first part tells samtools to extract (view) the .sam (-S) reads and convert them to a .bam (-b) format. Those data are then piped into the next command, where samtools is told to sort (-sort) the reads and save the result as an output file (-o).
 
-Bam is a binary format, which is much faster to process. But because it is binary it is not human-readable anymore. If you'd like to see what it looks like, take a peak into the .sam and .bam files using 'less'. The first one should look somewhat familiar, the second one should look like complete chaos. :scream:
+Bam is a binary format, which is much faster to process. But because it is binary it is not human-readable anymore. If you'd like to see what it looks like anyway, take a peak into the .sam and .bam files using 'less'. For the .sam file, you're just seeing the header (the lines starting which @). If you'd like to see the actual alingment and don't have the patience to scroll past the header, try this:
+```
+grep -v "^@" your_file.sam | less
+```
 
-Next, we need to remove duplicates. Duplicates here refer to PCR replicates and optical replicates which falsely infale the sequencing depth, affecting downstream variant calling. PCR duplicates are identical reads which result from the overamplification during PCR step of library preparation. Optical duplicates arise from sequencing machine artifacts, when a cluster is wrongly interpreted as multiple nearby clusters. We use [GATK4](https://gatk.broadinstitute.org/hc/en-us/articles/360036194592-Getting-started-with-GATK4) for this step. Run the following:
+We used `grep` before to only grab lines starting with >, here we tell it to only grab lines which do **not** start with @.
+
+Next, we need to remove duplicates. Duplicates here refer to PCR replicates and optical replicates which falsely infale the sequencing depth, affecting downstream variant calling. PCR duplicates are identical reads which result from the overamplification during PCR step of library preparation. Optical duplicates arise from sequencing machine artifacts, when a cluster is wrongly interpreted as multiple nearby clusters. We use [Picard](https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Picard) for this step. Run the following:
 ```
 for file in output_files/*_sorted.bam; do
   base=$(basename "$file" _sorted.bam)
-  /softwares/GATK-3.7/GenomeAnalysisTK.jar MarkDuplicates \
-  -I "$file" \
-  -O "output_files/${base}_deduplicated.bam" \
-  -M "output_files/${base}_duplication_metrics.txt" \
-  --REMOVE_DUPLICATES true
+  java -jar /softwares/picard/build/libs/picard.jar MarkDuplicates \
+  I="$file" \
+  O="output_files/${base}_deduplicated.bam" \
+  M="output_files/${base}_duplication_metrics.txt" \
+  REMOVE_DUPLICATES=TRUE
 done
 ```
 
-We use a for loop again, and the command needs an input file (-I), some information about the output file it should generate (-O), as well as a metrics file (-M). --REMOVE_DUPLICATES tells GATK4 to remove the duplicate reads, instead of just marking them. Check if the expected output files are generated, using `ls`.
+We use a for loop again, and the command needs an input file (I), some information about the output file it should generate (O), as well as a metrics file (M). --REMOVE_DUPLICATES tells GATK4 to remove the duplicate reads, instead of just marking them. Check if the expected output files are generated, using `ls`.
 
 We also have index the .bam file again. This time we use [samtools](https://www.htslib.org/).
 ```
 for bam in output_files/*_deduplicated.bam; do
-  /software/samtools1.12/samtools index "$bam"; 
+  /softwares/samtools1.12/samtools index "$bam"; 
 done
 ```
+
+Do `ls` to see what changed. You should now also have .bam.bai files.
 
 We now have .bam files which have been completely ready to go for downstream processing. But we haven't really looked at the mapping quality yet. We can do so with the tool [Qualimap](https://qualimap.conesalab.org/). Run the following:
 ```
 /softwares/qualimap_v2.2.1/qualimap bamqc -bam output_files/*_deduplicated.bam -outdir output_files/qualimap_results -outformat HTML
 ```
 
-It will create an html file, similar as what FastQC did before. Download the file and look at it in your browser.
+It will create an bunch of files, and store them in a qualimap_results folder (note that you asked it to create this folder to put all the output files in). Download the entire folder (just like you did with the FastQC results) and look at the html file it in your browser. Because Qualimap does not embed the images in their html files (unlike FastQC), you need to download the entire folder.
 
 **Housekeeping**: we have created quite a few large files, and it is good practice to delete what you don't need anymore. You could for example delete the .sam files, and the _sorted.bam files which were later deduplicated. Always keep the raw data, and keep the final .bam files as they will be needed for the variant calling.
-
-
