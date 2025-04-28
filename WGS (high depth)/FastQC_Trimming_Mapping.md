@@ -63,6 +63,31 @@ Let's proceed to the next step, during which we can also tweak things if we're n
 
 There are multiple softwares to trim your data, e.g. [Trimmomatic](http://www.usadellab.org/cms/index.php?page=trimmomatic), [cutadapt](https://cutadapt.readthedocs.io/en/stable/) and [TrimGalore!](https://github.com/FelixKrueger/TrimGalore) (which wraps around cutadapt and FastQC). We'll use Trimmomatic here.
 
+Run the following command:
+```
+for file in input_files/*_1.fq.gz
+do
+  mate="${file/_1.fq.gz/_2.fq.gz}"
+  /softwares/TrimGalore/trim_galore --paired --illumina "$file" "$mate" --output_dir output_files &
+done
+```
+
+TrimGalore! does not like wildcards (*), so we have to loop over our files instead. For each file in the input_files directory which ends with _1.fq.gz, it finds the accompanying reverse reads file (mate="${file/_1.fq.gz/_2.fq.gz}"), and it runs TrimGalore over both files. You tell it that there are --paired data, it should use --ilumina adapters for trimming (check the manual for more options, in case you're using different adapters), and you also tell it to store the results in the --output_dir. Finally, you can add & to make it run in parallel.
+
+This is going to take a few minutes... :stopwatch:
+
+Trimming can be done in different ways. You can look for specific motifs (like adapter sequences), you can pick a quality cut-off to get rid of low quality bases at the ends of the reads, you can set the minimum read length to discard reads that become too short after trimming etc. So, there is a lot of flexibility depending on your needs. Note that by default TrimGalore! is discarding reads which end up as singletons, meaning if a read is being discarded its mate with automatically be discarded too. However, you can ask TrimGalore! to keep singletons by telling it --retain_unpaired. Also, if your first FastQC file showed a lot of adapter contamination, and you'd like to check how this has changed after running TrimGalore!, you can add --fastqc, so TrimGalore! will automatically run FastQC after trimming.
+
+When the analysis finishes, look at the files it has created. You should have files with _val_1.fq.gz and _val_2.fq.gz. For each file, you also get a trimming report. Take a look what information is in there, using `less`.
+
+![trimgalore](Images/trimagalore.png)
+
+If we're happy with the quality of the reads that have made it through the trimming process, we're ready to start the mapping!
+
+** Mapping
+
+
+
 
 
 
