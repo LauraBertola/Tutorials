@@ -53,11 +53,14 @@ multiqc .
 ![multiqc](Images/multiqc.png)
 Look at the html file (download it to your computer, just like you did with the FastQC html files). It shows the results of all FastQC results in the same report. Note the the sample name appears when you hover with your cursor over a plot, so it is easy to identify which samples look strange and may require some more attention. 
 
+![multiqc_result](Images/multiqc_result.png)
+
 Let's proceed to the next step, during which we can also tweak things if we're not confident about the raw data quality.
 
 ## Trimming
 
 There are multiple softwares to trim your data, e.g. [Trimmomatic](http://www.usadellab.org/cms/index.php?page=trimmomatic), [cutadapt](https://cutadapt.readthedocs.io/en/stable/) and [TrimGalore!](https://github.com/FelixKrueger/TrimGalore) (which wraps around cutadapt and FastQC). We'll use Trimmomatic here.
+
 
 
 
