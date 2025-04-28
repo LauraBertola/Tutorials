@@ -153,6 +153,6 @@ We now have .bam files which have been completely ready to go for downstream pro
 
 It will create an html file, similar as what FastQC did before. Download the file and look at it in your browser.
 
-*Housekeeping*: we have created quite a few large files, and it is good practice to delete what you don't need anymore. You could for example delete the .sam files, and the _sorted.bam files which were later deduplicated. Always keep the raw data, and keep the final .bam files as they will be needed for the variant calling.
+**Housekeeping**: we have created quite a few large files, and it is good practice to delete what you don't need anymore. You could for example delete the .sam files, and the _sorted.bam files which were later deduplicated. Always keep the raw data, and keep the final .bam files as they will be needed for the variant calling.
 
 
