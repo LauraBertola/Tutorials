@@ -50,7 +50,9 @@ Often, you'll have a large number of samples, and you don't want to waste time l
 ```
 multiqc .
 ```
+
 ![multiqc](Images/multiqc.png)
+
 Look at the html file (download it to your computer, just like you did with the FastQC html files). It shows the results of all FastQC results in the same report. Note the the sample name appears when you hover with your cursor over a plot, so it is easy to identify which samples look strange and may require some more attention. 
 
 ![multiqc_result](Images/multiqc_result.png)
