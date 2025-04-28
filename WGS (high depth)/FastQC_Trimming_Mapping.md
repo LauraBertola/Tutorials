@@ -10,4 +10,4 @@ The `zcat` command is used to unzip the file (note it ends with .gz), and `less`
 If you'd like to see the messy format, with long lines wrapping, try using `head -n 20` instead of the `less` command. `head` shows the first part of the file, and `-n 20` tells it to show the first 20 lines. 
 
 Now to the actual data. You'll see something like this:
-![fastq.gz](/images/fastq.gz.png)
+![fastq.gz](/Images/fastq.gz.png)
