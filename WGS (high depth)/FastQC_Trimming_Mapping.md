@@ -30,6 +30,7 @@ In contrast, here is a somewhat typical base sequence quality report for R1 of a
 This figure depicts a common artifact of current Illumina chemistry, whereby quality scores per base drop off precipitously toward the ends of reads, with the effect being magnified for read lengths >150bp. The purpose of using FastQC to examine reads is to determine whether and how much to trim our reads to reduce sequencing error interfering with basecalling. In the above figure, as in most real dataset, we can see there is a tradeoff between throwing out data to increase overall quality by trimming for shorter length, and retaining data to increase value obtained from sequencing with the result of increasing noise toward the ends of reads.
 
 Now, let's run FastQC on our data. First make an output folder, where you will store the results in. Use `mkdir` to do this. Then run the `fastqc` command, and direct it to your newly created output folder by using -o.
+
 ```
 user@cluster:$ /softwares/FastQC/fastqc ~/input_files/* -o ~/output_files/
 ```
@@ -92,13 +93,18 @@ We'll use [this reference genome](https://www.ncbi.nlm.nih.gov/datasets/genome/G
 user@cluster:$ grep ">" GCA_021130815.1_PanTigT.MC.v3_genomic.fna
 ```
 
-Now we want to map our reads to this reference genome, but before we can use it, we need to index it. We'll use [samtools](https://www.htslib.org/) for this task.
+Now we want to map our reads to this reference genome, but before we can use it, we need to index it. This is already done, because this step takes some time. Just for completeness sake, the command is given below.
 
 ```
-user@cluster:$ /softwares/samtools1.12/samtools faidx GCA_021130815.1_PanTigT.MC.v3_genomic.fna
+user@cluster:$ bwa index GCA_021130815.1_PanTigT.MC.v3_genomic.fna
 ```
 
-Do `ls` to see what extra file was created by this command. You should now also have a .fna.fai file, which is the index file for your reference genome.
+This creates the following files:
+- GCA_021130815.1_PanTigT.MC.v3_genomic.fna.bwt
+- GCA_021130815.1_PanTigT.MC.v3_genomic.fna.pac
+- GCA_021130815.1_PanTigT.MC.v3_genomic.fna.ann
+- GCA_021130815.1_PanTigT.MC.v3_genomic.fna.amb
+- GCA_021130815.1_PanTigT.MC.v3_genomic.fna.sa
 
 For the mapping, we'll use [BWA MEM](https://github.com/lh3/bwa) and a for loop to make it loop over all samples. The idea is the same as in the trimming step. We need to tell it which forward (_sub_1_val_1.fq.gz) and reverse (_sub_2_val_2.fq.gz) reads go together, tell it which reference genome to use, and where to store the output. The flag -t tells it how many cores it can use, so if you have a larger cluster and don't have a lot of people running things simultaneously, you can probably request more cores.
 
@@ -126,4 +132,4 @@ You'll see that there are two commands, separated by a pipe (|). The first part 
 Bam is a binary format, which is much faster to process. But because it is binary it is not human-readable anymore. If you'd like to see what it looks like, take a peak into the .sam and .bam files using 'less'. The first one should look somewhat familiar, the second one should look like complete chaos.
 
 
-
+[samtools](https://www.htslib.org/)
