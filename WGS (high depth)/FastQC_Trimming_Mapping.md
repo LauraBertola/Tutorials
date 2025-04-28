@@ -80,11 +80,11 @@ Trimming can be done in different ways. You can look for specific motifs (like a
 
 When the analysis finishes, look at the files it has created. You should have files with _val_1.fq.gz and _val_2.fq.gz. For each file, you also get a trimming report. Take a look what information is in there, using `less`.
 
-![trimgalore](Images/trimagalore.png)
+![trimgalore](Images/trimgalore.png)
 
 If we're happy with the quality of the reads that have made it through the trimming process, we're ready to start the mapping!
 
-** Mapping
+## Mapping
 
 
 
