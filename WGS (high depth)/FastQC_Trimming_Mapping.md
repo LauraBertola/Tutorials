@@ -47,9 +47,10 @@ Open one of the html file in your browser. You'll see plots like the one above. 
 ![fastqc_summary](Images/fastqc-summary.png)
 
 Often, you'll have a large number of samples, and you don't want to waste time looking at tons of individual html files. [MultiQC](https://docs.seqera.io/multiqc) can help you summarize the results of multiple fastqc files. You can do this by navigating into your output folder with the FastQC results, and do:
-```multiqc .
 ```
-![multiqc](/Images/multiqc.png)
+multiqc .
+```
+![multiqc](Images/multiqc.png)
 Look at the html file (download it to your computer, just like you did with the FastQC html files). It shows the results of all FastQC results in the same report. Note the the sample name appears when you hover with your cursor over a plot, so it is easy to identify which samples look strange and may require some more attention. 
 
 Let's proceed to the next step, during which we can also tweak things if we're not confident about the raw data quality.
