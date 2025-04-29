@@ -1,14 +1,14 @@
-# Conda issues
+## Conda issues
 ```
 conda config --set ssl_verify false
 ```
 
-# Install Python3.9
+## Install Python3.9
 ```
 conda install python=3.9
 ```
 
-# Create an environment for multiqc which uses python 3.9 and activate it
+## Create an environment for multiqc which uses python 3.9 and activate it
 ```
 conda create -n multiqc
 ```
@@ -16,7 +16,7 @@ conda create -n multiqc
 conda activate multiqc
 ```
 
-# Download and install MultiQC
+## Download and install MultiQC
 ```
 git clone https://github.com/MultiQC/MultiQC.git
 ```
