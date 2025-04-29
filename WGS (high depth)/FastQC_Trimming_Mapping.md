@@ -52,7 +52,7 @@ Another key QC procedure involves inspecting average quality scores per base pos
 
 ![png](Images/fastqc-high-quality-example.png)
 
-In contrast, here is a somewhat typical base sequence quality report for R1 of a 300bp paired-end Illumina run of another RADseq dataset:
+In contrast, here is a somewhat typical base sequence quality report for R1 of a 300bp paired-end Illumina run of another dataset:
 
 ![png](Images/fastqc-low-quality-example.png)
 
