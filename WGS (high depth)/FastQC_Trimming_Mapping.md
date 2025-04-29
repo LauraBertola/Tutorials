@@ -68,7 +68,10 @@ Look at the html file (download it to your computer, just like you did with the 
 
 ![multiqc_result](Images/multiqc_result.png)
 
-Let's proceed to the next step, during which we can also tweak things if we're not confident about the raw data quality.
+Let's proceed to the next step, during which we can also tweak things if we're not confident about the raw data quality. We no longer need the environment with the other python version, so first do:
+```
+conda deactivate
+```
 
 ## Trimming
 
