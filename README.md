@@ -7,3 +7,5 @@ Most of the work will be done using command line. If you're not familiar with th
 To access Unix/Linux shell environment, you can use the native terminal when you're a Mac/Linux user. If you're on Windows, please install [MobaXterm](https://mobaxterm.mobatek.net/).
 
 For the downstream population genetics, we'll mostly be using R. Also for R, there are good (free!) introductory courses on [Datacamp](https://app.datacamp.com/learn/courses/free-introduction-to-r) and [CodeAcademy](https://www.codecademy.com/learn/learn-r). Also for R, there are many good resources out there, and also here, ChatGPT can be really helpful.
+
+**Everything is still under construction, but feel free to reach out with feedback!**
