@@ -163,4 +163,4 @@ It will create an bunch of files, and store them in a qualimap_results folder (n
 
 Note that for the sake of this tutorial, we've used downsampled data, so this is expected to be very, very low. However, the next step of the pipeline assumes that you have medium-high (>6X) depth, so we can call heterozygote positions reliably. Go to the next part [here]().
 
-**Housekeeping**: we have created quite a few large files, and it is good practice to delete what you don't need anymore. You could for example delete the .sam files, and the _sorted.bam files which were later deduplicated. Always keep the raw data, and keep the final .bam files as they will be needed for the variant calling.
+**Housekeeping**: we have created quite a few large files, and it is good practice to delete what you don't need anymore. You could for example delete the .sam files, and the _sorted.bam files which were later deduplicated. You can remove files with `rm`, but be careful! It will not ask you if you're certain and it cannot be undone. Always keep the raw data, and keep the final .bam files as they will be needed for the variant calling.
