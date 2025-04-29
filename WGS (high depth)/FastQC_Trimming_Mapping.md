@@ -115,7 +115,7 @@ done
 
 Also this step will take some time... :hourglass:
 
-If the mapping is finished, take a look at the files that were created using `ls`. Most downstream analyses use .bam files instead of .sam files. Also, most analyses like reads to be sorted by the order they occur on the genome, not by the order in which they were processed (which is the default .sam and .bam output). To convert .sam to .bam, and order the reads do:
+When the mapping is finished, take a look at the files that were created using `ls`. Most downstream analyses use .bam files instead of .sam files. Also, most analyses like reads to be sorted by the order they occur on the genome, not by the order in which they were processed (which is the default .sam and .bam output). To convert .sam to .bam, and order the reads do:
 ```
 for file in output_files/*.sam; do 
   filename=$(basename "$file" .sam)
