@@ -87,7 +87,7 @@ If we're happy with the quality of the reads that have made it through the trimm
 
 ## Mapping
 
-We'll use [this reference genome](https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_021130815.1/) to map our data to. It's already downloaded and also in the input_files folder. Copy it to your own folder using `cp`. You can also look into the file, using `less`. You probably don't want to scroll to an entire genome, so you can also look at the different scaffolds. They conveniently all start with a line, which starts with a >, so you can use `grep` to take a look at only those lines.
+We'll use [this reference genome](https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_021130815.1/) to map our data to. It's already downloaded and also in the input_files/References/ folder. You can also look into the reference file, the one ending with .fna, using `less`. You probably don't want to scroll to an entire genome, so you can also look at the different scaffolds. They conveniently all start with a line starting with a >, so you can use `grep` to take a look at only those lines.
 ```
 grep ">" GCA_021130815.1_PanTigT.MC.v3_genomic.fna
 ```
