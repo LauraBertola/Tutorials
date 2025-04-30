@@ -23,10 +23,10 @@ You should now have something which *looks* like a folder, called input_files, i
 
 If this doesn't work, you can also download some files from Zenodo directly and move them into an input_files directory:
 ```
-wget https://zenodo.org/records/14258052/files/BEN_CI16_sub_1.fq.gz?download=1
-wget https://zenodo.org/records/14258052/files/BEN_CI16_sub_2.fq.gz?download=1
-wget https://zenodo.org/records/14258052/files/LGS1_sub_1.fq.gz?download=1
-wget https://zenodo.org/records/14258052/files/LGS1_sub_2.fq.gz?download=1
+wget https://zenodo.org/records/14258052/files/BEN_CI16_sub_1.fq.gz
+wget https://zenodo.org/records/14258052/files/BEN_CI16_sub_2.fq.gz
+wget https://zenodo.org/records/14258052/files/LGS1_sub_1.fq.gz
+wget https://zenodo.org/records/14258052/files/LGS1_sub_2.fq.gz
 ```
 
 The raw data come in .fastq.gz (or .fq.gz) format. Now let's take a look at the data. Go to the folder where the data are stored, using `cd`, and use `ls` to display the contents of the folder. Most of the time, you'll be working with paired-end data, meaning that each sample has two files. These are usually identified by _R1 and _R2, or _1 and _2. Those two files contain the forward and reverse reads, respectively. For more information about paired-end Illumina sequencing, watch [this video](https://www.youtube.com/watch?v=fCd6B5HRaZ8).
