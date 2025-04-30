@@ -19,7 +19,12 @@ Now create the symbolic link to my folder by doing the following:
 ln -s /home/uramakri/laurabertola/Tutorial_WGS_HD/input_files input_files
 ```
 
-https://zenodo.org/records/14258052
+```
+wget https://zenodo.org/records/14258052/files/BEN_CI16_sub_1.fq.gz?download=1
+wget https://zenodo.org/records/14258052/files/BEN_CI16_sub_2.fq.gz?download=1
+wget https://zenodo.org/records/14258052/files/LGS1_sub_1.fq.gz?download=1
+wget https://zenodo.org/records/14258052/files/LGS1_sub_2.fq.gz?download=1
+```
 
 You should now have something which *looks* like a folder, called input_files, in your directory, but actually it teleports you to *my* folder when you enter it.
 
