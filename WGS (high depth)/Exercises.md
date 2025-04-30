@@ -16,6 +16,7 @@ wget https://zenodo.org/records/14258052/files/BEN_SI9_sub_1.fq.gz
 wget https://zenodo.org/records/14258052/files/BEN_SI9_sub_2.fq.gz
 wget https://zenodo.org/records/14258052/files/BEN_SI19_sub_1.fq.gz
 wget https://zenodo.org/records/14258052/files/BEN_SI19_sub_2.fq.gz
+
 ```
 
 By the end of this exercise you should have a trimmed version for each of the downloaded samples in your output_files folder.
