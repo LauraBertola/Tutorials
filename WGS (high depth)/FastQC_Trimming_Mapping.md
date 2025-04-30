@@ -48,7 +48,7 @@ The first is the name of the read, with information about its location on the pl
 ## FastQC for quality control
 The first step is to inspect your raw data to estimate overall quality. Scrolling through the data with `less` is obviously not going to work for this. So, we'll use a software called [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) to help us visualize overall data quality for each of our files. You can then attempt to improve your dataset by identifying and removing samples with failed sequencing. 
 
-Let's start the run now. First make an output folder, where you will store the results in. Use `mkdir` to do this. Then run the `fastqc` command, and direct it to your newly created output folder by using -o.
+Let's start the run now. First go out of the input_files folder by typing `cd ..` and then make an output folder, where you will store the results in. Use `mkdir` to do this. Then run the `fastqc` command, and direct it to your newly created output folder by using -o.
 ```
 /softwares/FastQC/fastqc ~/input_files/* -o ~/output_files/
 ```
