@@ -32,4 +32,3 @@ cd MultiQC
 ```
 pip install .
 ```
-``
