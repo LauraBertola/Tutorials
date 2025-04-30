@@ -1,3 +1,9 @@
+## Permissions
+For owner only: check reading permissions on input folder and make parent directory traversable:
+```
+chmod o+x ~
+```
+
 ## Conda issues
 ```
 conda config --set ssl_verify false
