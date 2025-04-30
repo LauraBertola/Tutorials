@@ -16,7 +16,7 @@ cd Tutorial_WGS_HD
 
 Now create the symbolic link to my folder by doing the following:
 ```
-ln -s /home/uramakri/laurabertola/Tutorial/input_files input_files
+ln -s /home/uramakri/laurabertola/Tutorial_WGS_HD/input_files input_files
 ```
 
 You should now have something which *looks* like a folder, called input_files, in your directory, but actually it teleports you to *my* folder when you enter it.
