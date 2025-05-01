@@ -70,4 +70,4 @@ The `bwa index` command has created the following files:
 - GCA_021130815.1_PanTigT.MC.v3_genomic.fna.amb
 - GCA_021130815.1_PanTigT.MC.v3_genomic.fna.sa
 
-Check if these files indeed are in your folder now, using 'ls'.
+Check if these files indeed are in your folder now, using `ls`.
