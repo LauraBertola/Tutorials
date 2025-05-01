@@ -118,7 +118,7 @@ for file in input_files/*_1.fq.gz; do
 done
 ```
 
-TrimGalore! does not like wildcards (*), so we have to loop over our files instead. For each file in the input_files directory which ends with _1.fq.gz, it finds the accompanying reverse reads file (mate="${file/_1.fq.gz/_2.fq.gz}"), and it runs TrimGalore over both files. You tell it that there are --paired data, it should use --ilumina adapters for trimming (check the manual for more options, in case you're using different adapters), and you also tell it to store the results in the --output_dir. Finally, you can add & to make it run in parallel.
+TrimGalore! does not like wildcards (*), so we have to loop over our files instead. For each file in the input_files directory which ends with _1.fq.gz, it finds the accompanying reverse reads file (mate="${file/_1.fq.gz/_2.fq.gz}"), and it runs TrimGalore over both files. You tell it that there are --paired data, it should use --ilumina adapters for trimming (check the manual for more options, in case you're using different adapters), and you also tell it to store the results in the --output_dir.
 
 This is going to take a few minutes... :hourglass:
 
