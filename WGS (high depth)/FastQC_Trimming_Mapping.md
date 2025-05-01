@@ -144,7 +144,7 @@ For the mapping, we'll use [BWA MEM](https://github.com/lh3/bwa) and a for loop 
 for file1 in output_files/*_sub_1_val_1.fq.gz; do
   file2=${file1/_sub_1_val_1.fq.gz/_sub_2_val_2.fq.gz}
   sample_name=$(basename "$file1" _sub_1_val_1.fq.gz)
-  bwa mem input_files/Reference/GCA_021130815.1_PanTigT.MC.v3_genomic.fna -t 2 "$file1" "$file2" > "output_files/${sample_name}_aligned_reads.sam"
+  bwa mem input_files/reference/GCA_021130815.1_PanTigT.MC.v3_genomic.fna -t 2 "$file1" "$file2" > "output_files/${sample_name}_aligned_reads.sam"
 done
 ```
 
