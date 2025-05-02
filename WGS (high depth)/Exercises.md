@@ -5,9 +5,14 @@ You've downloaded two samples already. But to make the SNP calling a little bit 
 ln -s /home/uramakri/laurabertola/Tutorial_WGS_HD/input_files input_files
 ```
 
-If you look inside this folder, you'll see that I've downloaded files for 7 more individuals. Follow the tutorial, running FastQC and Trimming.
+If you look inside this folder, you'll see that I've downloaded files for seven more individuals. Follow the tutorial, running FastQC and Trimming.
 
-By the end of this exercise you should have a trimmed version for each of the downloaded samples in your output_files folder, nine in total.
+By the end of this exercise you should have a trimmed version for each of the downloaded samples in your output_files folder, nine in total. You can quikcly check this, by looking how many trimming reports you have in your folder. Each file should have two trimming reports, one of the forward reads, one for the reverse reads. If you don't feel like counting lines on your screen, let the computer do it:
+```
+ls *trimming_report.txt | wc -l
+```
+
+`ls` will list all the files ending with trimming_report.txt, but instead of displaying this, we'll pipe the result to the next command. `wc` is short for 'word count', and the -l flag tells it to count the lines.
 
 ## Exercise 2
 
