@@ -41,7 +41,7 @@ The first step is to inspect your raw data to estimate overall quality. Scrollin
 
 Let's start the run now. First go out of the input_files folder by typing `cd ..` and then make an output folder, where you will store the results in. Use `mkdir` to do this. Then run the `fastqc` command, and direct it to your newly created output folder by using -o.
 ```
-/softwares/FastQC/fastqc ~/Tutorial_WGS_HD/input_files/* -o output_files/
+/softwares/FastQC/fastqc input_files/* -o output_files/
 ```
 
 On the screen, you'll see the progress of your FastQC run. 
