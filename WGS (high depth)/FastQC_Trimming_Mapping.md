@@ -1,5 +1,4 @@
 ## Raw data
-
 We'll provide raw :tiger: data for three samples to illustrate the steps of quality control, trimming and mapping. I've put the data that we'll be using here: /home/uramakri/laurabertola/Tutorial_WGS_HD/input_files
 You don't have to copy the data (with large datasets, we'll run out of disk space real fast!), but it is also inconvenient if you have to navigate my folder all the time. You can create a symbolic link (or soft link) in your own directory, which will serve as a connection to my folder.
 
