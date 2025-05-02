@@ -5,13 +5,13 @@ You've downloaded two samples already. But to make the SNP calling a little bit 
 ln -s /home/uramakri/laurabertola/Tutorial_WGS_HD/input_files input_files
 ```
 
-Follow the rest of the tutorial, running FastQC and Trimming.
+If you look inside this folder, you'll see that I've downloaded files for 7 more individuals. Follow the tutorial, running FastQC and Trimming.
 
 By the end of this exercise you should have a trimmed version for each of the downloaded samples in your output_files folder, nine in total.
 
 ## Exercise 2
 
-Next, we will map the samples to a reference genome. We will talk about it more during our next session, but to prepare for it, please do the following two steps.
+Next, we will map the samples to a reference genome. We will talk about it more during our next session, but to prepare for it, you can do the following two steps.
 
 Make a folder called 'reference' within your input_files folder first, and navigate into is with `cd`. Then download the reference genome, using `wget`:
 ```
