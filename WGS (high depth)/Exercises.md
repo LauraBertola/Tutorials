@@ -1,37 +1,24 @@
 ## Exercise 1
 
-You've downloaded two samples already. But to make the SNP calling a little bit more interesting download the following samples as well, and process them in the same way as we did with the first two.
+You've downloaded two samples already. But to make the SNP calling a little bit more interesting we should have a few more. Softlinking to my folder should now work, so try this again:
 ```
-wget https://zenodo.org/records/14258052/files/BEN_CI18_sub_1.fq.gz
-wget https://zenodo.org/records/14258052/files/BEN_CI18_sub_2.fq.gz
-wget https://zenodo.org/records/14258052/files/BEN_NW10_sub_1.fq.gz
-wget https://zenodo.org/records/14258052/files/BEN_NW10_sub_2.fq.gz
-wget https://zenodo.org/records/14258052/files/BEN_NW12_sub_1.fq.gz
-wget https://zenodo.org/records/14258052/files/BEN_NW12_sub_2.fq.gz
-wget https://zenodo.org/records/14258052/files/BEN_NW13_sub_1.fq.gz
-wget https://zenodo.org/records/14258052/files/BEN_NW13_sub_2.fq.gz
-wget https://zenodo.org/records/14258052/files/BEN_SI18_sub_1.fq.gz
-wget https://zenodo.org/records/14258052/files/BEN_SI18_sub_2.fq.gz
-wget https://zenodo.org/records/14258052/files/BEN_SI9_sub_1.fq.gz
-wget https://zenodo.org/records/14258052/files/BEN_SI9_sub_2.fq.gz
-wget https://zenodo.org/records/14258052/files/BEN_SI19_sub_1.fq.gz
-wget https://zenodo.org/records/14258052/files/BEN_SI19_sub_2.fq.gz
-
+ln -s /home/uramakri/laurabertola/Tutorial_WGS_HD/input_files input_files
 ```
 
-By the end of this exercise you should have a trimmed version for each of the downloaded samples in your output_files folder.
+Follow the rest of the tutorial, running FastQC and Trimming.
+
+By the end of this exercise you should have a trimmed version for each of the downloaded samples in your output_files folder, nine in total.
 
 ## Exercise 2
 
 Next, we will map the samples to a reference genome. We will talk about it more during our next session, but to prepare for it, please do the following two steps.
 
-First download the reference genome, the same way you downloaded the other data. Make a folder called 'reference' within your input_files folder first, and navigate into is with `cd`.
-Then do:
+Make a folder called 'reference' within your input_files folder first, and navigate into is with `cd`. Then download the reference genome, using `wget`:
 ```
 wget https://zenodo.org/records/14258052/files/GCA_021130815.1_PanTigT.MC.v3_genomic.fna
 ```
 
-For a reference genome to be used efficiently, it needs to be indexed. But indexing takes some time (~2 hours in my case). You're internet connection may drop, or maybe you feel like closing your laptop and going home. Both of these things will interrupt the run, which is really annoying when you're running something which takes long (hours, days, weeks...). For that, you can use `screen`.
+For a reference genome to be used efficiently, it needs to be indexed. But indexing takes some time (~2 hours in my case). Your internet connection may drop, or maybe you feel like closing your laptop and going home. Both of these things will interrupt the run, which is really annoying when you're running something which takes long (hours, days, weeks...). For that, you can use `screen`.
 'screen' is a terminal multiplexing tool that allows you to create, manage, and switch between multiple shell sessions from a single terminal window. Let's try to run the indexing from within screen.
 
 First, start a new screen session, which you call 'index':
@@ -51,7 +38,7 @@ To see if you have screen session running, do:
 screen ls
 ```
 
-It should show you that you have a screen session called 'index'. To attach to the screen session again, for example to check if it is finished yet, do:
+It should show you that you have a screen session called 'index'. To attach to the screen session again, for example to check if the run is finished yet, do:
 ```
 screen -r index
 ```
