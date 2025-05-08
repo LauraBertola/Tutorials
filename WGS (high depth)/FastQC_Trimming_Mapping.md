@@ -169,7 +169,7 @@ You'll see that there are two commands, separated by a pipe (|). The first part 
 
 Bam is a binary format, which is much faster to process. But because it is binary it is not human-readable anymore. If you'd like to see what it looks like anyway, take a peak into the .sam and .bam files using 'less'. For the .sam file, you're just seeing the header (the lines starting which @). If you'd like to see the actual alingment and don't have the patience to scroll past the header, try this:
 ```
-grep -v "^@" your_file.sam | less
+grep -v "^@" LGS1_aligned_reads.sam | less
 ```
 
 We used `grep` before to only grab lines starting with >, here we tell it to only grab lines which do **not** start with @.
