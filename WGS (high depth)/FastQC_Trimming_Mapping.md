@@ -186,7 +186,7 @@ for file in output_files/*_sorted.bam; do
 done
 ```
 
-We use a for loop again, and the command needs an input file (I), some information about the output file it should generate (O), as well as a metrics file (M). --REMOVE_DUPLICATES tells GATK4 to remove the duplicate reads, instead of just marking them. Check if the expected output files are generated, using `ls`.
+We use a for loop again, and the command needs an input file (I), some information about the output file it should generate (O), as well as a metrics file (M). --REMOVE_DUPLICATES tells it to remove the duplicate reads, instead of just marking them. Check if the expected output files are generated, using `ls`.
 
 We also have index the .bam file again. This time we use [samtools](https://www.htslib.org/).
 ```
