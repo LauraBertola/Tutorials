@@ -63,3 +63,7 @@ The `bwa index` command has created the following files:
 - GCA_021130815.1_PanTigT.MC.v3_genomic.fna.sa
 
 Check if these files indeed are in your folder now, using `ls`.
+
+## Exercise 3
+
+Next time, we'll used the mapped data in the .bam files to call variants. However, calling variants from two files and then doing some popgen is not very interesting. Therefore, if you have downloaded and trimmed more files (see Exercise 1), process them in the same way. You should end up with an indexed bam file for all nine samples. Note that mapping takes some time (~15 minutes per sample), so it is advisable to use `screen` in this exercise as well.
