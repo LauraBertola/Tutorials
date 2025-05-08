@@ -199,7 +199,13 @@ Do `ls` to see what changed. You should now also have .bam.bai files.
 
 We now have .bam files which have been completely ready to go for downstream processing. But we haven't really looked at the mapping quality yet. We can do so with the tool [Qualimap](https://qualimap.conesalab.org/). Run the following:
 ```
-/softwares/qualimap_v2.2.1/qualimap bamqc -bam output_files/*_deduplicated.bam -outdir output_files/qualimap_results -outformat HTML
+for bam in output_files/*_deduplicated.bam; do
+    sample=$(basename "$bam" .bam)
+    /softwares/qualimap_v2.2.1/qualimap bamqc \
+        -bam "$bam" \
+        -outdir output_files/qualimap_results/${sample}_qualimap \
+        -outformat HTML
+done
 ```
 
 It will create an bunch of files, and store them in a qualimap_results folder (note that you asked it to create this folder to put all the output files in). Download the entire folder (just like you did with the FastQC results) and look at the html file it in your browser. Because Qualimap does not embed the images in their html files (unlike FastQC), you need to download the entire folder. Take a look at the images at the bottom of the report (you can click the links on the right side of the page), especially the depth across the coverage across the reference, and coverage histogram. It should look something like this:
