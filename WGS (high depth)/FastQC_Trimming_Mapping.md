@@ -125,11 +125,25 @@ If we're happy with the quality of the reads that have made it through the trimm
 
 ## Mapping
 
-We'll use [this reference genome](https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_021130815.1/) to map our data to, but also in a downsampled version, since this is just for practice. If you've gone through the exercises successfully, you'll have the reference genome and the necessary index files in the folder where you downloaded it to. If you didn't go through the exercises, you should make softlink to my input_files folder as described at the beginning of this tutorial. The reference files with all index files can be found in /input_files/reference/. 
+We'll use [this reference genome](https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_021130815.1/) to map our data to, but also in a downsampled version, since this is just for practice. If you've gone through the exercises successfully, you'll have the reference genome and the necessary index files in the folder where you downloaded it to. If you didn't go through the exercises, you should make softlink to my input_files folder as described at the beginning of this tutorial. The reference files with all index files can be found in input_files/reference/. 
 
 You can also look into the reference file, the one ending with .fna, using `less`. You probably don't want to scroll to an entire genome, so you can also look at the different scaffolds. They conveniently all start with a line starting with a >, so you can use `grep` to take a look at only those lines. Make sure you're in the right folder when running this command.
 ```
 grep ">" GCA_021130815.1_PanTigT.MC.v3_genomic.fna
+```
+
+To avoid spending too much time on this, we'll proceed with the next step with only two samples: BEN_CI16 and LGS1. Check if these are the two files which are in your output_folder/. If you have more files in your output_folder/ please move them temporarily. E.g. make a new folder with `mkdir` and move them there with `mv`. For example, I used the commands below:
+```
+mkdir TEMP
+```
+```
+mv * TEMP
+```
+```
+cd TEMP
+```
+```
+mv BEN_CI16_sub_1_val_1.fq.gz BEN_CI16_sub_2_val_2.fq.gz LGS1_sub_1_val_1.fq.gz LGS1_sub_2_val_2.fq.gz ..
 ```
 
 For the mapping, we'll use [BWA MEM](https://github.com/lh3/bwa) and a for loop to make it loop over all samples. The idea is the same as in the trimming step. We need to tell it which forward (_sub_1_val_1.fq.gz) and reverse (_sub_2_val_2.fq.gz) reads go together, tell it which reference genome to use, and where to store the output. The flag -t tells it how many cores it can use, so if you have a larger cluster and don't have a lot of people running things simultaneously, you can probably request more cores. You should be in your Tutorials folder when running this command.
