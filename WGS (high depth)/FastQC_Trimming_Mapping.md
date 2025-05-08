@@ -155,7 +155,7 @@ for file1 in output_files/*_sub_1_val_1.fq.gz; do
 done
 ```
 
-Also this step will take some time... :hourglass:
+This step will take some time... :hourglass:
 
 When the mapping is finished, take a look at the files that were created using `ls`. Most downstream analyses use .bam files instead of .sam files. Also, most analyses like reads to be sorted by the order they occur on the genome, not by the order in which they were processed (which is the default .sam and .bam output). To convert .sam to .bam, and order the reads do:
 ```
