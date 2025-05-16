@@ -148,7 +148,7 @@ mv BEN_CI16_sub_1_val_1.fq.gz BEN_CI16_sub_2_val_2.fq.gz ..
 
 For the mapping, we'll use [BWA MEM](https://github.com/lh3/bwa) and a for loop to make it loop over all samples. The idea is the same as in the trimming step. We need to tell it which forward (_sub_1_val_1.fq.gz) and reverse (_sub_2_val_2.fq.gz) reads go together, tell it which reference genome to use, and where to store the output. The flag -t tells it how many cores it can use, so if you have a larger cluster and don't have a lot of people running things simultaneously, you can probably request more cores. You should be in your Tutorials folder when running this command.
 ```
-for file1 in input_files/*_sub_1_val_1.fq.gz; do
+for file1 in output_files/*_sub_1_val_1.fq.gz; do
   file2=${file1/_sub_1_val_1.fq.gz/_sub_2_val_2.fq.gz}
   sample_name=$(basename "$file1" _sub_1_val_1.fq.gz)
   bwa mem input_files/reference/GCA_021130815.1_PanTigT.MC.v3_genomic.fna -t 2 "$file1" "$file2" > "output_files/${sample_name}_aligned_reads.sam"
