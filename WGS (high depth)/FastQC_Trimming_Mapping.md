@@ -143,7 +143,7 @@ mv * TEMP
 cd TEMP
 ```
 ```
-mv BEN_CI16_sub_1_val_1.fq.gz BEN_CI16_sub_2_val_2.fq.gz ..
+mv BEN_CI16_sub_1_val_1.fq.gz BEN_CI16_sub_2_val_2.fq.gz LGS1_sub_1_val_1.fq.gz LGS1_sub_2_val_2.fq.gz ..
 ```
 
 For the mapping, we'll use [BWA MEM](https://github.com/lh3/bwa) and a for loop to make it loop over all samples. The idea is the same as in the trimming step. We need to tell it which forward (_sub_1_val_1.fq.gz) and reverse (_sub_2_val_2.fq.gz) reads go together, tell it which reference genome to use, and where to store the output. The flag -t tells it how many cores it can use, so if you have a larger cluster and don't have a lot of people running things simultaneously, you can probably request more cores. You should be in your Tutorials folder when running this command.
