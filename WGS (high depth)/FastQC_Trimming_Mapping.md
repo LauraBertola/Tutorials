@@ -172,7 +172,7 @@ Bam is a binary format, which is much faster to process. But because it is binar
 grep -v "^@" LGS1_aligned_reads.sam | less
 ```
 
-We used `grep` before to only grab lines starting with >, here we tell it to only grab lines which do **not** start with @.
+We used `grep` before to only grab lines starting with >, here we use -v to tell it to only grab lines which do **not** start with @.
 
 Next, we need to remove duplicates. Duplicates here refer to PCR replicates and optical replicates which falsely inflate the sequencing depth, affecting downstream variant calling. PCR duplicates are identical reads which result from the overamplification during PCR step of library preparation. Optical duplicates arise from sequencing machine artifacts, when a cluster is wrongly interpreted as multiple nearby clusters. We use [Picard](https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Picard) for this step. Run the following:
 ```
