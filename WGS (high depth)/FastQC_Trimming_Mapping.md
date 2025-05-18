@@ -82,6 +82,9 @@ conda create -n multiqc --file /home/uramakri/laurabertola/Tutorial_WGS_HD/admin
 ```
 conda activate multiqc
 ```
+```
+conda install -c bioconda multiqc
+```
 
 Now, navigating into your output folder with the FastQC results, and do:
 ```
