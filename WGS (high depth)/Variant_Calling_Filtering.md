@@ -31,7 +31,7 @@ Now, let's take a look at the actual data, instead of the header, and use `less`
 ```
 
 You should see something like this:
-![vcf](/Images/vcf.png)
+![vcf](Images/vcf.png)
 
 You can scroll through it, see what the reference allele and the alternative alleles are for each of the positions, and what information is available per sample. There is a lot of information in the INFO column:  
 | INFO Tag   | Description                                                                                   |
