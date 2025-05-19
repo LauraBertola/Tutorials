@@ -52,19 +52,19 @@ We are not going to look at the content of the file in much more detail now, bec
 ## Variant filtering
 Our vcf file has a lot of variants, but we don't want to use everything. For example, there will be a lot of noise in the file, e.g. positions which do not have reliable information, or have missing data for most samples (remember this is a downsampled dataset!). We therefore need to filter our vcf file. The images below illustrate different types of variants which you may or may not want to retain (depending on your research question!).
 
-Variants:
+Variants:  
 ![variants](Images/all_variants.png)
 
-Variants which occur in more than one sample (to avoid sequencing errors to be included as a variant):
+Variants which occur in more than one sample (to avoid sequencing errors to be included as a variant):  
 ![variants](Images/maf_variants.png)
 
-Variants which are indels (lots of downstream analyses don't like these, error-prone:
+Variants which are indels (lots of downstream analyses don't like these, error-prone:  
 ![variants](Images/indel_variants.png)
 
-Variants which are multi-allelic (lots of downstream analyses don't like these, error-prone):
+Variants which are multi-allelic (lots of downstream analyses don't like these, error-prone):  
 ![variants](Images/multiallelic_variants.png)
 
-Variants which are variable within your samples (imaginge what happens if you use a reference genome of another species):
+Variants which are variable within your samples (imaginge what happens if you use a reference genome of another species):  
 ![variants](Images/ingroup_variants.png)
 
 We will now use some very common filters, and to get an idea of the impact of filtering, we'll count the number of retained variants after each step.
