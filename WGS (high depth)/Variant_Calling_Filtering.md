@@ -69,26 +69,29 @@ Variants which are variable within your samples (imaginge what happens if you us
 
 We will now use some very common filters, and to get an idea of the impact of filtering, we'll count the number of retained variants after each step.
 
-1. Bi-allelic SNPs only (i.e. no indels; m2 = min. 2 alleles, M2 = max. 2 alleles):
+**1. Bi-allelic SNPs only (i.e. no indels; m2 = min. 2 alleles, M2 = max. 2 alleles)**
 ```
 /softwares/bcftools1.12/bcftools view -v snps -m2 -M2 unfiltered_variants.vcf -o variants_snps.vcf
 /softwares/bcftools1.12/bcftools view -H variants_snps.vcf | wc -l
 ```
-2. Remove low quality base calls
+**2. Remove low quality base calls**
 ```
 /softwares/bcftools1.12/bcftools filter -e 'QUAL >= 30' variants_snps.vcf -o variants_snps_qual30.vcf
 /softwares/bcftools1.12/bcftools view -H variants_snps_qual30.vcf | wc -l
 ```
-3. Filter for minor allele frequency (MAF) (removing rare SNPs, which may be caused by sequencing errors):
+**3. Filter for minor allele frequency (MAF) (removing rare SNPs, which may be caused by sequencing errors)**
 ```
 /softwares/bcftools1.12/bcftools filter -e 'AF<0.05 || AF>0.95' variants_snps_qual30.vcf -o variants_snps_qual30_maf05.vcf
 /softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05.vcf | wc -l
 ```
-4. Filter for low quality genotypes (per sample)
+**4. Filter for low quality genotypes (per sample)**
 ```
 /softwares/bcftools1.12/bcftools filter -e 'FMT/GQ >= 30' variants_snps_qual30_maf05.vcf -o variants_snps_qual30_maf05_gq30.vcf
 /softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30.vcf | wc -l
 ```
+**5. Filter out sites with very low depth (impossible to reliably call a genotype) and very high depth (likely mapping errors)**
+/softwares/bcftools1.12/bcftools filter -e 'FMT/DP <= 3 || FMT/DP >= 10' variants_snps_qual30_maf05_gq30.vcf -o variants_snps_qual30_maf05_gq30_dp3to10.vcf
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_dp3to10.vcf | wc -l
 
 Now, we have our final dataset, and we can look at a few more things in detail. E.g. we can look at a specific chromosome or region:
 ```
@@ -145,3 +148,5 @@ We also want to explore different levels of missingsness across samples, so we c
 /softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.75' -Ov -o variants_snps_qual30_maf05_gq30_missing075.vcf
 /softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_missing075.vcf | wc -l
 ```
+
+**Important!** Remember that we're using downsampled data, so we're only *pretending* that this is a high depth dataset. Your choice for the depth filters should always be based on actual depth. For how to process a low depth dataset, please refer to the [Tutorial WGS (low depth)](https://github.com/LauraBertola/Tutorials/tree/main/WGS%20(low%20depth)).
