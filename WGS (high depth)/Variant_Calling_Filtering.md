@@ -104,3 +104,37 @@ Or, because it's easier to interpret, basecalls:
 ```
 /softwares/bcftools1.12/bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%TGT]\n' variants_snps_qual30_maf05_gq30.vcf | head
 ```
+
+We will do one final step of filtering, by excluding positions which have too high 'missingness'. What an appropriate threshold for missingness is depends highly on your data and your research question. It is also good to look at the distribution of missing data across samples. Let's do that here.
+
+```
+/softwares/bcftools1.12/bcftools query -f '[%GT\t]\n' variants_snps_qual30_maf05_gq30.vcf | \
+awk '{
+  for (i=1; i<=NF; i++) if ($i == "./.") missing[i]++;
+}
+END {
+  for (i in missing) print "Sample" i, missing[i];
+}' | sort -k2 -nr
+```
+
+We also want to explore different levels of missingsness across samples, so we can remove SNPs for which we have only data for a single sample, for example. We're going to filter for a couple of different levels, for positions that have <0.1, <0.25, <0.5 and <0.75 missing data. To achieve this, we need to add a missingness tag first, and can pipe the result in to the filter. We will also count the number of retained SNPs again.
+```
+/softwares/bcftools1.12/bcftools +fill-tags -Ov variants_snps_qual30_maf05_gq30.vcf -- -t F_MISSING  | \
+/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.1' -Ov -o variants_snps_qual30_maf05_gq30_missing01.vcf
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_missing01.vcf | wc -l
+```
+```
+/softwares/bcftools1.12/bcftools +fill-tags -Ov variants_snps_qual30_maf05_gq30.vcf -- -t F_MISSING  | \
+/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.25' -Ov -o variants_snps_qual30_maf05_gq30_missing025.vcf
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_missing025.vcf | wc -l
+```
+```
+/softwares/bcftools1.12/bcftools +fill-tags -Ov variants_snps_qual30_maf05_gq30.vcf -- -t F_MISSING  | \
+/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.5' -Ov -o variants_snps_qual30_maf05_gq30_missing05.vcf
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_missing05.vcf | wc -l
+```
+```
+/softwares/bcftools1.12/bcftools +fill-tags -Ov variants_snps_qual30_maf05_gq30.vcf -- -t F_MISSING  | \
+/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.75' -Ov -o variants_snps_qual30_maf05_gq30_missing075.vcf
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_missing075.vcf | wc -l
+```
