@@ -44,15 +44,63 @@ You can scroll through it, see what the reference allele and the alternative all
 | `DP4`      | Strand-specific read depth: REF-forward, REF-reverse, ALT-forward, ALT-reverse            |
 | `MQ`       | Average mapping quality of reads covering this site                                       |
 
-Finally, you may be curious how many variants are in your vcf file. Do:
+We are not going to look at the content of the file in much more detail now, because there's still a lot of junk in there. First, we'll do some filtering. But before we move on, you may be curious how many variants are in your vcf file. We can do this by counting all the lines (`wc -l`) of all the data lines (i.e. not including the header):
 ```
-/softwares/bcftools1.12/bcftools view -v snps unfiltered_variants.vcf | grep -vc "^#"
+/softwares/bcftools1.12/bcftools view -H unfiltered_variants.vcf | wc -l
 ```
 
 ## Variant filtering
-Our vcf file has a lot of variants, but we don't want to use everything. For example, there will be a lot of noise in the file, e.g. positions which do not have reliable information, or having missing data for most samples. We therefore need to filter our vcf file.
+Our vcf file has a lot of variants, but we don't want to use everything. For example, there will be a lot of noise in the file, e.g. positions which do not have reliable information, or have missing data for most samples (remember this is a downsampled dataset!). We therefore need to filter our vcf file. The images below illustrate different types of variants which you may or may not want to retain (depending on your research question!).
 
+Variants:
+![variants](Images/all_variants.png)
 
-region: /softwares/bcftools1.12/bcftools view -H -r chr2:100000-200000 variants.vcf
-genotypes: /softwares/bcftools1.12/bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%GT]\n' variants.vcf | head
-basecalls: /softwares/bcftools1.12/bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%TGT]\n' variants.vcf | head
+Variants which occur in more than one sample (to avoid sequencing errors to be included as a variant):
+![variants](Images/maf_variants.png)
+
+Variants which are indels (lots of downstream analyses don't like these, error-prone:
+![variants](Images/indel_variants.png)
+
+Variants which are multi-allelic (lots of downstream analyses don't like these, error-prone):
+![variants](Images/multiallelic_variants.png)
+
+Variants which are variable within your samples (imaginge what happens if you use a reference genome of another species):
+![variants](Images/ingroup_variants.png)
+
+We will now use some very common filters, and to get an idea of the impact of filtering, we'll count the number of retained variants after each step.
+
+1. Bi-allelic SNPs only (i.e. no indels; m2 = min. 2 alleles, M2 = max. 2 alleles):
+```
+/softwares/bcftools1.12/bcftools view -v snps -m2 -M2 unfiltered_variants.vcf -o variants_snps.vcf
+/softwares/bcftools1.12/bcftools view -H variants_snps.vcf | wc -l
+```
+2. Remove low quality base calls
+```
+/softwares/bcftools1.12/bcftools filter -e 'QUAL >= 30' variants_snps.vcf -o variants_snps_qual30.vcf
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30.vcf | wc -l
+```
+3. Filter for minor allele frequency (MAF) (removing rare SNPs, which may be caused by sequencing errors):
+```
+/softwares/bcftools1.12/bcftools filter -e 'AF<0.05 || AF>0.95' variants_snps_qual30.vcf -o variants_snps_qual30_maf05.vcf
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05.vcf | wc -l
+```
+4. Filter for low quality genotypes (per sample)
+```
+/softwares/bcftools1.12/bcftools filter -e 'FMT/GQ >= 30' variants_snps_qual30_maf05.vcf -o variants_snps_qual30_maf05_gq30.vcf
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30.vcf | wc -l
+```
+
+Now, we have our final dataset, and we can look at a few more things in detail. E.g. we can look at a specific chromosome or region:
+```
+/softwares/bcftools1.12/bcftools view -H -r chr2:100000-200000 variants_snps_qual30_maf05_gq30.vcf
+```
+
+We may also want to look in more detail at the positions that ended up in our file, for example by looking at the genotypes:
+```
+/softwares/bcftools1.12/bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%GT]\n' variants_snps_qual30_maf05_gq30.vcf | head
+```
+
+Or, because it's easier to interpret, basecalls:
+```
+/softwares/bcftools1.12/bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%TGT]\n' variants_snps_qual30_maf05_gq30.vcf | head
+```
