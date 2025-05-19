@@ -11,11 +11,11 @@ You can also output a bcf file. The difference between vcf and bcf is similar to
 
 A vcf file contains a lot of information, and there are many ways of adjusting what the output should look like. More information about the format of vcf files, as well as additional flags to use, can be found [here](https://samtools.github.io/hts-specs/VCFv4.2.pdf). E.g. you can ask for more information fields by using the -f flag with the `call` command (note that in this context, the -f flag means something else than the -f flag with the `mpileup` command!). By default, the vcf file will contain the following information fields:
 
-FORMAT Tag	    Description
-GT	            Genotype — encoded like 0/0, 0/1, 1/1, etc.
-GQ	            Genotype Quality — Phred-scaled confidence in the genotype call
-DP	            Read Depth — total number of reads covering the site for the sample
-PL	            Phred-scaled genotype Likelihoods — e.g. likelihoods for 0/0, 0/1, and 1/1
+FORMAT Tag	    Description  
+GT	            Genotype — encoded like 0/0, 0/1, 1/1, etc.  
+GQ	            Genotype Quality — Phred-scaled confidence in the genotype call  
+DP	            Read Depth — total number of reads covering the site for the sample  
+PL	            Phred-scaled genotype Likelihoods — e.g. likelihoods for 0/0, 0/1, and 1/1  
 
 In the fields above, 0 stands for the reference allele, whereas 1 stands for the derived allele. Let's take a closer look at our vcf file. First, we'll start with the header, by using -h:
 ```
@@ -31,14 +31,14 @@ Now, let's take a look at the actual data, instead of the header, and use `less`
 ```
 
 You can scroll through it, see what the reference allele and the alternative alleles are for each of the positions, and what information is available per sample. There is a lot of information in the INFO column:
-Field	      Meaning
-DP	        Total read depth at this position (from all samples)
-SGB         Segregation-based score used internally by bcftools to penalize low-quality calls — ignore unless you're debugging internals
-MQ0F        Fraction of reads with mapping quality zero → 0 here means all reads were well-mapped
-AC          Allele count for the ALT allele
-AN          Allele number (total number of called alleles)
-DP4        	Strand-specific read depth: REF-forward, REF-reverse, ALT-forward, ALT-reverse
-MQ          Average mapping quality of reads covering this site
+Field	      Meaning  
+DP	        Total read depth at this position (from all samples)  
+SGB         Segregation-based score used internally by bcftools to penalize low-quality calls — ignore unless you're debugging internals  
+MQ0F        Fraction of reads with mapping quality zero → 0 here means all reads were well-mapped  
+AC          Allele count for the ALT allele  
+AN          Allele number (total number of called alleles)  
+DP4        	Strand-specific read depth: REF-forward, REF-reverse, ALT-forward, ALT-reverse  
+MQ          Average mapping quality of reads covering this site  
 
 
 
