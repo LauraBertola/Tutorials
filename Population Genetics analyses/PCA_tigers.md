@@ -64,6 +64,15 @@ These data are already filtered for missingness, so we can start exploring the r
 /softwares/plink/plink --vcf machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode.vcf.gz \
   --make-bed --double-id --allow-extra-chr --out plink_file
 ```
+
+This creates the following files, which are needed for a lot of downstream analyses:
+| File                  | Description                                   | Contents Summary                              |
+|-----------------------|-----------------------------------------------|-----------------------------------------------|
+| `plink_file.bed`       | Binary genotype data file                      | Genotype matrix (SNPs × individuals) stored in compact binary format |
+| `plink_file.bim`       | Variant information file (text)                | One SNP per line: chromosome, SNP ID, genetic distance, physical position, allele 1, allele 2 |
+| `plink_file.fam`       | Sample information file (text)                 | One individual per line: family ID, individual ID, paternal/maternal ID, sex, phenotype |
+| `plink_file.nosex`     | Optional sample IDs file without sex info     | List of sample IDs when sex info is missing or irrelevant           |
+
 ```
 /softwares/plink/plink --bfile plink_file --pca 10 --allow-extra-chr --out plink_pca
 ```
