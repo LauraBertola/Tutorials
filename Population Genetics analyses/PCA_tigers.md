@@ -83,26 +83,26 @@ Let's also do some filtering for different levels of missingness:
 
 Now, let's do some popgen, but seeing how a PCA for this dataset looks like. First we need to convert the vcf files to plink format, and then we can use plink to calculate the eigenvectors.
 ```
-plink --vcf machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode_missing01.vcf.gz \
+/softwares/plink/plink --vcf machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode_missing01.vcf.gz \
   --make-bed --double-id --allow-extra-chr --out plink_missing01_file
 
-plink --vcf machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode_missing025.vcf.gz \
+/softwares/plink/plink --vcf machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode_missing025.vcf.gz \
   --make-bed --double-id --allow-extra-chr --out plink_missing025_file
 
-plink --vcf machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode_missing05.vcf.gz \
+/softwares/plink/plink --vcf machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode_missing05.vcf.gz \
   --make-bed --double-id --allow-extra-chr --out plink_missing05_file
 
-plink --vcf machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode_missing075.vcf.gz \
+/softwares/plink/plink --vcf machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode_missing075.vcf.gz \
   --make-bed --double-id --allow-extra-chr --out plink_missing075_file
 ```
 ```
-plink --bfile plink_missing01_file --pca 10 --allow-extra-chr --out plink_missing01_pca
+/softwares/plink/plink --bfile plink_missing01_file --pca 10 --allow-extra-chr --out plink_missing01_pca
 
-plink --bfile plink_missing025_file --pca 10 --allow-extra-chr --out plink_missing025_pca
+/softwares/plink/plink --bfile plink_missing025_file --pca 10 --allow-extra-chr --out plink_missing025_pca
 
-plink --bfile plink_missing05_file --pca 10 --allow-extra-chr --out plink_missing05_pca
+/softwares/plink/plink --bfile plink_missing05_file --pca 10 --allow-extra-chr --out plink_missing05_pca
 
-plink --bfile plink_missing075_file --pca 10 --allow-extra-chr --out plink_missing075_pca
+/softwares/plink/plink --bfile plink_missing075_file --pca 10 --allow-extra-chr --out plink_missing075_pca
 ```
 
 We are going to plot this result in R:
