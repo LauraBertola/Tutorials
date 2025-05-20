@@ -133,20 +133,44 @@ Or, because it's easier to interpret, basecalls:
 We will do one final step of filtering, by excluding positions which have too high 'missingness'. What an appropriate threshold for missingness is, depends highly on your data and your research question. It is also good to look at the distribution of missing data across samples. Let's do that here.
 
 ```
-/softwares/bcftools1.12/bcftools query -l variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf | \
+/softwares/bcftools1.12/bcftools query -l variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz | \
 sed 's|output_files/||; s/_aligned_reads_deduplicated.bam$//' > sample_names_cleaned.txt
 ```
 
 ```
 paste sample_names_cleaned.txt <( \
-  bcftools query -f '[%GT\t]\n' variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf | \
+  /softwares/bcftools1.12/bcftools query -f '[%GT\t]\n' variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz | \
   awk '{
     for (i=1; i<=NF; i++) if ($i == "./.") missing[i]++;
   }
   END {
     for (i=1; i<=length(missing); i++) print missing[i];
   }'
-) | sort -k2 -nr
+) | sort -k2 -nr > missing_data.txt
+```
+
+We don't have a lot of samples here, but it's good to plot these results, so we have a visual if there are samples which are poorer in quality than others. We do this in R. This requires a slightly different syntax than bash, as we'll be working in another environment. Do the following:
+```
+/softwares/R-4.2.3/bin/R
+```
+
+We're now inside of R. Run the following code here:
+```
+# Load libraries
+library(ggplot2)
+
+# Read the data
+missing_data <- read.table("missing_data_cleaned.txt", header=FALSE, col.names=c("Sample", "Missing"))
+
+# Sort by missing count
+missing_data <- missing_data[order(-missing_data$Missing), ]
+
+# Plot
+ggplot(missing_data, aes(x = reorder(Sample, -Missing), y = Missing)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  theme_minimal() +
+  labs(title = "Missing Genotypes per Sample", x = "Sample", y = "Count of Missing Genotypes") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
 We also want to explore different levels of missingsness across samples, so we can remove SNPs for which we have only data for a single sample, for example. We're going to filter for a couple of different levels, for positions that have <0.1, <0.25, <0.5 and <0.75 missing data. To achieve this, we need to add a missingness tag first, and can pipe the result in to the filter. We will also count the number of retained SNPs again.
