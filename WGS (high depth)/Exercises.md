@@ -84,4 +84,14 @@ Maybe you're also curious to know what the **real** data look like. You can down
 wget https://zenodo.org/records/15173226/files/machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode.vcf.gz
 ```
 
+Check how many individuals are in this file:
+```
+/softwares/bcftools1.12/bcftools query -l machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode.vcf.gz | wc -l
+```
+
+And how many SNPs:
+```
+/softwares/bcftools1.12/bcftools view -H machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode.vcf.gz | wc -l
+```
+
 Explore this dataset for missingness per sample, and run a PCA to get an idea of the real :tiger: population structure.
