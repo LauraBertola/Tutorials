@@ -2,9 +2,9 @@
 To get an idea of how our filtering impacts actual downstream results, let's run a couple of PCAs. This is to illustrate that choices about filtering are extremely important, and not thinking about this carefully can lead to wrong conclusions about your study system!
 
 Because the dataset we've been using so far only has 9 individuals, we'll use another, pre-filtered vcf with more populations. Download this datafile:
-'''
+```
 wget https://zenodo.org/records/15173226/files/machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode.vcf.gz
-'''
+```
 
 Check how many individuals are in this file:
 ```
