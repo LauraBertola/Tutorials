@@ -178,13 +178,8 @@ quit()
 We also want to explore different levels of missingsness across samples, so we can remove SNPs for which we have only data for a single sample, for example. We're going to filter for a couple of different levels, for positions that have <0.1, <0.25, <0.5 and <0.75 missing data. To achieve this, we need to add a missingness tag first, and can pipe the result in to the filter. We will also count the number of retained SNPs again.
 ```
 /softwares/bcftools1.12/bcftools +fill-tags -Oz variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz -- -t F_MISSING  | \
-/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.1' -Oz -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing01.vcf.gz
-/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing01.vcf.gz | wc -l
-```
-```
-/softwares/bcftools1.12/bcftools +fill-tags -Oz variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz -- -t F_MISSING  | \
-/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.25' -Oz -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing025.vcf.gz
-/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing025.vcf.gz | wc -l
+/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.75' -Oz -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing075.vcf.gz
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing075.vcf.gz | wc -l
 ```
 ```
 /softwares/bcftools1.12/bcftools +fill-tags -Oz variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz -- -t F_MISSING  | \
@@ -193,8 +188,94 @@ We also want to explore different levels of missingsness across samples, so we c
 ```
 ```
 /softwares/bcftools1.12/bcftools +fill-tags -Oz variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz -- -t F_MISSING  | \
-/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.75' -Oz -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing075.vcf.gz
-/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing075.vcf.gz | wc -l
+/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.25' -Oz -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing025.vcf.gz
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing025.vcf.gz | wc -l
 ```
+```
+/softwares/bcftools1.12/bcftools +fill-tags -Oz variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz -- -t F_MISSING  | \
+/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.1' -Oz -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing01.vcf.gz
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing01.vcf.gz | wc -l
+```
+Let's take a look what the effect of our filtering is when plotting a PCA. First we need to convert the vcf files to plink format, and then we can use plink to calculate the eigenvectors.
+```
+/softwares/plink/plink --vcf variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing075.vcf.gz \
+  --make-bed --double-id --allow-extra-chr --out plink_missing075_file
+
+/softwares/plink/plink --vcf variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing05.vcf.gz \
+  --make-bed --double-id --allow-extra-chr --out plink_missing05_file
+
+/softwares/plink/plink --vcf variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing025.vcf.gz \
+  --make-bed --double-id --allow-extra-chr --out plink_missing025_file
+
+/softwares/plink/plink --vcf variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing01.vcf.gz \
+  --make-bed --double-id --allow-extra-chr --out plink_missing01_file
+```
+
+This creates the following files, which are needed for a lot of downstream analyses:
+| File                  | Description                                   | Contents Summary                              |
+|-----------------------|-----------------------------------------------|-----------------------------------------------|
+| `plink_file.bed`       | Binary genotype data file                      | Genotype matrix (SNPs × individuals) stored in compact binary format |
+| `plink_file.bim`       | Variant information file (text)                | One SNP per line: chromosome, SNP ID, genetic distance, physical position, allele 1, allele 2 |
+| `plink_file.fam`       | Sample information file (text)                 | One individual per line: family ID, individual ID, paternal/maternal ID, sex, phenotype |
+| `plink_file.nosex`     | Optional sample IDs file without sex info     | List of sample IDs when sex info is missing or irrelevant           |
+
+Now we run the PCA:
+```
+/softwares/plink/plink --bfile plink_missing075_file --pca 9 --allow-extra-chr --out plink_missing075_pca
+
+/softwares/plink/plink --bfile plink_missing05_file --pca 9 --allow-extra-chr --out plink_missing05_pca
+
+/softwares/plink/plink --bfile plink_missing025_file --pca 9 --allow-extra-chr --out plink_missing025_pca
+
+/softwares/plink/plink --bfile plink_missing01_file --pca 9 --allow-extra-chr --out plink_missing01_pca
+```
+
+We are going to plot this result in R:
+```
+/softwares/R-4.2.3/bin/R
+```
+```
+library(ggplot2)
+library(dplyr)
+
+# Define file names and corresponding labels
+files <- list(
+  "plink_missing075_pca.eigenvec" = "Missing < 0.75",
+  "plink_missing05_pca.eigenvec"  = "Missing < 0.5",
+  "plink_missing025_pca.eigenvec" = "Missing < 0.25",
+  "plink_missing01_pca.eigenvec"  = "Missing < 0.1"
+)
+
+# Read and combine all eigenvec files
+pca_all <- bind_rows(lapply(names(files), function(f) {
+  df <- read.table(f, header = FALSE)
+  colnames(df) <- c("FID", "IID", paste0("PC", 1:9))
+  df$Missingness <- files[[f]]
+  return(df)
+}))
+
+# Ensure Missingness is a factor with correct order
+pca_all$Missingness <- factor(pca_all$Missingness, levels = c(
+  "Missing < 0.75",
+  "Missing < 0.5",
+  "Missing < 0.25",
+  "Missing < 0.1"
+), ordered = TRUE)
+
+# Plot
+ggplot(pca_all, aes(x = PC1, y = PC2)) +
+  geom_point() +
+  facet_wrap(~Missingness, scales = "free") +
+  labs(
+    x = "Principal Component 1",
+    y = "Principal Component 2",
+    title = "PCA by Missingness Threshold"
+  ) +
+  theme_minimal()
+```
+
+Although we only have very few samples, you'll see that the filtering will impact patterns downstream.
+
+
 
 **Important!** Remember that we're using downsampled data, so we're only *pretending* that this is a high depth dataset. Your choice for the depth filters should always be based on actual depth. For how to process a low depth dataset, please refer to the [Tutorial WGS (low depth)](https://github.com/LauraBertola/Tutorials/tree/main/WGS%20(low%20depth)).
