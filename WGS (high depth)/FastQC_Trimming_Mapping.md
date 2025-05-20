@@ -1,4 +1,5 @@
 ## Raw data
+
 We'll provide raw :tiger: data for three samples to illustrate the steps of quality control, trimming and mapping. I've put the data that we'll be using here: /home/uramakri/laurabertola/Tutorial_WGS_HD/input_files
 You don't have to copy the data (with large datasets, we'll run out of disk space real fast!), but it is also inconvenient if you have to navigate my folder all the time. You can create a symbolic link (or soft link) in your own directory, which will serve as a connection to my folder.
 
@@ -37,6 +38,7 @@ It'll look something like this:
 The first is the name of the read, with information about its location on the plate, or in this case the identified from NCBI, where the data were downloaded from. The second line contains the sequence data. The third line is unused (identified with +). And the fourth line is the quality scores for the base calls. The [FASTQ wikipedia page](https://en.wikipedia.org/wiki/FASTQ_format) has a good figure depicting the logic behind how quality scores are encoded.
 
 ## FastQC for quality control
+
 The first step is to inspect your raw data to estimate overall quality. Scrolling through the data with `less` is obviously not going to work for this. So, we'll use a software called [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) to help us visualize overall data quality for each of our files. You can then attempt to improve your dataset by identifying and removing samples with failed sequencing. 
 
 Let's start the run now. First go out of the input_files folder by typing `cd ..` and then make an output folder, where you will store the results in. Use `mkdir` to do this. Then run the `fastqc` command, and direct it to your newly created output folder by using -o.
