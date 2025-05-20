@@ -93,35 +93,43 @@ We will now use some very common filters, and to get an idea of the impact of fi
 ```
 **5. Filter out sites with very low depth (impossible to reliably call a genotype) and very high depth (likely mapping errors)**
 ```
-/softwares/bcftools1.12/bcftools filter -e 'FMT/DP <= 3 || FMT/DP >= 10' variants_snps_qual30_maf05_gq30.vcf -o variants_snps_qual30_maf05_gq30_dp3to10.vcf
-/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_dp3to10.vcf | wc -l
+/softwares/bcftools1.12/bcftools filter -e 'INFO/DP <= 18 || INFO/DP >= 60' variants_snps_qual30_maf05_gq30.vcf -o variants_snps_qual30_maf05_gq30_dp3to10.vcf
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_alldp18-60.vcf | wc -l
+```
+
+Note that in the last step we filter on depth across **all** samples (`INFO/DP`). If you have high depth data, maybe you want to filter on **per sample** depth (`FORMAT/DP`). This, however, is very stringent. Instead, you can mask genotypes which are not within the range of your filters, so that they are regarded as "missing data". One way to do this is:
+
+```
+/softwares/bcftools1.12/bcftools +setGT variants_snps_qual30_maf05_gq30_alldp18-60.vcf \
+  -- -t q -n "." -e 'DP<3 || DP>10' \
+  -Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3to10masked.vcf
 ```
 
 Now, we have our final dataset, and we can look at a few more things in detail. E.g. we can look at a specific chromosome or region:
 ```
-/softwares/bcftools1.12/bcftools view -H -r chr2:100000-200000 variants_snps_qual30_maf05_gq30.vcf
+/softwares/bcftools1.12/bcftools view -H -r chr2:100000-200000 variants_snps_qual30_maf05_gq30_alldp18-60.vcf
 ```
 
-We may also want to look in more detail at the positions that ended up in our file, for example by looking at the genotypes:
+We may also want to look in more detail at the positions that ended up in our file, without all the extra info which doesn't fit nicely on our screen. Let's look at the genotypes:
 ```
-/softwares/bcftools1.12/bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%GT]\n' variants_snps_qual30_maf05_gq30.vcf | head
+/softwares/bcftools1.12/bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%GT]\n' variants_snps_qual30_maf05_gq30_alldp18-60.vcf | head
 ```
 
 Or, because it's easier to interpret, basecalls:
 ```
-/softwares/bcftools1.12/bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%TGT]\n' variants_snps_qual30_maf05_gq30.vcf | head
+/softwares/bcftools1.12/bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%TGT]\n' variants_snps_qual30_maf05_gq30_alldp18-60.vcf | head
 ```
 
 We will do one final step of filtering, by excluding positions which have too high 'missingness'. What an appropriate threshold for missingness is, depends highly on your data and your research question. It is also good to look at the distribution of missing data across samples. Let's do that here.
 
 ```
-/softwares/bcftools1.12/bcftools query -l variants_snps_qual30_maf05_gq30.vcf | \
+/softwares/bcftools1.12/bcftools query -l variants_snps_qual30_maf05_gq30_alldp18-60.vcf | \
 sed 's|output_files/||; s/_aligned_reads_deduplicated.bam$//' > sample_names_cleaned.txt
 ```
 
 ```
 paste sample_names_cleaned.txt <( \
-  bcftools query -f '[%GT\t]\n' variants_snps_qual30_maf05_gq30.vcf | \
+  bcftools query -f '[%GT\t]\n' variants_snps_qual30_maf05_gq30_alldp18-60.vcf | \
   awk '{
     for (i=1; i<=NF; i++) if ($i == "./.") missing[i]++;
   }
@@ -134,22 +142,22 @@ paste sample_names_cleaned.txt <( \
 We also want to explore different levels of missingsness across samples, so we can remove SNPs for which we have only data for a single sample, for example. We're going to filter for a couple of different levels, for positions that have <0.1, <0.25, <0.5 and <0.75 missing data. To achieve this, we need to add a missingness tag first, and can pipe the result in to the filter. We will also count the number of retained SNPs again.
 ```
 /softwares/bcftools1.12/bcftools +fill-tags -Ov variants_snps_qual30_maf05_gq30.vcf -- -t F_MISSING  | \
-/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.1' -Ov -o variants_snps_qual30_maf05_gq30_missing01.vcf
+/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.1' -Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_missing01.vcf
 /softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_missing01.vcf | wc -l
 ```
 ```
 /softwares/bcftools1.12/bcftools +fill-tags -Ov variants_snps_qual30_maf05_gq30.vcf -- -t F_MISSING  | \
-/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.25' -Ov -o variants_snps_qual30_maf05_gq30_missing025.vcf
+/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.25' -Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_missing025.vcf
 /softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_missing025.vcf | wc -l
 ```
 ```
 /softwares/bcftools1.12/bcftools +fill-tags -Ov variants_snps_qual30_maf05_gq30.vcf -- -t F_MISSING  | \
-/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.5' -Ov -o variants_snps_qual30_maf05_gq30_missing05.vcf
+/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.5' -Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_missing05.vcf
 /softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_missing05.vcf | wc -l
 ```
 ```
 /softwares/bcftools1.12/bcftools +fill-tags -Ov variants_snps_qual30_maf05_gq30.vcf -- -t F_MISSING  | \
-/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.75' -Ov -o variants_snps_qual30_maf05_gq30_missing075.vcf
+/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.75' -Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_missing075.vcf
 /softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_missing075.vcf | wc -l
 ```
 
