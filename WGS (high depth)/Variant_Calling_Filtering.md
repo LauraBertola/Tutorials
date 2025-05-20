@@ -102,7 +102,7 @@ Note that in the last step we filter on depth across **all** samples (`INFO/DP`)
 ```
 /softwares/bcftools1.12/bcftools +setGT variants_snps_qual30_maf05_gq30_alldp18-60.vcf \
   -- -t q -n "." -e 'DP<3 || DP>10' \
-  -Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3to10masked.vcf
+  -Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf
 ```
 
 Now, we have our final dataset, and we can look at a few more things in detail. E.g. we can look at a specific chromosome or region:
