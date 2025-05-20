@@ -100,12 +100,12 @@ We will now use some very common filters, and to get an idea of the impact of fi
 Note that in the last step we filter on depth across **all** samples (`INFO/DP`). If you have high depth data, maybe you want to filter on **per sample** depth (`FORMAT/DP`). This, however, is very stringent. Instead, you can mask genotypes which are not within the range of your filters, so that they are regarded as "missing data". One way to do this is:
 
 ```
-/softwares/bcftools1.12/bcftools +setGT -Ov -o test_masked.vcf   variants_snps_qual30_maf05_gq30_alldp18-60.vcf -- -t q -n "." -e 'FORMAT/DP < 3 \
-  -Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3masked.vcf
+/softwares/bcftools1.12/bcftools +setGT variants_snps_qual30_maf05_gq30_alldp18-60.vcf \
+-- -t q -n "." -e 'FORMAT/DP < 3' -Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3masked.vcf 
 ```
 ```
-/softwares/bcftools1.12/bcftools +setGT -Ov -o test_masked.vcf   variants_snps_qual30_maf05_gq30_alldp18-60.vcf -- -t q -n "." -e 'FORMAT/DP > 10 \
-  -Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf
+/softwares/bcftools1.12/bcftools +setGT -Ov -o test_masked.vcf variants_snps_qual30_maf05_gq30_alldp18-60.vcf \
+-- -t q -n "." -e 'FORMAT/DP > 10 -Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf
 ```
 
 Now, we have our final dataset, and we can look at a few more things in detail. E.g. we can look at a specific chromosome or region:
