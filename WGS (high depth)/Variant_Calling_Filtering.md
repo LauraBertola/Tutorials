@@ -78,12 +78,12 @@ We will now use some very common filters, and to get an idea of the impact of fi
 ```
 **2. Remove low quality base calls**
 ```
-/softwares/bcftools1.12/bcftools filter -e 'QUAL >= 30' variants_snps.vcf -o variants_snps_qual30.vcf
+/softwares/bcftools1.12/bcftools filter -e 'QUAL < 30' variants_snps.vcf -o variants_snps_qual30.vcf
 /softwares/bcftools1.12/bcftools view -H variants_snps_qual30.vcf | wc -l
 ```
 **3. Filter for minor allele frequency (MAF) (removing rare SNPs, which may be caused by sequencing errors)**
 ```
-/softwares/bcftools1.12/bcftools filter -e 'AF<0.05 || AF>0.95' variants_snps_qual30.vcf -o variants_snps_qual30_maf05.vcf
+/softwares/bcftools1.12/bcftools filter -e 'INFO/AF < 0.05 || INFO/AF > 0.95' variants_snps_qual30.vcf -o variants_snps_qual30_maf05.vcf
 /softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05.vcf | wc -l
 ```
 **4. Filter for low quality genotypes (per sample)**
