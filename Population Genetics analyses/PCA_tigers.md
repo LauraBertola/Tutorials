@@ -18,8 +18,7 @@ And how many SNPs:
 
 Maybe we should plot the amount of missing data here as well:
 ```
-/softwares/bcftools1.12/bcftools query -l machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode.vcf.gz | \
-sed 's|output_files/||; s/_aligned_reads_deduplicated.bam$//' > sample_names_cleaned.txt
+/softwares/bcftools1.12/bcftools query -l machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode.vcf.gz > sample_names_cleaned.txt
 ```
 
 ```
