@@ -67,3 +67,22 @@ Check if these files indeed are in your folder now, using `ls`.
 ## Exercise 3
 
 Next time, we'll used the mapped data in the .bam files to call variants. However, calling variants from two files and then doing some popgen is not very interesting. Therefore, if you have downloaded and trimmed more files (see Exercise 1), process them in the same way. You should end up with an indexed bam file for all nine samples. Note that mapping takes some time (~15 minutes per sample), so it is advisable to use `screen` in this exercise as well.
+
+## Exercise 4
+
+In the last session, we created a couple of PCA plots from a dataset with various levels of missingness. Compare this to results if you were to make a PCA directly from raw variants, without filtering. Use the following files to compare the results:
+```
+variants_snps.vcf
+variants_snps_qual30.vcf
+variants_snps_qual30_maf05_gq30_alldp18-60.vcf 
+```
+
+This is to illustrate that choices about filtering are extremely important, and not thinking about this carefully can lead to wrong conclusions about your study system!
+
+Maybe you're also curious to know what the **real** data look like. You can download a more complete, pre-filtered test datafile here:
+another, pre-filtered vcf with more populations. Download this datafile:
+```
+wget https://zenodo.org/records/15173226/files/machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode.vcf.gz
+```
+
+Explore this dataset for missingness per sample, and run a PCA to get an idea of the real :tiger: population structure.
