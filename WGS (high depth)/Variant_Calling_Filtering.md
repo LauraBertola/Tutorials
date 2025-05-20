@@ -14,9 +14,10 @@ A vcf file contains a lot of information, and there are many ways of adjusting w
 | FORMAT Tag | Description                                                                 |
 |------------|-----------------------------------------------------------------------------|
 | `GT`       | Genotype — encoded like `0/0`, `0/1`, `1/1`, etc.                           |
-| `GQ`       | Genotype Quality — Phred-scaled confidence in the genotype call            |
-| `DP`       | Read Depth — total number of reads covering the site for the sample        |
 | `PL`       | Phred-scaled genotype Likelihoods — likelihoods for `0/0`, `0/1`, and `1/1` |
+| `DP`       | Read Depth — total number of reads covering the site for the sample        |
+| `GP`       | Genotype Probabilities — normalized probabilities for each genotype, summing to 1.0 |
+| `GQ`       | Genotype Quality — Phred-scaled confidence in the genotype call            |
 
 In the fields above, 0 stands for the reference allele, whereas 1 stands for the derived allele. Let's take a closer look at our vcf file. First, we'll start with the header, by using -h:
 ```
