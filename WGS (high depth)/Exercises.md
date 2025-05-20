@@ -80,7 +80,6 @@ variants_snps_qual30_maf05_gq30_alldp18-60.vcf
 This is to illustrate that choices about filtering are extremely important, and not thinking about this carefully can lead to wrong conclusions about your study system!
 
 Maybe you're also curious to know what the **real** data look like. You can download a more complete, pre-filtered test datafile here:
-another, pre-filtered vcf with more populations. Download this datafile:
 ```
 wget https://zenodo.org/records/15173226/files/machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode.vcf.gz
 ```
