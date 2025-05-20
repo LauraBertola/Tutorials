@@ -110,8 +110,9 @@ Note that in the last step we filter on depth across **all** samples (`INFO/DP`)
 
 Now, we have our final dataset, and we can look at a few more things in detail. E.g. we can look at a specific chromosome or region:
 ```
-/softwares/bcftools1.12/bcftools view -H -r chr2:100000-200000 variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf
+/softwares/bcftools1.12/bcftools view -H -r CM037649.1:120000000-150000000 variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz | less -S
 ```
+Remember, we can look at the names of the chromosomes etc. by using `grep` on the reference.
 
 We may also want to look in more detail at the positions that ended up in our file, without all the extra info which doesn't fit nicely on our screen. Let's look at the genotypes:
 ```
