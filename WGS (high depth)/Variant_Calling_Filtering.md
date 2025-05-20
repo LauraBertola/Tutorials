@@ -177,24 +177,24 @@ quit()
 
 We also want to explore different levels of missingsness across samples, so we can remove SNPs for which we have only data for a single sample, for example. We're going to filter for a couple of different levels, for positions that have <0.1, <0.25, <0.5 and <0.75 missing data. To achieve this, we need to add a missingness tag first, and can pipe the result in to the filter. We will also count the number of retained SNPs again.
 ```
-/softwares/bcftools1.12/bcftools +fill-tags -Ov variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf -- -t F_MISSING  | \
-/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.1' -Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing01.vcf
-/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing01.vcf | wc -l
+/softwares/bcftools1.12/bcftools +fill-tags -Oz variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz -- -t F_MISSING  | \
+/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.1' -Oz -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing01.vcf.gz
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing01.vcf.gz | wc -l
 ```
 ```
-/softwares/bcftools1.12/bcftools +fill-tags -Ov variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf -- -t F_MISSING  | \
-/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.25' -Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing025.vcf
-/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing025.vcf | wc -l
+/softwares/bcftools1.12/bcftools +fill-tags -Oz variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz -- -t F_MISSING  | \
+/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.25' -Oz -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing025.vcf.gz
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing025.vcf.gz | wc -l
 ```
 ```
-/softwares/bcftools1.12/bcftools +fill-tags -Ov variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf -- -t F_MISSING  | \
-/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.5' -Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing05.vcf
-/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing05.vcf | wc -l
+/softwares/bcftools1.12/bcftools +fill-tags -Oz variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz -- -t F_MISSING  | \
+/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.5' -Oz -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing05.vcf.gz
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing05.vcf.gz | wc -l
 ```
 ```
-/softwares/bcftools1.12/bcftools +fill-tags -Ov variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf -- -t F_MISSING  | \
-/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.75' -Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing075.vcf
-/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing075.vcf | wc -l
+/softwares/bcftools1.12/bcftools +fill-tags -Oz variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz -- -t F_MISSING  | \
+/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.75' -Oz -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing075.vcf.gz
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing075.vcf.gz | wc -l
 ```
 
 **Important!** Remember that we're using downsampled data, so we're only *pretending* that this is a high depth dataset. Your choice for the depth filters should always be based on actual depth. For how to process a low depth dataset, please refer to the [Tutorial WGS (low depth)](https://github.com/LauraBertola/Tutorials/tree/main/WGS%20(low%20depth)).
