@@ -108,6 +108,9 @@ Note that in the last step we filter on depth across **all** samples (`INFO/DP`)
 -Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf -- -t q -n "." -e 'FORMAT/DP > 10'
 ```
 
+Note that these last step will not remove SNPs, so if you'd do `wc -l` there should be no change. They just mask those positions for which we feel we cannot get reliable information.
+
+## Data exploration
 Now, we have our final dataset, and we can look at a few more things in detail. E.g. we can look at a specific chromosome or region. But first, we should compress and index it:
 ```
 gzip variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf
