@@ -108,7 +108,13 @@ Note that in the last step we filter on depth across **all** samples (`INFO/DP`)
 -Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf -- -t q -n "." -e 'FORMAT/DP > 10'
 ```
 
-Now, we have our final dataset, and we can look at a few more things in detail. E.g. we can look at a specific chromosome or region:
+Now, we have our final dataset, and we can look at a few more things in detail. E.g. we can look at a specific chromosome or region. But first, we should compress and index it:
+```
+gzip variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf
+```
+```
+tabix variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz
+```
 ```
 /softwares/bcftools1.12/bcftools view -H -r CM037649.1:120000000-150000000 variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz | less -S
 ```
@@ -116,12 +122,12 @@ Remember, we can look at the names of the chromosomes etc. by using `grep` on th
 
 We may also want to look in more detail at the positions that ended up in our file, without all the extra info which doesn't fit nicely on our screen. Let's look at the genotypes:
 ```
-/softwares/bcftools1.12/bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%GT]\n' variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf | head
+/softwares/bcftools1.12/bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%GT]\n' variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz | head
 ```
 
 Or, because it's easier to interpret, basecalls:
 ```
-/softwares/bcftools1.12/bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%TGT]\n' variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf | head
+/softwares/bcftools1.12/bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%TGT]\n' variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz | head
 ```
 
 We will do one final step of filtering, by excluding positions which have too high 'missingness'. What an appropriate threshold for missingness is, depends highly on your data and your research question. It is also good to look at the distribution of missing data across samples. Let's do that here.
