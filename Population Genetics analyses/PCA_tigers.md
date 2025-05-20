@@ -73,6 +73,7 @@ This creates the following files, which are needed for a lot of downstream analy
 | `plink_file.fam`       | Sample information file (text)                 | One individual per line: family ID, individual ID, paternal/maternal ID, sex, phenotype |
 | `plink_file.nosex`     | Optional sample IDs file without sex info     | List of sample IDs when sex info is missing or irrelevant           |
 
+Now we run the PCA:
 ```
 /softwares/plink/plink --bfile plink_file --pca 10 --allow-extra-chr --out plink_pca
 ```
