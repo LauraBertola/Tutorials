@@ -160,10 +160,7 @@ We're now inside of R. Run the following code here:
 library(ggplot2)
 
 # Read the data
-missing_data <- read.table("missing_data_cleaned.txt", header=FALSE, col.names=c("Sample", "Missing"))
-
-# Sort by missing count
-missing_data <- missing_data[order(-missing_data$Missing), ]
+missing_data <- read.table("missing_data.txt", header=FALSE, col.names=c("Sample", "Missing"))
 
 # Plot
 ggplot(missing_data, aes(x = reorder(Sample, -Missing), y = Missing)) +
@@ -171,6 +168,11 @@ ggplot(missing_data, aes(x = reorder(Sample, -Missing), y = Missing)) +
   theme_minimal() +
   labs(title = "Missing Genotypes per Sample", x = "Sample", y = "Count of Missing Genotypes") +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+Quit R with (saving your workspace is not necessary):
+```
+quit()
 ```
 
 We also want to explore different levels of missingsness across samples, so we can remove SNPs for which we have only data for a single sample, for example. We're going to filter for a couple of different levels, for positions that have <0.1, <0.25, <0.5 and <0.75 missing data. To achieve this, we need to add a missingness tag first, and can pipe the result in to the filter. We will also count the number of retained SNPs again.
