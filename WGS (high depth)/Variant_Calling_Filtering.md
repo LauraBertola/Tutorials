@@ -1,4 +1,5 @@
 ## Variant calling
+
 Now we have all the genomes mapped, with reads sorted and deduplicated, and all .bam files indexed. We can now proceed to call the variant positions that we'll be using for downstream analyses. There are different variant callers out there, but here we'll use [bcftools](https://samtools.github.io/bcftools/bcftools.html). Run the following:
 ```
 /softwares/bcftools1.12/bcftools mpileup -Ou -f input_files/reference/GCA_021130815.1_PanTigT.MC.v3_genomic.fna -a FORMAT/DP output_files/*deduplicated.bam | \
@@ -52,6 +53,7 @@ We are not going to look at the content of the file in much more detail now, bec
 ```
 
 ## Variant filtering
+
 Our vcf file has a lot of variants, but we don't want to use everything. For example, there will be a lot of noise in the file, e.g. positions which do not have reliable information, or have missing data for most samples (remember this is a downsampled dataset!). We therefore need to filter our vcf file. The images below illustrate different types of variants which you may or may not want to retain (depending on your research question!).
 
 Variants:  
@@ -111,6 +113,7 @@ Note that in the last step we filter on depth across **all** samples (`INFO/DP`)
 Note that these last step will not remove SNPs, so if you'd do `wc -l` there should be no change. They just mask those positions for which we feel we cannot get reliable information.
 
 ## Data exploration
+
 Now, we have our final dataset, and we can look at a few more things in detail. E.g. we can look at a specific chromosome or region. But first, we should compress and index it:
 ```
 gzip variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf
