@@ -1,4 +1,4 @@
-## Exercise 1
+## Exercise 1 (FastQC_Trimming)
 
 You've downloaded two samples already. But to make the SNP calling a little bit more interesting we should have a few more. Softlinking to my folder should now work, so try this again:
 ```
@@ -14,7 +14,7 @@ ls *trimming_report.txt | wc -l
 
 `ls` will list all the files ending with trimming_report.txt, but instead of displaying this, we'll pipe the result to the next command. `wc` is short for 'word count', and the -l flag tells it to count the lines.
 
-## Exercise 2
+## Exercise 2 (FastQC_Trimming)
 
 Next, we will map the samples to a reference genome. We will talk about it more during our next session, but to prepare for it, you can do the following two steps.
 
@@ -64,11 +64,11 @@ The `bwa index` command has created the following files:
 
 Check if these files indeed are in your folder now, using `ls`.
 
-## Exercise 3
+## Exercise 3 (Mapping)
 
 Next time, we'll used the mapped data in the .bam files to call variants. However, calling variants from two files and then doing some popgen is not very interesting. Therefore, if you have downloaded and trimmed more files (see Exercise 1), process them in the same way. You should end up with an indexed bam file for all nine samples. Note that mapping takes some time (~15 minutes per sample), so it is advisable to use `screen` in this exercise as well.
 
-## Exercise 4
+## Exercise 4 (Variant_Calling_Filtering)
 
 In the last session, we created a couple of PCA plots from a dataset with various levels of missingness. Compare this to results if you were to make a PCA directly from raw variants, without filtering. Use the following files to compare the results:
 ```
