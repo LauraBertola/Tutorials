@@ -33,7 +33,7 @@ paste sample_names_machali.txt <( \
 ) | sort -k2 -nr > missing_data_machali.txt
 ```
 
-We don't have a lot of samples here, but it's good to plot these results, so we have a visual if there are samples which are poorer in quality than others. We do this in R. This requires a slightly different syntax than bash, as we'll be working in another environment. Do the following:
+We'll plot this again in R. Do the following:
 ```
 /softwares/R-4.2.3/bin/R
 ```
@@ -59,50 +59,13 @@ Quit R with (saving your workspace is not necessary):
 quit()
 ```
 
-Let's also do some filtering for different levels of missingness:
+These data are already filtered for missingness, so we can start exploring the results with further filtering. First we need to convert the vcf files to plink format, and then we can use plink to calculate the eigenvectors.
 ```
-/softwares/bcftools1.12/bcftools +fill-tags -Oz machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode.vcf.gz -- -t F_MISSING  | \
-/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.1' -Oz -o machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode_missing01.vcf.gz
-/softwares/bcftools1.12/bcftools view -H machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode_missing01.vcf.gz | wc -l
-```
-```
-/softwares/bcftools1.12/bcftools +fill-tags -Oz machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode.vcf.gz -- -t F_MISSING  | \
-/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.25' -Oz -o machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode_missing025.vcf.gz
-/softwares/bcftools1.12/bcftools view -H machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode_missing025.vcf.gz | wc -l
+/softwares/plink/plink --vcf machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode.vcf.gz \
+  --make-bed --double-id --allow-extra-chr --out plink_file
 ```
 ```
-/softwares/bcftools1.12/bcftools +fill-tags -Oz machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode.vcf.gz -- -t F_MISSING  | \
-/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.5' -Oz -o machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode_missing05.vcf.gz
-/softwares/bcftools1.12/bcftools view -H machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode_missing05.vcf.gz | wc -l
-```
-```
-/softwares/bcftools1.12/bcftools +fill-tags -Oz machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode.vcf.gz -- -t F_MISSING  | \
-/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.75' -Oz -o machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode_missing075.vcf.gz
-/softwares/bcftools1.12/bcftools view -H machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode_missing075.vcf.gz | wc -l
-```
-
-Now, let's do some popgen, but seeing how a PCA for this dataset looks like. First we need to convert the vcf files to plink format, and then we can use plink to calculate the eigenvectors.
-```
-/softwares/plink/plink --vcf machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode_missing01.vcf.gz \
-  --make-bed --double-id --allow-extra-chr --out plink_missing01_file
-
-/softwares/plink/plink --vcf machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode_missing025.vcf.gz \
-  --make-bed --double-id --allow-extra-chr --out plink_missing025_file
-
-/softwares/plink/plink --vcf machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode_missing05.vcf.gz \
-  --make-bed --double-id --allow-extra-chr --out plink_missing05_file
-
-/softwares/plink/plink --vcf machali_Aligned_rangeWideMerge_strelka_update2_BENGAL_mac3_passOnly_biallelicOnly_noIndels_minMAF0Pt05_chr_E2_minDP3.recode_missing075.vcf.gz \
-  --make-bed --double-id --allow-extra-chr --out plink_missing075_file
-```
-```
-/softwares/plink/plink --bfile plink_missing01_file --pca 10 --allow-extra-chr --out plink_missing01_pca
-
-/softwares/plink/plink --bfile plink_missing025_file --pca 10 --allow-extra-chr --out plink_missing025_pca
-
-/softwares/plink/plink --bfile plink_missing05_file --pca 10 --allow-extra-chr --out plink_missing05_pca
-
-/softwares/plink/plink --bfile plink_missing075_file --pca 10 --allow-extra-chr --out plink_missing075_pca
+/softwares/plink/plink --bfile plink_file --pca 10 --allow-extra-chr --out plink_pca
 ```
 
 We are going to plot this result in R:
@@ -111,38 +74,14 @@ We are going to plot this result in R:
 ```
 ```
 library(ggplot2)      
-eigenvec_data <- read.table("plink_missing01_pca.eigenvec", header=FALSE)
+
+eigenvec_data <- read.table("plink_pca.eigenvec", header=FALSE)
 colnames(eigenvec_data) <- c("FID", "IID", paste("PC", 1:10, sep=""))
 head(eigenvec_data)
 ggplot(eigenvec_data, aes(x=PC1, y=PC2)) +
   geom_point() +
   labs(x="Principal Component 1", y="Principal Component 2", title="PCA Plot Missing01: PC1 vs PC2") +
   theme_minimal()
-
-eigenvec_data <- read.table("plink_missing025_pca.eigenvec", header=FALSE)
-colnames(eigenvec_data) <- c("FID", "IID", paste("PC", 1:10, sep=""))
-head(eigenvec_data)
-ggplot(eigenvec_data, aes(x=PC1, y=PC2)) +
-  geom_point() +
-  labs(x="Principal Component 1", y="Principal Component 2", title="PCA Plot Missing025: PC1 vs PC2") +
-  theme_minimal()
-
-eigenvec_data <- read.table("plink_missing05_pca.eigenvec", header=FALSE)
-colnames(eigenvec_data) <- c("FID", "IID", paste("PC", 1:10, sep=""))
-head(eigenvec_data)
-ggplot(eigenvec_data, aes(x=PC1, y=PC2)) +
-  geom_point() +
-  labs(x="Principal Component 1", y="Principal Component 2", title="PCA Plot Missing05: PC1 vs PC2") +
-  theme_minimal()
-
-eigenvec_data <- read.table("plink_missing075_pca.eigenvec", header=FALSE)
-colnames(eigenvec_data) <- c("FID", "IID", paste("PC", 1:10, sep=""))
-head(eigenvec_data)
-ggplot(eigenvec_data, aes(x=PC1, y=PC2)) +
-  geom_point() +
-  labs(x="Principal Component 1", y="Principal Component 2", title="PCA Plot Missing075: PC1 vs PC2") +
-  theme_minimal()
-
 ```
 ```
 quit()
