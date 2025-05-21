@@ -1,4 +1,4 @@
-## WGS (high depth)
+# WGS (high depth)
 
 This part will deal with processing of whole genome sequencing data (WGS) of medium-to-high sequencing depth. Here, I'm referring to >6X genome-wide average sequencing depth, which allows for reliably calling heterozygous sites following this pipeline.
 
