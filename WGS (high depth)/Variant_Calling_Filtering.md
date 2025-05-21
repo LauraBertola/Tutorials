@@ -3,13 +3,13 @@
 Now we have all the genomes mapped, with reads sorted and deduplicated, and all .bam files indexed. We can now proceed to call the variant positions that we'll be using for downstream analyses. There are different variant callers out there, but here we'll use [bcftools](https://samtools.github.io/bcftools/bcftools.html). Run the following:
 ```
 /softwares/bcftools1.12/bcftools mpileup -Ou -f input_files/reference/GCA_021130815.1_PanTigT.MC.v3_genomic.fna -a FORMAT/DP output_files/*deduplicated.bam | \
-/softwares/bcftools1.12/bcftools call -f GQ,GP -mv -Ov -o unfiltered_variants.vcf
+/softwares/bcftools1.12/bcftools call -f GQ,GP -m -Ov -o unfiltered_variants.vcf
 
 ```
 
-The command has quite a few layers, so let's unpack those here. The `mpileup` command basically collects and summarized the data from all the .bam files, using the reference (indicated by the -f flag). We also tell it that we want it to save per sample depth for each site, so we add -a FORMAT/DP. The flag -Ou specifies that the output file should be uncompressed. This file then gets piped (|) into the next command, which is `call`. You ask it to use a multiallelic caller and output variant sites only (-mv). You can also ask for more information fields by using the -f flag with the `call` command (note that in this context, the -f flag means something else than the -f flag with the `mpileup` command!). Further, you specify that the output file should be an uncompressed vcf file (-Ov) and you specify the where the output file should be saved (-o).
+The command has quite a few layers, so let's unpack those here. The `mpileup` command basically collects and summarized the data from all the .bam files, using the reference (indicated by the -f flag). We also tell it that we want it to save per sample depth for each site, so we add -a FORMAT/DP. The flag -Ou specifies that the output file should be uncompressed. This file then gets piped (|) into the next command, which is `call`. You ask it to use a multiallelic caller and output variant sites only (-m). You can also ask for more information fields by using the -f flag with the `call` command (note that in this context, the -f flag means something else than the -f flag with the `mpileup` command!). Further, you specify that the output file should be an uncompressed vcf file (-Ov) and you specify the where the output file should be saved (-o).
 
-You can also output a bcf file. The difference between vcf and bcf is similar to sam and bam, as we saw previously. vcf is human-readable, but slowerw to process. bcf is binary and not human-readable, but therefore smaller in file size and faster to process in pipelines. Either way, this step will take some time... :hourglass:
+You can also output a bcf file. The difference between vcf and bcf is similar to sam and bam, as we saw previously. vcf is human-readable, but slower to process. bcf is binary and not human-readable, but therefore smaller in file size and faster to process in pipelines. Either way, this step will take quite a lot of time... :hourglass:
 
 A vcf file contains a lot of information, and there are many ways of adjusting what the output should look like. More information about the format of vcf files, as well as additional flags to use, can be found [here](https://samtools.github.io/hts-specs/VCFv4.2.pdf). Our vcf file will contain the following information fields:
 | FORMAT Tag | Description                                                                 |
@@ -49,7 +49,7 @@ You can scroll through it, see what the reference allele and the alternative all
 
 We are not going to look at the content of the file in much more detail now, because there's still a lot of junk in there. First, we'll do some filtering. But before we move on, you may be curious how many variants are in your vcf file. We can do this by counting all the lines (`wc -l`) of all the data lines (i.e. not including the header):
 ```
-/softwares/bcftools1.12/bcftools view -H unfiltered_variants.vcf | wc -l
+/softwares/bcftools1.12/bcftools view -H unfiltered_variants.vcf.gz | wc -l
 ```
 
 ## Variant filtering
@@ -71,81 +71,85 @@ Variants which are multi-allelic (lots of downstream analyses don't like these, 
 Variants which are variable within your samples (imaginge what happens if you use a reference genome of another species):  
 ![variants](Images/ingroup_variants.png)
 
-We will now use some very common filters, and to get an idea of the impact of filtering, we'll count the number of retained variants after each step.
+We will now use some very common filters, and to get an idea of the impact of filtering, we'll count the number of retained variants after each step. But before we start filtering, we should compress and index out vcf file:
+```
+gzip unfiltered_variants.vcf
+```
+```
+tabix unfiltered_variants.vcf.gz
+```
+
+Now, we'll do some filtering, using [vcftools](https://vcftools.sourceforge.net/man_latest.html):
 
 **1. Bi-allelic SNPs only (i.e. no indels; m2 = min. 2 alleles, M2 = max. 2 alleles)**
 ```
-/softwares/bcftools1.12/bcftools view -v snps -m2 -M2 unfiltered_variants.vcf -o variants_snps.vcf
-/softwares/bcftools1.12/bcftools view -H variants_snps.vcf | wc -l
+/softwares/vcftoolsV13/bin/vcftools --gzvcf unfiltered_variants.vcf.gz --remove-indels --max-alleles 2 --min-alleles 2 --recode --out variants_snps
+/softwares/bcftools1.12/bcftools view -H variants_snps.vcf.gz | wc -l
 ```
-**2. Remove low quality base calls**
+**2. Remove low quality base calls (minimum variant site quality; QUAL field in the VCF)**
 ```
-/softwares/bcftools1.12/bcftools filter -e 'QUAL < 30' variants_snps.vcf -o variants_snps_qual30.vcf
-/softwares/bcftools1.12/bcftools view -H variants_snps_qual30.vcf | wc -l
+/softwares/vcftoolsV13/bin/vcftools --gzvcf variants_snps.vcf.gz --minQ 30 --recode --out variants_snps_qual30
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30.vcf.gz | wc -l
 ```
-**3. Filter for minor allele frequency (MAF) (removing rare SNPs, which may be caused by sequencing errors)**
+**3. Filter for minor allele counts (MAC) (removing rare SNPs, which may be caused by sequencing errors)**
 ```
-/softwares/bcftools1.12/bcftools filter -e 'INFO/AF < 0.05 || INFO/AF > 0.95' variants_snps_qual30.vcf -o variants_snps_qual30_maf05.vcf
-/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05.vcf | wc -l
+/softwares/vcftoolsV13/bin/vcftools --gzvcf variants_snps_qual30.vcf.gz --mac 3 --recode --out variants_snps_qual30_mac3.vcf
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_mac3.vcf.gz | wc -l
 ```
 **4. Filter for low quality genotypes (per sample)**
 ```
-/softwares/bcftools1.12/bcftools filter -e 'FMT/GQ >= 30' variants_snps_qual30_maf05.vcf -o variants_snps_qual30_maf05_gq30.vcf
-/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30.vcf | wc -l
+/softwares/vcftoolsV13/bin/vcftools --gzvcf variants_snps_qual30_mac3.vcf.gz --minGQ 30 --recode --out variants_snps_qual30_mac3_gq30.vcf
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_mac3_gq30.vcf.gz | wc -l
 ```
 **5. Filter out sites with very low depth (impossible to reliably call a genotype) and very high depth (likely mapping errors)**
 ```
-/softwares/bcftools1.12/bcftools filter -e 'INFO/DP <= 18 || INFO/DP >= 60' variants_snps_qual30_maf05_gq30.vcf -o variants_snps_qual30_maf05_gq30_alldp18-60.vcf
-/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_alldp18-60.vcf | wc -l
+/softwares/bcftools1.12/bcftools filter -e 'INFO/DP <= 18 || INFO/DP >= 60' variants_snps_qual30_mac3_gq30.vcf -o variants_snps_qual30_mac3_gq30_alldp18-60.vcf
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_mac3_gq30_alldp18-60.vcf.gz | wc -l
 ```
 
 Note that in the last step we filter on depth across **all** samples (`INFO/DP`). If you have high depth data, maybe you want to filter on **per sample** depth (`FORMAT/DP`). This, however, is very stringent. Instead, you can mask genotypes which are not within the range of your filters, so that they are regarded as "missing data". One way to do this is:
 
 ```
-/softwares/bcftools1.12/bcftools +setGT variants_snps_qual30_maf05_gq30_alldp18-60.vcf \
--Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3masked.vcf -- -t q -n "." -e 'FORMAT/DP < 3' 
+/softwares/bcftools1.12/bcftools +setGT variants_snps_qual30_mac3_gq30_alldp18-60.vcf \
+-Ov -o variants_snps_qual30_mac3_gq30_alldp18-60_psdp3masked.vcf -- -t q -n "." -e 'FORMAT/DP < 3' 
 ```
 ```
-/softwares/bcftools1.12/bcftools +setGT -Ov -o test_masked.vcf variants_snps_qual30_maf05_gq30_alldp18-60.vcf \
--Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf -- -t q -n "." -e 'FORMAT/DP > 10'
+/softwares/bcftools1.12/bcftools +setGT -Ov -o test_masked.vcf variants_snps_qual30_mac3_gq30_alldp18-60.vcf \
+-Ov -o variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked.vcf -- -t q -n "." -e 'FORMAT/DP > 10'
 ```
 
 Note that these last step will not remove SNPs, so if you'd do `wc -l` there should be no change. They just mask those positions for which we feel we cannot get reliable information.
 
+One more filtering step that may be relevant when working on your own data, is that you may want to remove sex chromosomes. They behave differently from autosomes, and can therefore create some noise in downstream analyses. Whether you have sex chromosomes in your data depends on the reference you have used, and if they are properly assigned in the reference. We won't go into detail about this now, but you can remove specific chromosomes by using the `--not-chr` flag in `vcftools`.
+
 ## Data exploration
 
-Now, we have our final dataset, and we can look at a few more things in detail. E.g. we can look at a specific chromosome or region. But first, we should compress and index it:
+Now, we have our final dataset, and we can look at a few more things in detail. E.g. we can look at a specific chromosome or region:
 ```
-gzip variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf
-```
-```
-tabix variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz
-```
-```
-/softwares/bcftools1.12/bcftools view -H -r CM037649.1:120000000-150000000 variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz | less -S
+/softwares/bcftools1.12/bcftools view -H -r CM037649.1:120000000-150000000 variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked.vcf.gz | less -S
 ```
 Remember, we can look at the names of the chromosomes etc. by using `grep` on the reference.
 
 We may also want to look in more detail at the positions that ended up in our file, without all the extra info which doesn't fit nicely on our screen. Let's look at the genotypes:
 ```
-/softwares/bcftools1.12/bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%GT]\n' variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz | head
+/softwares/bcftools1.12/bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%GT]\n' variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked.vcf.gz | head
 ```
 
 Or, because it's easier to interpret, basecalls:
 ```
-/softwares/bcftools1.12/bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%TGT]\n' variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz | head
+/softwares/bcftools1.12/bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%TGT]\n' variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked.vcf.gz | head
 ```
 
 We will do one final step of filtering, by excluding positions which have too high 'missingness'. What an appropriate threshold for missingness is, depends highly on your data and your research question. It is also good to look at the distribution of missing data across samples. Let's do that here.
 
 ```
-/softwares/bcftools1.12/bcftools query -l variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz | \
+/softwares/bcftools1.12/bcftools query -l variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked.vcf.gz | \
 sed 's|output_files/||; s/_aligned_reads_deduplicated.bam$//' > sample_names_cleaned.txt
 ```
 
 ```
 paste sample_names_cleaned.txt <( \
-  /softwares/bcftools1.12/bcftools query -f '[%GT\t]\n' variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz | \
+  /softwares/bcftools1.12/bcftools query -f '[%GT\t]\n' variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked.vcf.gz | \
   awk '{
     for (i=1; i<=NF; i++) if ($i == "./.") missing[i]++;
   }
@@ -181,39 +185,49 @@ Quit R with (saving your workspace is not necessary):
 quit()
 ```
 
-We also want to explore different levels of missingsness across samples, so we can remove SNPs for which we have only data for a single sample, for example. We're going to filter for a couple of different levels, for positions that have <0.1, <0.25, <0.5 and <0.75 missing data. To achieve this, we need to add a missingness tag first, and can pipe the result in to the filter. We will also count the number of retained SNPs again.
+You'll see that there are two individuals that have considerably more missing data then others. It may be a good idea to remove those (depending on your overall dataset and your research question, of course!). But note that removing individuals is better to do before you filter out sites with low depth (filter 5. above), because having individuals with lots of missing data will obviously influence this. Just for practice, let's try to remove the two individuals with more missing data here:
 ```
-/softwares/bcftools1.12/bcftools +fill-tags -Oz variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz -- -t F_MISSING  | \
-/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.75' -Oz -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing075.vcf.gz
-/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing075.vcf.gz | wc -l
+/softwares/vcftoolsV13/bin/vcftools --gzvcf variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked.vcf.gz --remove-indv Raman --remove-indv Johny --recode --out variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked_ex2ind
+```
+
+Double check how many individuals we have left:
+```
+/softwares/bcftools1.12/bcftools query -l variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked_ex2ind.vcf.gz | wc -l
+```
+
+We also want to explore different levels of missingsness across samples, so we can remove SNPs for which we have only data for a single sample, for example. We're going to filter for a couple of different levels, for positions that have <0.75, <0.5, <0.25 and <0.1 missing data. To achieve this, we need to add a missingness tag first, and can pipe the result in to the filter. We will also count the number of retained SNPs again.
+```
+/softwares/bcftools1.12/bcftools +fill-tags -Oz variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked.vcf.gz -- -t F_MISSING  | \
+/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.75' -Oz -o variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked_missing075.vcf.gz
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked_missing075.vcf.gz | wc -l
 ```
 ```
-/softwares/bcftools1.12/bcftools +fill-tags -Oz variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz -- -t F_MISSING  | \
-/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.5' -Oz -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing05.vcf.gz
-/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing05.vcf.gz | wc -l
+/softwares/bcftools1.12/bcftools +fill-tags -Oz variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked.vcf.gz -- -t F_MISSING  | \
+/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.5' -Oz -o variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked_missing05.vcf.gz
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked_missing05.vcf.gz | wc -l
 ```
 ```
-/softwares/bcftools1.12/bcftools +fill-tags -Oz variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz -- -t F_MISSING  | \
-/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.25' -Oz -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing025.vcf.gz
-/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing025.vcf.gz | wc -l
+/softwares/bcftools1.12/bcftools +fill-tags -Oz variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked.vcf.gz -- -t F_MISSING  | \
+/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.25' -Oz -o variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked_missing025.vcf.gz
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked_missing025.vcf.gz | wc -l
 ```
 ```
-/softwares/bcftools1.12/bcftools +fill-tags -Oz variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz -- -t F_MISSING  | \
-/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.1' -Oz -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing01.vcf.gz
-/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing01.vcf.gz | wc -l
+/softwares/bcftools1.12/bcftools +fill-tags -Oz variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked.vcf.gz -- -t F_MISSING  | \
+/softwares/bcftools1.12/bcftools view -i 'INFO/F_MISSING<0.1' -Oz -o variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked_missing01.vcf.gz
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked_missing01.vcf.gz | wc -l
 ```
 Let's take a look what the effect of our filtering is when plotting a PCA. First we need to convert the vcf files to plink format, and then we can use plink to calculate the eigenvectors.
 ```
-/softwares/plink/plink --vcf variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing075.vcf.gz \
+/softwares/plink/plink --vcf variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked_missing075.vcf.gz \
   --make-bed --double-id --allow-extra-chr --out plink_missing075_file
 
-/softwares/plink/plink --vcf variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing05.vcf.gz \
+/softwares/plink/plink --vcf variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked_missing05.vcf.gz \
   --make-bed --double-id --allow-extra-chr --out plink_missing05_file
 
-/softwares/plink/plink --vcf variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing025.vcf.gz \
+/softwares/plink/plink --vcf variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked_missing025.vcf.gz \
   --make-bed --double-id --allow-extra-chr --out plink_missing025_file
 
-/softwares/plink/plink --vcf variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing01.vcf.gz \
+/softwares/plink/plink --vcf variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked_missing01.vcf.gz \
   --make-bed --double-id --allow-extra-chr --out plink_missing01_file
 ```
 
@@ -281,7 +295,5 @@ ggplot(pca_all, aes(x = PC1, y = PC2)) +
 ```
 
 Although we only have very few samples, you'll see that the filtering will impact patterns downstream.
-
-
 
 **Important!** Remember that we're using downsampled data, so we're only *pretending* that this is a high depth dataset. Your choice for the depth filters should always be based on actual depth. For how to process a low depth dataset, please refer to the [Tutorial WGS (low depth)](https://github.com/LauraBertola/Tutorials/tree/main/WGS%20(low%20depth)).
