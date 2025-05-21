@@ -14,7 +14,7 @@ For the downstream population genetics, we'll mostly be using R. Also for R, the
 
 ## Job submission scripts
 
-Depending on the computer infrastructure you are using, you have to run your analyses using a job submissions script. When you log in to the cluster, you're on a login node, where you can prepare your analyses, write your code, transfer data to and from etc. The actual analyses should be run on the compute nodes, which you cannot access directly. Instead, you submit your job to a scheduler through a job submission script. An example of HPC structure is below:
+Depending on the computer infrastructure you are using, you have to run your analyses using a job submissions script. When you log in to the cluster, you're on a login node, where you can prepare your analyses, write your code, transfer data to and from etc. The actual analyses should be run on the compute nodes, which you cannot access directly. Instead, you submit your job to a scheduler through a job submission script. An example of HPC structure is below:  
 <img src="Images/server_structure.png" alt="pakeeza" width="50%">
 
 You can create a small shell script with information about the job submission and the actual code you'd like to run. You can do that in a simple text editor like Notepad (don't use Word, those programs add weird and invisible formatting which can affect your script!), or directly on the cluster by using `nano`. Start the shell script with:
