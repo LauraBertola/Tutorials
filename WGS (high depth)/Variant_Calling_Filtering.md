@@ -75,36 +75,39 @@ We will now use some very common filters, using [vcftools](https://vcftools.gith
 
 **1. Bi-allelic SNPs only (i.e. no indels; m2 = min. 2 alleles, M2 = max. 2 alleles)**
 ```
-/softwares/vcftoolsV13/bin/vcftools --vcf unfiltered_variants.vcf --remove-indels --max-alleles 2 --min-alleles 2 --recode --out variants_snps
+/softwares/bcftools1.12/bcftools view -v snps -m2 -M2 unfiltered_variants.vcf -o variants_snps.vcf
+/softwares/bcftools1.12/bcftools view -H variants_snps.vcf | wc -l
 ```
-**2. Remove low quality base calls (minimum variant site quality; QUAL field in the VCF)**
+**2. Remove low quality base calls**
 ```
-/softwares/vcftoolsV13/bin/vcftools --vcf variants_snps.recode.vcf --minQ 30 --recode --out variants_snps_qual30
+/softwares/bcftools1.12/bcftools filter -e 'QUAL < 30' variants_snps.vcf -o variants_snps_qual30.vcf
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30.vcf | wc -l
 ```
-**3. Filter for minor allele counts (MAC) (removing rare SNPs, which may be caused by sequencing errors)**
+**3. Filter for minor allele frequency (MAF) (removing rare SNPs, which may be caused by sequencing errors)**
 ```
-/softwares/vcftoolsV13/bin/vcftools --vcf variants_snps_qual30.recode.vcf --mac 3 --recode --out variants_snps_qual30_mac3
+/softwares/bcftools1.12/bcftools filter -e 'INFO/AF < 0.05 || INFO/AF > 0.95' variants_snps_qual30.vcf -o variants_snps_qual30_maf05.vcf
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05.vcf | wc -l
 ```
 **4. Filter for low quality genotypes (per sample)**
 ```
-/softwares/bcftools1.12/bcftools filter -e 'FMT/GQ >= 30' variants_snps_qual30_mac3.recode.vcf -o variants_snps_qual30_mac3_gq30.vcf
-/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_mac3_gq30.vcf | wc -l
+/softwares/bcftools1.12/bcftools filter -e 'FMT/GQ >= 30' variants_snps_qual30_maf05.vcf -o variants_snps_qual30_maf05_gq30.vcf
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30.vcf | wc -l
 ```
 **5. Filter out sites with very low depth (impossible to reliably call a genotype) and very high depth (likely mapping errors)**
 ```
-/softwares/bcftools1.12/bcftools filter -e 'INFO/DP <= 18 || INFO/DP >= 60' variants_snps_qual30_mac3_gq30.vcf -o variants_snps_qual30_mac3_gq30_alldp18-60.vcf
-/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_mac3_gq30_alldp18-60.vcf | wc -l
+/softwares/bcftools1.12/bcftools filter -e 'INFO/DP <= 18 || INFO/DP >= 60' variants_snps_qual30_maf05_gq30.vcf -o variants_snps_qual30_maf05_gq30_alldp18-60.vcf
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_maf05_gq30_alldp18-60.vcf | wc -l
 ```
 
 Note that in the last step we filter on depth across **all** samples (`INFO/DP`). If you have high depth data, maybe you want to filter on **per sample** depth (`FORMAT/DP`). This, however, is very stringent. Instead, you can mask genotypes which are not within the range of your filters, so that they are regarded as "missing data". One way to do this is:
 
 ```
-/softwares/bcftools1.12/bcftools +setGT variants_snps_qual30_mac3_gq30_alldp18-60.vcf \
--Ov -o variants_snps_qual30_mac3_gq30_alldp18-60_psdp3masked.vcf -- -t q -n "." -e 'FORMAT/DP < 3' 
+/softwares/bcftools1.12/bcftools +setGT variants_snps_qual30_maf05_gq30_alldp18-60.vcf \
+-Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3masked.vcf -- -t q -n "." -e 'FORMAT/DP < 3' 
 ```
 ```
-/softwares/bcftools1.12/bcftools +setGT -Ov -o test_masked.vcf variants_snps_qual30_mac3_gq30_alldp18-60.vcf \
--Ov -o variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked.vcf -- -t q -n "." -e 'FORMAT/DP > 10'
+/softwares/bcftools1.12/bcftools +setGT -Ov -o test_masked.vcf variants_snps_qual30_maf05_gq30_alldp18-60.vcf \
+-Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf -- -t q -n "." -e 'FORMAT/DP > 10'
 ```
 
 Note that these last step will not remove SNPs, so if you'd do `wc -l` there should be no change. They just mask those positions for which we feel we don't have reliable information.
