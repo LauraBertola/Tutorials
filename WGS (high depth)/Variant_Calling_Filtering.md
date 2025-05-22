@@ -93,7 +93,7 @@ We will now use some very common filters, using [vcftools](https://vcftools.gith
 **5. Filter out sites with very low depth (impossible to reliably call a genotype) and very high depth (likely mapping errors)**
 ```
 /softwares/bcftools1.12/bcftools filter -e 'INFO/DP <= 18 || INFO/DP >= 60' variants_snps_qual30_mac3_gq30.vcf -o variants_snps_qual30_mac3_gq30_alldp18-60.vcf
-/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_mac3_gq30_alldp18-60.vcf.gz | wc -l
+/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_mac3_gq30_alldp18-60.vcf | wc -l
 ```
 
 Note that in the last step we filter on depth across **all** samples (`INFO/DP`). If you have high depth data, maybe you want to filter on **per sample** depth (`FORMAT/DP`). This, however, is very stringent. Instead, you can mask genotypes which are not within the range of your filters, so that they are regarded as "missing data". One way to do this is:
