@@ -49,7 +49,7 @@ You can scroll through it, see what the reference allele and the alternative all
 
 We are not going to look at the content of the file in much more detail now, because there's still a lot of junk in there. First, we'll do some filtering. But before we move on, you may be curious how many variants are in your vcf file. We can do this by counting all the lines (`wc -l`) of all the data lines (i.e. not including the header):
 ```
-/softwares/bcftools1.12/bcftools view -H unfiltered_variants.vcf.gz | wc -l
+/softwares/bcftools1.12/bcftools view -H unfiltered_variants.vcf | wc -l
 ```
 
 ## Variant filtering
