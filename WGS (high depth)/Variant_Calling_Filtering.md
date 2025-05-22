@@ -187,7 +187,7 @@ quit()
 
 You'll see that there are two individuals that have considerably more missing data then others. It may be a good idea to remove those (depending on your overall dataset and your research question, of course!). But note that removing individuals is better to do before you filter out sites with low depth (filter 5. above), because having individuals with lots of missing data will obviously influence this. Just for practice, let's try to remove the two individuals with more missing data here:
 ```
-/softwares/vcftoolsV13/bin/vcftools --gzvcf variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz --remove-indv BEN_CI16 --remove-indv BEN_CI18 --recode --out variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_ex2ind
+/softwares/vcftoolsV13/bin/vcftools --gzvcf variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz --remove-indv BEN_CI18 --remove-indv BEN_NW13 --recode --out variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_ex2ind
 ```
 
 Double check how many individuals we have left:
