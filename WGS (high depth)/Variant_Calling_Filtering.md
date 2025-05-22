@@ -118,10 +118,10 @@ One more filtering step that may be relevant when working on your own data, is t
 
 Now, we have our final dataset, and we can look at a few more things in detail. Some command expect the file to be indexed (again), so we'll do that first:
 ```
-bgzip unfiltered_variants.vcf
+bgzip variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked.vcf
 ```
 ```
-tabix unfiltered_variants.vcf.gz
+tabix variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked.vcf.gz
 ```
 
 Now, we can look at a specific chromosome or region:
