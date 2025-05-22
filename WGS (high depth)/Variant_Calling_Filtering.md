@@ -190,11 +190,6 @@ You'll see that there are two individuals that have considerably more missing da
 /softwares/vcftoolsV13/bin/vcftools --gzvcf variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz --remove-indv output_files/BEN_CI18_aligned_reads_deduplicated.bam --remove-indv output_files/BEN_NW13_aligned_reads_deduplicated.bam --recode --out variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_ex2ind
 ```
 
-Double check how many individuals we have left:
-```
-/softwares/bcftools1.12/bcftools query -l variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_ex2ind.vcf.gz | wc -l
-```
-
 We also want to explore different levels of missingsness across samples, so we can remove SNPs for which we have only data for a single sample, for example. We're going to filter for a couple of different levels, for positions that have <0.75, <0.5, <0.25 and <0.1 missing data. To achieve this, we need to add a missingness tag first, and can pipe the result in to the filter. We will also count the number of retained SNPs again.
 ```
 /softwares/bcftools1.12/bcftools +fill-tags -Oz variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf.gz -- -t F_MISSING  | \
