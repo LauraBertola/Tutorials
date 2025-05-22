@@ -71,35 +71,23 @@ Variants which are multi-allelic (lots of downstream analyses don't like these, 
 Variants which are variable within your samples (imaginge what happens if you use a reference genome of another species):  
 ![variants](Images/ingroup_variants.png)
 
-We will now use some very common filters, and to get an idea of the impact of filtering, we'll count the number of retained variants after each step. But before we start filtering, we should compress and index out vcf file:
-```
-bgzip unfiltered_variants.vcf
-```
-```
-tabix unfiltered_variants.vcf.gz
-```
-
-Now, we'll do some filtering, using [vcftools](https://vcftools.github.io/man_latest.html):
+We will now use some very common filters, using [vcftools](https://vcftools.github.io/man_latest.html). Note that it also tells you how many sites were kept during the filtering step, which is really useful to know.
 
 **1. Bi-allelic SNPs only (i.e. no indels; m2 = min. 2 alleles, M2 = max. 2 alleles)**
 ```
-/softwares/vcftoolsV13/bin/vcftools --gzvcf unfiltered_variants.vcf.gz --remove-indels --max-alleles 2 --min-alleles 2 --recode --out variants_snps
-/softwares/bcftools1.12/bcftools view -H variants_snps.vcf.gz | wc -l
+/softwares/vcftoolsV13/bin/vcftools --vcf unfiltered_variants.vcf --remove-indels --max-alleles 2 --min-alleles 2 --recode --stdout > variants_snps.vcf
 ```
 **2. Remove low quality base calls (minimum variant site quality; QUAL field in the VCF)**
 ```
-/softwares/vcftoolsV13/bin/vcftools --gzvcf variants_snps.vcf.gz --minQ 30 --recode --out variants_snps_qual30
-/softwares/bcftools1.12/bcftools view -H variants_snps_qual30.vcf.gz | wc -l
+/softwares/vcftoolsV13/bin/vcftools --vcf variants_snps.vcf --minQ 30 --recode --stdout > variants_snps_qual30.vcf
 ```
 **3. Filter for minor allele counts (MAC) (removing rare SNPs, which may be caused by sequencing errors)**
 ```
-/softwares/vcftoolsV13/bin/vcftools --gzvcf variants_snps_qual30.vcf.gz --mac 3 --recode --out variants_snps_qual30_mac3.vcf
-/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_mac3.vcf.gz | wc -l
+/softwares/vcftoolsV13/bin/vcftools --vcf variants_snps_qual30.vcf --mac 3 --recode --stdout > variants_snps_qual30_mac3.vcf
 ```
 **4. Filter for low quality genotypes (per sample)**
 ```
-/softwares/vcftoolsV13/bin/vcftools --gzvcf variants_snps_qual30_mac3.vcf.gz --minGQ 30 --recode --out variants_snps_qual30_mac3_gq30.vcf
-/softwares/bcftools1.12/bcftools view -H variants_snps_qual30_mac3_gq30.vcf.gz | wc -l
+/softwares/vcftoolsV13/bin/vcftools --vcf variants_snps_qual30_mac3.vcf --minGQ 30 --recode --stdout > variants_snps_qual30_mac3_gq30.vcf
 ```
 **5. Filter out sites with very low depth (impossible to reliably call a genotype) and very high depth (likely mapping errors)**
 ```
@@ -124,7 +112,15 @@ One more filtering step that may be relevant when working on your own data, is t
 
 ## Data exploration
 
-Now, we have our final dataset, and we can look at a few more things in detail. E.g. we can look at a specific chromosome or region:
+Now, we have our final dataset, and we can look at a few more things in detail. Some command expect the file to be indexed (again), so we'll do that first:
+```
+bgzip unfiltered_variants.vcf
+```
+```
+tabix unfiltered_variants.vcf.gz
+```
+
+Now, we can look at a specific chromosome or region:
 ```
 /softwares/bcftools1.12/bcftools view -H -r CM037649.1:120000000-150000000 variants_snps_qual30_mac3_gq30_alldp18-60_psdp3-10masked.vcf.gz | less -S
 ```
