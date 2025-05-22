@@ -217,9 +217,6 @@ Let's take a look what the effect of our filtering is when plotting a PCA. First
 
 /softwares/plink/plink --vcf variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing025.vcf.gz \
   --make-bed --double-id --allow-extra-chr --out plink_missing025_file
-
-/softwares/plink/plink --vcf variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked_missing01.vcf.gz \
-  --make-bed --double-id --allow-extra-chr --out plink_missing01_file
 ```
 
 This creates the following files, which are needed for a lot of downstream analyses:
@@ -237,8 +234,6 @@ Now we run the PCA:
 /softwares/plink/plink --bfile plink_missing05_file --pca 9 --allow-extra-chr --out plink_missing05_pca
 
 /softwares/plink/plink --bfile plink_missing025_file --pca 9 --allow-extra-chr --out plink_missing025_pca
-
-/softwares/plink/plink --bfile plink_missing01_file --pca 9 --allow-extra-chr --out plink_missing01_pca
 ```
 
 We are going to plot this result in R:
@@ -253,9 +248,8 @@ library(dplyr)
 files <- list(
   "plink_missing075_pca.eigenvec" = "Missing < 0.75",
   "plink_missing05_pca.eigenvec"  = "Missing < 0.5",
-  "plink_missing025_pca.eigenvec" = "Missing < 0.25",
-  "plink_missing01_pca.eigenvec"  = "Missing < 0.1"
-)
+  "plink_missing025_pca.eigenvec" = "Missing < 0.25"
+ )
 
 # Read and combine all eigenvec files
 pca_all <- bind_rows(lapply(names(files), function(f) {
