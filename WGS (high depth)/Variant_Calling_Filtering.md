@@ -73,7 +73,7 @@ Variants which are variable within your samples (imaginge what happens if you us
 
 We will now use some very common filters, and to get an idea of the impact of filtering, we'll count the number of retained variants after each step. But before we start filtering, we should compress and index out vcf file:
 ```
-gzip unfiltered_variants.vcf
+bgzip unfiltered_variants.vcf
 ```
 ```
 tabix unfiltered_variants.vcf.gz
