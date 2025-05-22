@@ -62,7 +62,7 @@ Variants:
 Variants which occur in more than one sample (to avoid sequencing errors to be included as a variant):  
 ![variants](Images/maf_variants.png)
 
-Variants which are indels (lots of downstream analyses don't like these, error-prone:  
+Variants which are indels (lots of downstream analyses don't like these, error-prone):  
 ![variants](Images/indel_variants.png)
 
 Variants which are multi-allelic (lots of downstream analyses don't like these, error-prone):  
