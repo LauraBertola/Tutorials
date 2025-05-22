@@ -79,7 +79,7 @@ gzip unfiltered_variants.vcf
 tabix unfiltered_variants.vcf.gz
 ```
 
-Now, we'll do some filtering, using [vcftools](https://vcftools.sourceforge.net/man_latest.html):
+Now, we'll do some filtering, using [vcftools](https://vcftools.github.io/man_latest.html):
 
 **1. Bi-allelic SNPs only (i.e. no indels; m2 = min. 2 alleles, M2 = max. 2 alleles)**
 ```
