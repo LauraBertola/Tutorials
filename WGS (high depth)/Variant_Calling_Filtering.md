@@ -106,7 +106,7 @@ Note that in the last step we filter on depth across **all** samples (`INFO/DP`)
 -Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3masked.vcf -- -t q -n "." -e 'FORMAT/DP < 3' 
 ```
 ```
-/softwares/bcftools1.12/bcftools +setGT variants_snps_qual30_maf05_gq30_alldp18-60_psdp3masked \
+/softwares/bcftools1.12/bcftools +setGT variants_snps_qual30_maf05_gq30_alldp18-60_psdp3masked.vcf \
 -Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf -- -t q -n "." -e 'FORMAT/DP > 10'
 ```
 
