@@ -75,23 +75,23 @@ We will now use some very common filters, using [vcftools](https://vcftools.gith
 
 **1. Bi-allelic SNPs only (i.e. no indels; m2 = min. 2 alleles, M2 = max. 2 alleles)**
 ```
-/softwares/vcftoolsV13/bin/vcftools --vcf unfiltered_variants.vcf --remove-indels --max-alleles 2 --min-alleles 2 --recode --stdout > variants_snps.vcf
+/softwares/vcftoolsV13/bin/vcftools --vcf unfiltered_variants.vcf --remove-indels --max-alleles 2 --min-alleles 2 --recode --out variants_snps
 ```
 **2. Remove low quality base calls (minimum variant site quality; QUAL field in the VCF)**
 ```
-/softwares/vcftoolsV13/bin/vcftools --vcf variants_snps.vcf --minQ 30 --recode --stdout > variants_snps_qual30.vcf
+/softwares/vcftoolsV13/bin/vcftools --vcf variants_snps.recode.vcf --minQ 30 --recode out variants_snps_qual30
 ```
 **3. Filter for minor allele counts (MAC) (removing rare SNPs, which may be caused by sequencing errors)**
 ```
-/softwares/vcftoolsV13/bin/vcftools --vcf variants_snps_qual30.vcf --mac 3 --recode --stdout > variants_snps_qual30_mac3.vcf
+/softwares/vcftoolsV13/bin/vcftools --vcf variants_snps_qual30.recode.vcf --mac 3 --recode --out variants_snps_qual30_mac3
 ```
 **4. Filter for low quality genotypes (per sample)**
 ```
-/softwares/vcftoolsV13/bin/vcftools --vcf variants_snps_qual30_mac3.vcf --minGQ 30 --recode --stdout > variants_snps_qual30_mac3_gq30.vcf
+/softwares/vcftoolsV13/bin/vcftools --vcf variants_snps_qual30_mac3.recode.vcf --minGQ 30 --recode --out > variants_snps_qual30_mac3_gq30
 ```
 **5. Filter out sites with very low depth (impossible to reliably call a genotype) and very high depth (likely mapping errors)**
 ```
-/softwares/bcftools1.12/bcftools filter -e 'INFO/DP <= 18 || INFO/DP >= 60' variants_snps_qual30_mac3_gq30.vcf -o variants_snps_qual30_mac3_gq30_alldp18-60.vcf
+/softwares/bcftools1.12/bcftools filter -e 'INFO/DP <= 18 || INFO/DP >= 60' variants_snps_qual30_mac3_gq30.recode.vcf -o variants_snps_qual30_mac3_gq30_alldp18-60.vcf
 /softwares/bcftools1.12/bcftools view -H variants_snps_qual30_mac3_gq30_alldp18-60.vcf.gz | wc -l
 ```
 
