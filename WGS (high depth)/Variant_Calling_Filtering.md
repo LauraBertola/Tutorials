@@ -87,7 +87,7 @@ We will now use some very common filters, using [vcftools](https://vcftools.gith
 ```
 **4. Filter for low quality genotypes (per sample)**
 ```
-/softwares/vcftoolsV13/bin/vcftools --vcf variants_snps_qual30_mac3.recode.vcf --minGQ 30 --recode --out > variants_snps_qual30_mac3_gq30
+/softwares/vcftoolsV13/bin/vcftools --vcf variants_snps_qual30_mac3.recode.vcf --minGQ 30 --recode --out variants_snps_qual30_mac3_gq30
 ```
 **5. Filter out sites with very low depth (impossible to reliably call a genotype) and very high depth (likely mapping errors)**
 ```
