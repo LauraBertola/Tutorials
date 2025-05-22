@@ -79,7 +79,7 @@ We will now use some very common filters, using [vcftools](https://vcftools.gith
 ```
 **2. Remove low quality base calls (minimum variant site quality; QUAL field in the VCF)**
 ```
-/softwares/vcftoolsV13/bin/vcftools --vcf variants_snps.recode.vcf --minQ 30 --recode out variants_snps_qual30
+/softwares/vcftoolsV13/bin/vcftools --vcf variants_snps.recode.vcf --minQ 30 --recode --out variants_snps_qual30
 ```
 **3. Filter for minor allele counts (MAC) (removing rare SNPs, which may be caused by sequencing errors)**
 ```
