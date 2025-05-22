@@ -54,7 +54,7 @@ We are not going to look at the content of the file in much more detail now, bec
 
 ## Variant filtering
 
-Our vcf file has a lot of variants, but we don't want to use everything. For example, there will be a lot of noise in the file, e.g. positions which do not have reliable information, or have missing data for most samples (remember this is a downsampled dataset!). We therefore need to filter our vcf file. The images below illustrate different types of variants which you may or may not want to retain (depending on your research question!).
+Our vcf file has a lot of variants, but we don't want to use everything. There is a lot of noise in the file, e.g. positions which do not have reliable information, or have missing data for most samples (remember this is a downsampled dataset!). We therefore need to filter our vcf file. The images below illustrate different types of variants which you may or may not want to retain (depending on your research question!).
 
 Variants:  
 ![variants](Images/all_variants.png)
