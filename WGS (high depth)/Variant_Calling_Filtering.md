@@ -28,7 +28,7 @@ In the fields above, 0 stands for the reference allele, whereas 1 stands for the
 Lots of info here, but the last line is quite important, because it tells you what the format is of the vcf file:  
 #CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT 
 
-Now, let's take a look at the actual data, instead of the header, and use `less` -S so it doesn't print all the variants on the screen:
+Now, let's take a look at the actual data, instead of the header, and use `less -S` so it doesn't print all the variants on the screen:
 ```
 /softwares/bcftools1.12/bcftools view -H unfiltered_variants.vcf | less -S
 ```
