@@ -92,7 +92,7 @@ We will now use some very common filters, using [vcftools](https://vcftools.gith
 ```
 **5. Filter out sites with very low depth (impossible to reliably call a genotype) and very high depth (likely mapping errors)**
 ```
-/softwares/bcftools1.12/bcftools filter -e 'INFO/DP <= 18 || INFO/DP >= 60' variants_snps_qual30_mac3_gq30.recode.vcf -o variants_snps_qual30_mac3_gq30_alldp18-60.vcf
+/softwares/bcftools1.12/bcftools filter -e 'INFO/DP <= 18 || INFO/DP >= 60' variants_snps_qual30_mac3_gq30.vcf -o variants_snps_qual30_mac3_gq30_alldp18-60.vcf
 /softwares/bcftools1.12/bcftools view -H variants_snps_qual30_mac3_gq30_alldp18-60.vcf.gz | wc -l
 ```
 
