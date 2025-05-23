@@ -71,7 +71,7 @@ Variants which are multi-allelic (lots of downstream analyses don't like these, 
 Variants which are variable within your samples (imaginge what happens if you use a reference genome of another species):  
 ![variants](Images/ingroup_variants.png)
 
-We will now use some very common filters, using [vcftools](https://vcftools.github.io/man_latest.html). Note that it also tells you how many sites were kept during the filtering step, which is really useful to know.
+We will now use some very common filters, and we'll count the number of line to monitor how many SNPs were retained. 
 
 **1. Bi-allelic SNPs only (i.e. no indels; m2 = min. 2 alleles, M2 = max. 2 alleles)**
 ```
