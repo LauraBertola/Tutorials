@@ -40,7 +40,7 @@ You can exit your screen session by typing CTRL+A and D. Nothing will show on yo
 
 To see if you have screen session running, do:
 ```
-screen ls
+screen -ls
 ```
 
 It should show you that you have a screen session called 'index'. To attach to the screen session again, for example to check if the run is finished yet, do:
@@ -50,7 +50,7 @@ screen -r index
 
 If it is finished, you don't need this screen session anymore, and you can kill it. Do CTRL+A and K. It will ask you "Really kill this window [y/n]", and you can type y. If you now do:
 ```
-screen ls
+screen -ls
 ```
 
 It should say: "No sockets found", which means you don't have active screen sessions anymore.
