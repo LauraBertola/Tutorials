@@ -1,4 +1,4 @@
-#RADseq
+# RADseq
 
 This part will deal with processing of a Restriction site Associated DNA sequencing (RADseq), which is a form of reduced representation sequencing. This allows for cost-effective analyses of a larger number of samples, making this a useful strategy when funding is limited (and it always is :slightly_frowning_face:).
 
