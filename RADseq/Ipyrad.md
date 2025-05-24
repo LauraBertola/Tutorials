@@ -155,7 +155,7 @@ You exit the text editor with `CTRL + X` (note it lists the most common commands
 
 Once we start running the analysis ipyrad will create several new directories to hold the output of each step for this assembly. By default the new directories are created in the `project_dir` directory and use the prefix specified by the `assembly_name` parameter. For this example assembly all the intermediate directories will be of the form: `/Tutorial_RADseq/cheetah_*`. 
 
-# Step 1: Loading/Demultiplexing the raw data
+**Step 1: Loading/Demultiplexing the raw data**
 
 Sometimes, you'll receive your data as a huge pile of reads, and you'll need to split it up and assign each read to the sample it came from. This is called demultiplexing and is done by unique barcodes which allow you to recognize individual samples. In that case, you'll have to provide a path to the raw non-demultiplexed fastq files `[2]` and the path to the barcode file `[3]` in your params file. In our case, the samples are already demultiplexed and we have 1 file per sample. The path to these files is indicated in `[4]` in the params file. Even though we do not need to demultiplex our data here, we still need to run this step to import the data into ipyrad.
 
@@ -242,7 +242,7 @@ step 7: None
 
 If you want to get even **more** info, ipyrad tracks all kinds of wacky stats and saves them to a file inside the directories it creates for each step. 
 
-# Step 2: Filter reads
+**Step 2: Filter reads**
 
 This step filters reads based on quality scores and maximum number of uncalled bases, and can be used to detect Illumina adapters in your reads, which is sometimes a problem under a couple different library prep scenarios. We know the our data have an excess of low-quality bases toward the 5' end (remember the FastQC results!), so lets use this opportunity to trim off some of those low quality regions. To account for this we will trim reads to 100bp, removing the last 10bp of our 110bp reads. 
 
@@ -333,7 +333,7 @@ FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF<FFFFFFFFFFFFFFFBFFFFFFFFFFFFFFFFFFFFFFFFFFBFFF
 
 This is actually really cool, because we can already see the results of our applied parameters. All reads have been trimmed to 100bp.
 
-# Step 3: denovo clustering within-samples
+**Step 3: denovo clustering within-samples**
 
 For a *de novo* assembly, step 3 de-replicates and then clusters reads within each sample by the set clustering threshold and then writes the clusters to new files in a directory called `cheetah_clust_0.9`. Intuitively, we are trying to identify all the reads that map to the same locus within each sample. You may remember the default value is 0.85, but we have increased if to 0.9 in our params file. This value dictates the percentage of sequence similarity that reads must have in order to be considered reads at the same locus. 
 
@@ -457,7 +457,7 @@ TGCAGGTCTGCGAATGACGGTGGCTAGTACTCGAGGAAGGGTCGCACCGCAGTAAGCTAATCTGACCCTCTGGAGnnnnA
 
 Reads that are sufficiently similar (based on the above sequence similarity threshold) are grouped together in clusters separated by "//". The first cluster above is *probably* homozygous with some sequencing error. The second cluster is *probably* heterozygous with some sequencing error. We don't want to go through and 'decide' by ourselves for each cluster, so thankfully, untangling this mess is what steps 4 & 5 are all about. 
 
-# Step 4: Joint estimation of heterozygosity and error rate
+**Step 4: Joint estimation of heterozygosity and error rate**
 
 In Step 3 reads that are sufficiently similar (based on the specified sequence similarity threshold) are grouped together in clusters separated by "//". We examined the `head` of one of the sample cluster files at the end of the last exercise, but here we've cherry picked a couple clusters with more pronounced features.
 
@@ -581,7 +581,7 @@ step 7: None
 
 Illumina error rates are on the order of 0.1% per base, so your error rates will ideally be in this neighborhood. Also, under normal conditions error rate will be much, much lower than heterozygosity (on the order of 10x lower). If the error rate is >>0.1% then you might be using too permissive a clustering threshold. Just a thought.
 
-# Step 5: Consensus base calls
+**Step 5: Consensus base calls**
 
 Step 5 uses the inferred error rate and heterozygosity per sample to call the consensus of sequences within each cluster. Here we are identifying what we believe to be the real haplotypes at each locus within each sample.
 
@@ -664,7 +664,7 @@ step 7: None
 
 And here the important information is the number of `reads_consens`. This is the number of retained reads within each sample that we'll send on to the next step. Retained reads must pass filters on read depth tolerance (both `mindepth_majrule` and `maxdepth`), maximum number of uncalled bases (`max_Ns_consens`) and maximum number of heterozygous sites (`max_Hs_consens`) per consensus sequence. 
 
-# Step 6: Cluster across samples
+**Step 6: Cluster across samples**
 
 Step 6 clusters consensus sequences across samples. Now that we have good estimates for haplotypes within samples we can try to identify similar sequences at each locus among samples. We use the same clustering threshold as step 3 to identify sequences among samples that are probably sampled from the same locus, based on sequence similarity.
 
@@ -748,7 +748,7 @@ CATGCTCTGCTCTGCAGCCTGCAGTCTTTATGTTTGCTCTATGTCATAAGAATTCTGGCATACTTGTTTCTGTGAAATAC
 The final output of step 6 is a file in `cheetah_across` called `cheetah_clust_database.fa`. This file contains all aligned reads across all
 samples. Executing the above command you'll see all the reads that align at each locus. You'll see the sample name of each read followed by the sequence of the read at that locus for that sample. If you wish to examine more loci you can increase the number of lines you want to view by increasing the value you pass to `head` in the above command (e.g. `... | head -n 300`).
 
-# Step 7: Filter and write output files
+**Step 7: Filter and write output files**
 
 The final step is to filter the data and write output files in many convenient file formats. First, we apply filters for maximum number of
 indels per locus, max heterozygosity per locus, max number of snps per locus, and minimum number of samples per locus. All these filters are
@@ -959,5 +959,5 @@ do that by adding the `-f` flag, **forcing** ipyrad to overwrite already existin
 
 **Congratulations!** You've completed your first RAD-Seq assembly. Now you can try applying what you've learned to assemble your own real data. Please consult the [ipyrad online documentation](http://ipyrad.readthedocs.io) for details about many of the more powerful features of ipyrad, including reference sequence mapping, assembly branching, and the extensive `analysis` toolkit, which includes extensive downstream analysis tools for such things as clustering and population assignment, phylogenetic tree inference, quartet-based species tree inference, and much more.
 
-![png](images/Cheetah_cubs2.png)
+![png](Images/Cheetah_cubs2.png)
 ©Laura Bertola
