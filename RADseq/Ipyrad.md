@@ -24,7 +24,7 @@ Detailed information about ipyrad, including instructions for installation and t
 
 **Note:** Assembling RADseq type sequence data requires a lot of different steps, and these steps generate a **lot** of intermediary files. ipyrad organizes these files into directories, and it prepends the name of your assembly to each directory with data that belongs to it. One result of this is that you can have multiple assemblies of the same raw data with different parameter settings and you don't have to manage all the files yourself! (See [Branching assemblies](https://ipyrad.readthedocs.io/en/latest/8-branching.html) for more info). Another result is that **you should not rename or move any of the directories inside your project directory**, unless you know what you're doing or you don't mind if your assembly breaks. This is an important point when using pipelines, as file paths are usually included within the pipeline, and there are assumptions where the different files are.
 
-## Getting Started
+## Running Ipyrad
 
 To better understand how to use ipyrad, let's take a look at the help argument. We will use some of the ipyrad arguments in this tutorial (for example: -n, -p, -s, -c, -r). But, the complete list of optional arguments and their explanation is below.
 
@@ -84,7 +84,8 @@ optional arguments:
   * Documentation: http://ipyrad.readthedocs.io
 ```
 
-## Create a new parameters file
+**Create a new parameters file**
+
 ipyrad uses a text file to hold all the parameters for a given assembly. Start by creating a new parameters file with the `-n` flag. This flag
 requires you to pass in a name for your assembly. In the example we use `cheetah` but the name can be anything at all. Once you start analysing your own data you might call your parameters file something more informative, including some details on the settings.
 
