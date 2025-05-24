@@ -114,5 +114,6 @@ Let's proceed to the next step, during which we can also tweak things if we're n
 conda deactivate
 ```
 
+:camera: Cheetah coalition in the Masai Mara, Kenya
 ![png](Images/Cheetah_brothers.png)
 ©Laura Bertola
