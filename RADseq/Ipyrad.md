@@ -13,7 +13,8 @@ check that your analysis is working, and what the final output formats
 will be. We will also cover how to run ipyrad on a cluster and how to do so
 efficiently.
 
-# Overview of Assembly Steps
+## Overview of Assembly Steps
+
 Very roughly speaking, ipyrad exists to transform raw data coming off the 
 sequencing instrument into output files that you can use for downstream 
 analysis. 
@@ -44,21 +45,15 @@ result is that **you should not rename or move any of the directories
 inside your project directory**, unless you know what you're doing or
 you don't mind if your assembly breaks. This is an important point when using pipelines, as file paths are usually included within the pipeline, and there are assumptions where the different files are.
 
-# Getting Started
+## Getting Started
 
-We will be running through the assembly of the cheetah data using the ipyrad
-CLI. So, if you don't have the terminal window open, please start your VM, open a browser
-window and navigate to `http://localhost:8800` and create a **new "Terminal"**
-using the "New" button.
-
-## ipyrad help
 To better understand how to use ipyrad, let's take a look at the help argument.
 We will use some of the ipyrad arguments in this tutorial (for example: -n, -p,
 -s, -c, -r). But, the complete list of optional arguments and their explanation
 is below.
 
 ```
-(ipyrad) osboxes@osboxes:~/ipyrad-workshop$ ipyrad -h
+ipyrad -h
 
 usage: ipyrad [-h] [-v] [-r] [-f] [-q] [-d] [-n NEW] [-p PARAMS] [-s STEPS] [-b [BRANCH [BRANCH ...]]]
               [-m [MERGE [MERGE ...]]] [-c cores] [-t threading] [--MPI] [--ipcluster [IPCLUSTER]]
@@ -121,9 +116,8 @@ analysing your own data you might call your parameters file something
 more informative, including some details on the
 settings.
 
-```bash
-# Now create a new params file named 'cheetah'
-(ipyrad) osboxes@osboxes:~/ipyrad-workshop$ ipyrad -n cheetah
+```
+ipyrad -n cheetah
 ```
 
 This will create a file in the current directory called `params-cheetah.txt`.
@@ -132,38 +126,38 @@ then the name of the parameter, and then a short description of its purpose.
 Lets take a look at it.
 
 ``` 
-(ipyrad) osboxes@osboxes:~/ipyrad-workshop$ cat params-cheetah.txt
+cat params-cheetah.txt
 ------- ipyrad params file (v.0.9.92)-------------------------------------------
-cheetah                          ## [0] [assembly_name]: Assembly name. Used to name output directories for assembly steps
-/home/osboxes//ipyrad-workshop   ## [1] [project_dir]: Project dir (made in curdir if not present)
-                                 ## [2] [raw_fastq_path]: Location of raw non-demultiplexed fastq files
-                                 ## [3] [barcodes_path]: Location of barcodes file
-                                 ## [4] [sorted_fastq_path]: Location of demultiplexed/sorted fastq files
-denovo                           ## [5] [assembly_method]: Assembly method (denovo, reference)
-                                 ## [6] [reference_sequence]: Location of reference sequence file
-rad                              ## [7] [datatype]: Datatype (see docs): rad, gbs, ddrad, etc.
-TGCAG,                           ## [8] [restriction_overhang]: Restriction overhang (cut1,) or (cut1, cut2)
-5                                ## [9] [max_low_qual_bases]: Max low quality base calls (Q<20) in a read
-33                               ## [10] [phred_Qscore_offset]: phred Q score offset (33 is default and very standard)
-6                                ## [11] [mindepth_statistical]: Min depth for statistical base calling
-6                                ## [12] [mindepth_majrule]: Min depth for majority-rule base calling
-10000                            ## [13] [maxdepth]: Max cluster depth within samples
-0.85                             ## [14] [clust_threshold]: Clustering threshold for de novo assembly
-0                                ## [15] [max_barcode_mismatch]: Max number of allowable mismatches in barcodes
-0                                ## [16] [filter_adapters]: Filter for adapters/primers (1 or 2=stricter)
-35                               ## [17] [filter_min_trim_len]: Min length of reads after adapter trim
-2                                ## [18] [max_alleles_consens]: Max alleles per site in consensus sequences
-0.05                             ## [19] [max_Ns_consens]: Max N's (uncalled bases) in consensus (R1, R2)
-0.05                             ## [20] [max_Hs_consens]: Max Hs (heterozygotes) in consensus (R1, R2)
-4                                ## [21] [min_samples_locus]: Min # samples per locus for output
-0.2                              ## [22] [max_SNPs_locus]: Max # SNPs per locus (R1, R2)
-8                                ## [23] [max_Indels_locus]: Max # of indels per locus (R1, R2)
-0.5                              ## [24] [max_shared_Hs_locus]: Max # heterozygous sites per locus
-0, 0, 0, 0                       ## [25] [trim_reads]: Trim raw read edges (R1>, <R1, R2>, <R2) (see docs)
-0, 0, 0, 0                       ## [26] [trim_loci]: Trim locus edges (see docs) (R1>, <R1, R2>, <R2)
-p, s, l                          ## [27] [output_formats]: Output formats (see docs)
-                                 ## [28] [pop_assign_file]: Path to population assignment file
-                                 ## [29] [reference_as_filter]: Reads mapped to this reference are removed in step 3
+cheetah                                      ## [0] [assembly_name]: Assembly name. Used to name output directories for assembly steps
+/home/uramakri/laurabertola/Tutorial_RADseq  ## [1] [project_dir]: Project dir (made in curdir if not present)
+                                             ## [2] [raw_fastq_path]: Location of raw non-demultiplexed fastq files
+                                             ## [3] [barcodes_path]: Location of barcodes file
+                                             ## [4] [sorted_fastq_path]: Location of demultiplexed/sorted fastq files
+denovo                                       ## [5] [assembly_method]: Assembly method (denovo, reference)
+                                             ## [6] [reference_sequence]: Location of reference sequence file
+rad                                          ## [7] [datatype]: Datatype (see docs): rad, gbs, ddrad, etc.
+TGCAG,                                       ## [8] [restriction_overhang]: Restriction overhang (cut1,) or (cut1, cut2)
+5                                            ## [9] [max_low_qual_bases]: Max low quality base calls (Q<20) in a read
+33                                           ## [10] [phred_Qscore_offset]: phred Q score offset (33 is default and very standard)
+6                                            ## [11] [mindepth_statistical]: Min depth for statistical base calling
+6                                            ## [12] [mindepth_majrule]: Min depth for majority-rule base calling
+10000                                        ## [13] [maxdepth]: Max cluster depth within samples
+0.85                                         ## [14] [clust_threshold]: Clustering threshold for de novo assembly
+0                                            ## [15] [max_barcode_mismatch]: Max number of allowable mismatches in barcodes
+0                                            ## [16] [filter_adapters]: Filter for adapters/primers (1 or 2=stricter)
+35                                           ## [17] [filter_min_trim_len]: Min length of reads after adapter trim
+2                                            ## [18] [max_alleles_consens]: Max alleles per site in consensus sequences
+0.05                                         ## [19] [max_Ns_consens]: Max N's (uncalled bases) in consensus (R1, R2)
+0.05                                         ## [20] [max_Hs_consens]: Max Hs (heterozygotes) in consensus (R1, R2)
+4                                            ## [21] [min_samples_locus]: Min # samples per locus for output
+0.2                                          ## [22] [max_SNPs_locus]: Max # SNPs per locus (R1, R2)
+8                                            ## [23] [max_Indels_locus]: Max # of indels per locus (R1, R2)
+0.5                                          ## [24] [max_shared_Hs_locus]: Max # heterozygous sites per locus
+0, 0, 0, 0                                   ## [25] [trim_reads]: Trim raw read edges (R1>, <R1, R2>, <R2) (see docs)
+0, 0, 0, 0                                   ## [26] [trim_loci]: Trim locus edges (see docs) (R1>, <R1, R2>, <R2)
+p, s, l                                      ## [27] [output_formats]: Output formats (see docs)
+                                             ## [28] [pop_assign_file]: Path to population assignment file
+                                             ## [29] [reference_as_filter]: Reads mapped to this reference are removed in step 3
 ```
 
 In general the defaults are sensible, and we won't mess with them for now, 
