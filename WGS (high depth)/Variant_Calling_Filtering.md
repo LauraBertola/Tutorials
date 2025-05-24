@@ -110,7 +110,7 @@ Note that in the last step we filter on depth across **all** samples (`INFO/DP`)
 -Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf -- -t q -n "." -e 'FORMAT/DP > 10'
 ```
 
-Note that these last step will not remove SNPs, so if you'd do `wc -l` there should be no change. They just mask those positions for which we feel we don't have reliable information.
+>**Note:** these last step will not remove SNPs, so if you'd do `wc -l` there should be no change. They just mask those positions for which we feel we don't have reliable information.
 
 One more filtering step that may be relevant when working on your own data, is that you may want to remove sex chromosomes. They behave differently from autosomes, and can therefore create some noise in downstream analyses. Whether you have sex chromosomes in your data depends on the reference you have used, and if they are properly assigned in the reference. We won't go into detail about this now, but you can remove specific chromosomes by using the `--not-chr` flag in `vcftools`.
 
