@@ -1,4 +1,4 @@
-# Branching
+## Branching
 
 It is likely that you want to explore your data with a number of different filters, to get a better understanding. In the tutorial we used `min_samples_locus` = 4, which means that only SNPs which are succesfully called in 4 or more samples are retained. Let's try some other values, using branching.
 
