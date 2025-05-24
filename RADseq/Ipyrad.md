@@ -798,7 +798,7 @@ cheetah.loci     cheetah.snps       cheetah.treemix
 cheetah.migrate  cheetah.snps.hdf5  cheetah.ugeno
 ```
 
-ipyrad always creates the `cheetah.loci` file, as this is our internal format, as well as the `cheetah_stats.txt` file, which reports final statistics for the assembly (more below). The other files created fall in to 2 categories: files that contain the full sequence (i.e. the `cheetah.phy` and `cheetah.seqs.hdf5` files) and files that contain only variable sites (i.e. the `cheetah.snps` and `cheetah.snps.hdf5` files). The `cheetah.snpsmap` is a file which maps SNPs to loci, which is used downstream in the analysis toolkit for sampling unlinked SNPs.
+Ipyrad always creates the `cheetah.loci` file, as this is our internal format, as well as the `cheetah_stats.txt` file, which reports final statistics for the assembly (more below). The other files created fall in to 2 categories: files that contain the full sequence (i.e. the `cheetah.phy` and `cheetah.seqs.hdf5` files) and files that contain only variable sites (i.e. the `cheetah.snps` and `cheetah.snps.hdf5` files). The `cheetah.snpsmap` is a file which maps SNPs to loci, which is used downstream in the analysis toolkit for sampling unlinked SNPs. You'll also see that there are some output files which have a 'u' in there format, e.g. .ustr and .ugeno. These files contain only one SNP per locus, while the normal .str and .geno file may contain SNPs from the same locus. For downstream analyses, it is often good to use data with a single SNP per locus to avoid linkage.
 
 The most informative, human-readable file here is `cheetah_stats.txt` which gives extensive and detailed stats about the final assembly. A quick overview of the different sections of this file:
 
@@ -959,6 +959,8 @@ sequence matrix size: (24, 1571595), 65.34% missing sites.
 do that by adding the `-f` flag, **forcing** ipyrad to overwrite already existing files. Remember that if you don't want to overwrite existing data, you may want to use [branching](https://ipyrad.readthedocs.io/en/latest/8-branching.html).
 
 **Congratulations!** You've completed your first RAD-Seq assembly. Now you can try applying what you've learned to assemble your own real data. Please consult the [ipyrad online documentation](http://ipyrad.readthedocs.io) for details about many of the more powerful features of ipyrad, including reference sequence mapping, assembly branching, and the extensive `analysis` toolkit, which includes extensive downstream analysis tools for such things as clustering and population assignment, phylogenetic tree inference, quartet-based species tree inference, and much more.
+
+There is also an exercise which explains branching in more detail [here](Exercises.md).
 
 ![png](Images/Cheetah_cubs2.png)
 ©Laura Bertola
