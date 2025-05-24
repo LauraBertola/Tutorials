@@ -57,7 +57,7 @@ Now run fastqc on one of the samples:
 
 FastQC will indicate its progress in the terminal. This toy data will run quite quickly, but real data can take somewhat longer to analyse (10s of minutes).
 
-![png](images/fastqc-run.png)
+![png](Images/fastqc-run.png)
 
 After some time, we'll have output files that include html and images depicting lots of information about the quality of our reads. If you're using Mobaxterm, you can download the .html files from the panel on the left side on the screen. Or simply open it by right clicking and selecting "Open with...", and then open it in Chrome or another browser. If you're on Linux/Mac, you have to download the file. Open a new terminal window and navigate to where you want to download it to, e.g. your Downloads folder. Then use the following command:
 ```
@@ -70,16 +70,16 @@ Open one of the html file in your browser. You'll see plots like the one above. 
 
 Just taking a random one, lets spend a moment looking at the results from `SRR19760910_R1__fastqc.html`. Opening up this html file, on the left you'll see a summary of all the results, which highlights areas FastQC indicates may be worth further examination. We will only look at a few of these.
 
-![png](images/fastqc-summary.png)
+![png](Images/fastqc-summary.png)
 
 Lets start with Per base sequence quality, because it's very easy to interpret, and often times with RAD-Seq data results here will be of special importance.
 
-![png](images/fastqc-perbasequal.png)
+![png](Images/fastqc-perbasequal.png)
 
 For the cheetah data the sequence quality per base is uniformly quite high, with minor dips only in the first and last few bases (again, this is typical for Illumina reads). Based on information from this plot we can see that the cheetah data doesn't need trimming, which is good.
 
 Now lets look at the `Per base sequece content`, which FastQC highlights with a scary red **X**.
-![png](images/fastqc-perbasecontent.png)
+![png](Images/fastqc-perbasecontent.png)
 
 The squiggles indicate base composition per base position averaged across the reads. It looks like the signal FastQC is concerned about here is related to the *extreme* base composition bias of the first 5 positions. We happen to know this is a result of the restriction enzyme overhang present in all reads (`CATGC` in this case for the SphI enzyme used), and so it is in fact of no concern. 
 
@@ -114,5 +114,5 @@ Let's proceed to the next step, during which we can also tweak things if we're n
 conda deactivate
 ```
 
-![png](images/Cheetah_brothers.png)
+![png](Images/Cheetah_brothers.png)
 ©Laura Bertola
