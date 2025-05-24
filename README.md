@@ -62,7 +62,7 @@ If you want delete a job, because it got stuck or because you realized you made 
 qdel <jobID>
 ```
 
-**Note:** Details about the the structure of your job submission script depends on the nature of your HPC and job scheduler.
+>**Note:** Details about the the structure of your job submission script depends on the nature of your HPC and job scheduler.
 
 
-**Everything is still under construction, but feel free to reach out with feedback!**
+>**Everything is still under construction, but feel free to reach out with feedback!**
