@@ -23,7 +23,7 @@ You should now have something which *looks* like a folder, called input_files, i
 If you do `ls` now, you'll see the files of the individual samples:
 ![png](Images/ls_raws.png)
 
-**Note:** You'll see that every file contains `_R1_`. Most of the time, the data you will be working on are paired-end, meaning that each sample has a `_R1_` and `_R2_` file. For this workshop, and to ensure that the steps run quickly, we will only use `_R1_`. 
+>**Note:** You'll see that every file contains `_R1_`. Most of the time, the data you will be working on are paired-end, meaning that each sample has a `_R1_` and `_R2_` file. For this workshop, and to ensure that the steps run quickly, we will only use `_R1_`. 
 
 Before we get started with the assembly, let's take a look at what the raw data looks like. We can use `zcat` and `head` to do this.
 
