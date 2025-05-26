@@ -26,7 +26,7 @@ Tools in standard WGS pipelines (e.g., GATK best practices):
 2. High missingness confuses variant callers
 Variant callers like GATK HaplotypeCaller, FreeBayes, etc., assume:
 * Every sample will have coverage at most variant sites.
-* Depth can be used as a proxy for genotype confidence.
+* Depth can be used as a proxy for genotype confidence.  
 → In RADseq, many loci are missing completely from many individuals, and coverage can be low and variable, which leads to:
 
   Poor genotype calling:
@@ -36,7 +36,7 @@ Variant callers like GATK HaplotypeCaller, FreeBayes, etc., assume:
 3. Duplicate handling & local realignment are overkill or misleading
 WGS pipelines include steps like:
 * Marking duplicates.
-* Local realignment around indels.
+* Local realignment around indels.  
 → These aren't helpful (and may be harmful) for RADseq because:
 - RADseq reads from the same fragment often look like duplicates but aren't PCR duplicates.
 - Local realignment makes little sense with RAD loci that don't span structural variants.
