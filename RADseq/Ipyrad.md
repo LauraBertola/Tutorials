@@ -186,12 +186,12 @@ We use the following flags:
 -s    the step to run  
 -c    run on 4 cores  
 
-For those who are interested in what goes on under the hood:
-Any time Ipyrad is invoked it performs a few housekeeping operations: 
-1. Load the assembly object - Since this is our first time running any steps we need to initialize our assembly.
-2. Start the parallel cluster - Ipyrad uses a parallelization library called ipyparallel. Every time we start a step we fire up the parallel clients. This makes your assemblies go **smokin'** fast.
-3. Do the work - Actually perform the work of the requested step(s) (in this case demultiplexing reads to samples).
-4. Save, clean up, and exit - Save the state of the assembly, and spin down the ipyparallel cluster.
+For those who are interested in what goes on under the hood:  
+Any time Ipyrad is invoked it performs a few housekeeping operations:   
+1. Load the assembly object - Since this is our first time running any steps we need to initialize our assembly.  
+2. Start the parallel cluster - Ipyrad uses a parallelization library called ipyparallel. Every time we start a step we fire up the parallel clients. This makes your assemblies go **smokin'** fast.  
+3. Do the work - Actually perform the work of the requested step(s) (in this case demultiplexing reads to samples). 
+4. Save, clean up, and exit - Save the state of the assembly, and spin down the ipyparallel cluster.  
 
 As a convenience Ipyrad internally tracks the state of all your steps in your current assembly, so at any time you can ask for results by invoking the `-r` flag. We also use the `-p` argument to tell it which params file (i.e., which assembly) we want it to print stats for.
 
