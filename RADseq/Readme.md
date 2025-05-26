@@ -25,7 +25,7 @@ Tools in standard WGS pipelines (e.g., GATK best practices):
 
 2. High missingness confuses variant callers
 Variant callers like GATK HaplotypeCaller, FreeBayes, etc., assume:
-* Every sample will have coverage at most variant sites.
+* Every sample will have coverage at most variant sites.  
 * Depth can be used as a proxy for genotype confidence.  
 → In RADseq, many loci are missing completely from many individuals, and coverage can be low and variable, which leads to:
 
