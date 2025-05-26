@@ -29,9 +29,7 @@ Variant callers like GATK HaplotypeCaller, FreeBayes, etc., assume:
 * Samples have some coverage at most variant sites.  
 * Depth can be used as a proxy for genotype confidence.  
 
-→ In RADseq, many loci are missing completely from many individuals, and coverage can be low and variable, which leads to:
-
-  Poor genotype calling:
+→ In RADseq, many loci are missing completely from many individuals, and coverage can be low and variable, which leads to poor genotype calling:
 * Inflated missingness in VCF.
 * Overfiltered or miscalled variants.
 
