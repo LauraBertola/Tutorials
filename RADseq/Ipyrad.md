@@ -6,7 +6,7 @@ If you are new to RADseq analyses, this tutorial will provide a simple overview 
 
 ## Overview of Assembly Steps
 
-Very roughly speaking, ipyrad exists to transform raw data coming off the sequencing instrument into output files that you can use for downstream analysis. 
+Very roughly speaking, Ipyrad exists to transform raw data coming off the sequencing instrument into output files that you can use for downstream analysis. 
 
 ![png](Images/ipyrad_workflow.png)
 
@@ -22,7 +22,7 @@ The basic steps of this process are as follows:
 
 Detailed information about ipyrad, including instructions for installation and troubleshooting, can be found [here](https://ipyrad.readthedocs.io/en/master/).
 
-**Note:** Assembling RADseq type sequence data requires a lot of different steps, and these steps generate a **lot** of intermediary files. ipyrad organizes these files into directories, and it prepends the name of your assembly to each directory with data that belongs to it. One result of this is that you can have multiple assemblies of the same raw data with different parameter settings and you don't have to manage all the files yourself! (See [Branching assemblies](https://ipyrad.readthedocs.io/en/latest/8-branching.html) for more info). Another result is that **you should not rename or move any of the directories inside your project directory**, unless you know what you're doing or you don't mind if your assembly breaks. This is an important point when using pipelines, as file paths are usually included within the pipeline, and there are assumptions where the different files are.
+>**Note:** Assembling RADseq type sequence data requires a lot of different steps, and these steps generate a **lot** of intermediary files. ipyrad organizes these files into directories, and it prepends the name of your assembly to each directory with data that belongs to it. One result of this is that you can have multiple assemblies of the same raw data with different parameter settings and you don't have to manage all the files yourself! (See [Branching assemblies](https://ipyrad.readthedocs.io/en/latest/8-branching.html) for more info). Another result is that **you should not rename or move any of the directories inside your project directory**, unless you know what you're doing or you don't mind if your assembly breaks. This is an important point when using pipelines, as file paths are usually included within the pipeline, and there are assumptions where the different files are.
 
 ## Running Ipyrad
 
