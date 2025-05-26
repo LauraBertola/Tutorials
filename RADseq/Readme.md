@@ -21,7 +21,7 @@ Tools in standard WGS pipelines (e.g., GATK best practices):
 * Expect reads to be distributed across the whole genome.
 * Use population-level models for genotype likelihoods and filtering.
 * Expect low missing data and higher coverage consistency.
-→ RADseq violates all of these assumptions.
+→ RADseq violates all of these assumptions. Note that there is a difference between _randomly_ missing data (e.g. low depth WGS) and _systematically_ missing data (e.g. RADseq).
 
 2. High missingness confuses variant callers
 Variant callers like GATK HaplotypeCaller, FreeBayes, etc., assume:
@@ -48,6 +48,6 @@ WGS pipelines include steps like:
 * Better locus ID consistency across individuals.
 * Reference-anchored SNP positions.
 
-But after mapping, you should still use a RADseq-aware pipeline (e.g., ipyrad -r, Stacks ref_map) to cluster loci and call variants.
+But after mapping, you should still use a RADseq-aware pipeline (e.g., ipyrad, Stacks) to cluster loci and call variants.
 
 Of course, there are different arguments for using a specific pipeline, and consistency with previously generated datasets is one of them. But RADseq pipeline exist for a reason.
