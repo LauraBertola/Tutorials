@@ -51,4 +51,4 @@ WGS pipelines include steps like:
 
 But after mapping, you should still use a RADseq-aware pipeline (e.g., ipyrad, Stacks) to cluster loci and call variants.
 
-Of course, there are different arguments for using a specific pipeline, and consistency with previously generated datasets is one of them. But RADseq pipeline exist for a reason.
+Of course, there are different arguments for using a specific pipeline, and consistency with previously generated datasets is one of them. But RADseq pipelines exist for a reason.
