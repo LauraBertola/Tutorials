@@ -102,11 +102,11 @@ Now, navigating into your output folder with the FastQC results, and do:
 multiqc .
 ```
 
-![multiqc](Images/multiqc.png)
+![multiqc](Images/multiqc_radseq.png)
 
 Look at the html file (download it to your computer, just like you did with the FastQC html files). It shows the results of all FastQC results in the same report. Note that the sample name appears when you hover with your cursor over a plot, so it is easy to identify which samples look strange and may require some more attention. 
 
-![multiqc_result](Images/multiqc_result.png)
+![multiqc_result](Images/multiqc_radseq_results.png)
 
 Let's proceed to the next step, during which we can also tweak things if we're not confident about the raw data quality. We no longer need the environment with the other python version, so first do:
 ```
