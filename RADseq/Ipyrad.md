@@ -146,7 +146,8 @@ nano params-cheetah.txt
 
 Now you can move around with the arrow keys and adjust the content of the file. We need to specify where the raw data files are located, the type of data we are using (.e.g., 'gbs', 'rad', 'ddrad', 'pairddrad), and which enzyme cut site overhangs are expected to be present on the reads. Change the following lines in your params files to look like this:
 
-```./input_files/*.fastq.gz     ## [4] [sorted_fastq_path]: Location of demultiplexed/sorted fastq files
+```
+./input_files/*.fastq.gz        ## [4] [sorted_fastq_path]: Location of demultiplexed/sorted fastq files
 CATGC                           ## [8] [restriction_overhang]: Restriction overhang (cut1,) or (cut1, cut2)
 0.9                             ## [14] [clust_threshold]: Clustering threshold for de novo assembly
 *                               ## [27] [output_formats]: Output formats (see docs)
