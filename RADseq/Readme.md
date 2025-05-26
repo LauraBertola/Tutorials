@@ -16,7 +16,7 @@ Note that there are exercises with additional information [here](Exercises.md).
 
 You technically can, but it's usually a bad idea unless you're very careful. Here's why:
 
-1. WGS tools assume even, genome-wide coverage
+1. WGS tools assume even, genome-wide coverage  
 Tools in standard WGS pipelines (e.g., GATK best practices):
 * Expect reads to be distributed across the whole genome.
 * Use population-level models for genotype likelihoods and filtering.
