@@ -432,7 +432,7 @@ Again, the final output of step 3 is dereplicated, clustered files for each samp
 this looks like by examining a portion of one of the files. 
 
 ```
-zcat cheetah_clust_0.9/SRR19760910.clustS.gz | head -n 18
+zcat cheetah_clust_0.9/SRR19760910.clustS.gz | head -n 100
 ```
 
 You'll see something similar to what is printed below:
