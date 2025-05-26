@@ -180,10 +180,10 @@ ipyrad -p params-cheetah.txt -s 1 -c 4
   Parallel connection closed.
 ```
 
-We use the following flags:
--p    the params file we wish to use
--s    the step to run
--c    run on 4 cores
+We use the following flags:  
+-p    the params file we wish to use  
+-s    the step to run  
+-c    run on 4 cores  
 
 For those who are interested in what goes on under the hood:
 Any time Ipyrad is invoked it performs a few housekeeping operations: 
