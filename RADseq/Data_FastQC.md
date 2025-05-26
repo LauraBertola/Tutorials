@@ -57,8 +57,6 @@ Now run fastqc on one of the samples:
 
 FastQC will indicate its progress in the terminal. This toy data will run quite quickly, but real data can take somewhat longer to analyse (10s of minutes).
 
-![png](Images/fastqc-run.png)
-
 After some time, we'll have output files that include html and images depicting lots of information about the quality of our reads. If you're using Mobaxterm, you can download the .html files from the panel on the left side on the screen. Or simply open it by right clicking and selecting "Open with...", and then open it in Chrome or another browser. If you're on Linux/Mac, you have to download the file. Open a new terminal window and navigate to where you want to download it to, e.g. your Downloads folder. Then use the following command:
 ```
 scp 'user@cluster:~/output_files/*.html' .
