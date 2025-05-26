@@ -50,17 +50,6 @@ WGS pipelines include steps like:
 But after mapping, you should still use a RADseq-aware pipeline (e.g., ipyrad, Stacks) to cluster loci and call variants. Note that mapping to a reference genome is integrated in the Ipyrad pipeline.
 
 ## In summary
-| **Feature**                           | **Low-Depth WGS Pipelines**                                                                 | **RADseq Pipelines**                                                           |
-|----------------------------------|----------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
-| **Typical Tools**                     | GATK, ANGSD, bcftools, FreeBayes                                                             | ipyrad, Stacks, pyRAD                                                           |
-| **Data Structure**                    | Reads spread across genome (sparse but random)                                               | Reads concentrated at restriction sites (locus-level)                          |
-| **Missing Data Pattern**             | Randomly distributed                                                                          | Systematic (entire loci missing in individuals)                                |
-| **Causes of Missingness**            | Low coverage, sequencing errors                                                              | Restriction site dropout, uneven digestion, low coverage                       |
-| **Genotype Calling Approach**         | Genotype likelihoods (GLs), population priors (e.g., in ANGSD, GATK's HaplotypeCaller)       | Clustering-based consensus calling per locus                                   |
-| **Handling of Missing Data**          | Statistical models infer genotypes/frequencies even with low depth                           | Filtering by minimum samples per locus (e.g., `min_samples_locus`)            |
-| **Assumption About Coverage**         | Generally assumes uniform or randomly missing                                                | Explicitly expects high missingness and dropout                                |
-| **Effect of Hard Filtering**          | Can be tuned by depth/quality thresholds                                                     | Over-stringent filtering removes most loci (bad)                               |
-| **SNP Position Resolution**           | Precise, genome-wide                                                                         | Clustered within RAD loci (may lack genomic coordinates if de novo)            |
 
 | **Feature&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;** | **Low-Depth WGS Pipelines**                                                                 | **RADseq Pipelines**                                                           |
 |-----------------------------------------------------------------------|----------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
