@@ -29,7 +29,7 @@ Variant callers like GATK HaplotypeCaller, FreeBayes, etc., assume:
 * Depth can be used as a proxy for genotype confidence.
 → In RADseq, many loci are missing completely from many individuals, and coverage can be low and variable, which leads to:
 
-Poor genotype calling:
+  Poor genotype calling:
 * Inflated missingness in VCF.
 * Overfiltered or miscalled variants.
 
@@ -40,6 +40,7 @@ WGS pipelines include steps like:
 → These aren't helpful (and may be harmful) for RADseq because:
 - RADseq reads from the same fragment often look like duplicates but aren't PCR duplicates.
 - Local realignment makes little sense with RAD loci that don't span structural variants.
+
 
 **However,** You can use a reference genome to map RADseq reads (e.g., with bwa mem) if you want:
 * Better locus ID consistency across individuals.
