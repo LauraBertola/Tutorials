@@ -12,7 +12,7 @@ Note that there are exercises with additional information [here](Exercises.md).
 ![cheetahs](./Images/DSC_3251.jpg)
 ©Laura Bertola
 
-# Important note on why not to use a WGS pipeline on RADseq data
+## Important note on why not to use a WGS pipeline on RADseq data
 
 You technically can, but it's usually a bad idea unless you're very careful. Here's why:
 
