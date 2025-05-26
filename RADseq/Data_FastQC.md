@@ -31,7 +31,7 @@ Here we have our first look at a fastq formatted file. Each sequenced read is sp
 ```
 zcat subset-R1-raws/SRR19760910_R1_.fastq.gz | head -n 20
 ```
-![fastq](Images/fastq_radseq.png)
+![fastq](Images/radseq_fastq.png)
 
 The first is the name of the read (its location on the plate). The second line contains the sequence data. The third line is unused. And the fourth line is the quality scores for the base calls. The [FASTQ wikipedia](https://en.wikipedia.org/wiki/FASTQ_format) page has a good figure depicting the logic behind how quality scores are encoded.
 
