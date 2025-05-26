@@ -65,7 +65,7 @@ But after mapping, you should still use a RADseq-aware pipeline (e.g., ipyrad, S
 | **SNP Position Resolution**      | Precise, genome-wide                                                                         | Clustered within RAD loci (may lack genomic coordinates if de novo)            |
 
 <div align="center">
-  <img src="Images/WGSvsRAD.png" alt="pakeeza" width="50%">
+  <img src="Images/WGSvsRAD.png" alt="pakeeza" width="70%">
 </div>
 
 Of course, there are different arguments for using a specific pipeline, and consistency with previously generated datasets is one of them. But RADseq pipelines exist for a reason.
