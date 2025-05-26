@@ -21,7 +21,7 @@ ln -s /home/uramakri/laurabertola/Tutorial_RADseq/input_files input_files
 You should now have something which *looks* like a folder, called input_files, in your directory, but actually it teleports you to *my* folder when you enter it.
 
 If you do `ls` now, you'll see the files of the individual samples:
-![png](Images/ls_raws.png)
+![png](Images/input_files.png)
 
 >**Note:** You'll see that every file contains `_R1_`. Most of the time, the data you will be working on are paired-end, meaning that each sample has a `_R1_` and `_R2_` file. For this workshop, and to ensure that the steps run quickly, we will only use `_R1_`. 
 
