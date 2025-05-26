@@ -21,6 +21,7 @@ Tools in standard WGS pipelines (e.g., GATK best practices):
 * Expect reads to be distributed across the whole genome.
 * Use population-level models for genotype likelihoods and filtering.
 * Expect low missing data and higher coverage consistency.
+  
 → RADseq violates all of these assumptions. Note that there is a difference between _randomly_ missing data (e.g. low depth WGS) and _systematically_ missing data (e.g. RADseq).
 
 2. High missingness confuses variant callers
