@@ -16,7 +16,7 @@ Note that there are exercises with additional information [here](Exercises.md).
 
 You technically can, but it's usually a bad idea unless you're very careful. Here's why:
 
-1. WGS tools assume (somewhat) even, genome-wide coverage  
+**1. WGS tools assume (somewhat) even, genome-wide coverage**  
 Tools in standard WGS pipelines (e.g., GATK best practices):
 * Expect reads to be distributed across the whole genome.
 * Use population-level models for genotype likelihoods and filtering.
@@ -24,7 +24,7 @@ Tools in standard WGS pipelines (e.g., GATK best practices):
   
 → RADseq violates all of these assumptions. Note that there is a difference between _randomly_ missing data (e.g. low depth WGS) and _systematically_ missing data (e.g. RADseq).
 
-2. High missingness confuses variant callers  
+**2. High missingness confuses variant callers**  
 Variant callers like GATK HaplotypeCaller, FreeBayes, etc., assume:
 * Samples have some coverage at most variant sites.  
 * Depth can be used as a proxy for genotype confidence.  
@@ -33,7 +33,7 @@ Variant callers like GATK HaplotypeCaller, FreeBayes, etc., assume:
 * Inflated missingness in VCF.
 * Overfiltered or miscalled variants.
 
-3. Duplicate handling & local realignment are overkill or misleading  
+**3. Duplicate handling & local realignment are overkill or misleading**  
 WGS pipelines include steps like:
 * Marking duplicates.
 * Local realignment around indels.  
@@ -43,11 +43,11 @@ WGS pipelines include steps like:
 - Local realignment makes little sense with RAD loci that don't span structural variants.
 
 
-**However,** You can use a reference genome to map RADseq reads (e.g., with bwa mem) if you want:
+**However,** you can use a reference genome to map RADseq reads (e.g., with bwa mem) if you want:
 * Better locus ID consistency across individuals.
 * Reference-anchored SNP positions.
 
-But after mapping, you should still use a RADseq-aware pipeline (e.g., ipyrad, Stacks) to cluster loci and call variants.
+But after mapping, you should still use a RADseq-aware pipeline (e.g., ipyrad, Stacks) to cluster loci and call variants. Note that mapping to a reference genome is integrated in the Ipyrad pipeline.
 
 ## In summary
 | **Feature**                      | **Low-Depth WGS Pipelines**                                                                 | **RADseq Pipelines**                                                           |
