@@ -4,7 +4,7 @@ This is the full tutorial for the command line interface (CLI) for ipyrad. In th
 
 If you are new to RADseq analyses, this tutorial will provide a simple overview of how to execute ipyrad, what the data files look like, how to check that your analysis is working, and what the final output formats will be. We will also cover how to run ipyrad on a cluster and how to do so efficiently.
 
-## Overview of Assembly Steps
+## Overview of assembly steps
 
 Very roughly speaking, ipyrad exists to transform raw data coming off the sequencing instrument into output files that you can use for downstream analysis. 
 
