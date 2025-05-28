@@ -60,7 +60,7 @@ FastQC will indicate its progress in the terminal. This toy data will run quite 
 When everything is done, navigate to your output folder using `cd` and see what files were created with `ls`. 
 You'll see that for each input file, FastQC created an .html and a .zip file. You want to look into the html file, which contains all the information you need for now. If you're using Mobaxterm, you can download the .html files from the panel on the left side on the screen. Or simply open it by right clicking and selecting "Open with...", and then open it in Chrome or another browser. If you're on Linux/Mac, you have to download the file. Open a new terminal window and navigate to where you want to download it to, e.g. your Downloads folder. Then use the following command:
 ```
-scp 'user@cluster:~/output_files/*.html' .
+scp user@cluster:~/output_files/*.html .
 ```
 
 You're now telling your computer to grab the files from the server. It will therefore ask you to provide your password again. The . at the end is the location the files will be downloaded to. It means *here, the current directory*, so if you're in the Downloads folder, this is where your html files will end up in.
