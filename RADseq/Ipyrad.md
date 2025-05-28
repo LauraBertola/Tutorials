@@ -1,12 +1,12 @@
-## Ipyrad command line assembly
+## ipyrad command line assembly
 
-This is the full tutorial for the command line interface (CLI) for Ipyrad. In this tutorial we'll walk through the entire assembly, from raw data to output files for downstream analysis. This is meant as a broad introduction to familiarize users with the general workflow, and some of the parameters and terminology. We will use and empirical dataset of paired-end cheetah ddRAD data as an example in this tutorial. Of course, you can replicate the steps described here with your own data, or any other RADseq dataset. 
+This is the full tutorial for the command line interface (CLI) for ipyrad. In this tutorial we'll walk through the entire assembly, from raw data to output files for downstream analysis. This is meant as a broad introduction to familiarize users with the general workflow, and some of the parameters and terminology. We will use and empirical dataset of paired-end cheetah ddRAD data as an example in this tutorial. Of course, you can replicate the steps described here with your own data, or any other RADseq dataset. 
 
-If you are new to RADseq analyses, this tutorial will provide a simple overview of how to execute Ipyrad, what the data files look like, how to check that your analysis is working, and what the final output formats will be. We will also cover how to run Ipyrad on a cluster and how to do so efficiently.
+If you are new to RADseq analyses, this tutorial will provide a simple overview of how to execute ipyrad, what the data files look like, how to check that your analysis is working, and what the final output formats will be. We will also cover how to run ipyrad on a cluster and how to do so efficiently.
 
 ## Overview of Assembly Steps
 
-Very roughly speaking, Ipyrad exists to transform raw data coming off the sequencing instrument into output files that you can use for downstream analysis. 
+Very roughly speaking, ipyrad exists to transform raw data coming off the sequencing instrument into output files that you can use for downstream analysis. 
 
 ![png](Images/ipyrad_workflow.png)
 
@@ -20,13 +20,18 @@ The basic steps of this process are as follows:
 * Step 6 - Cluster across samples
 * Step 7 - Apply filters and write output formats
 
-Detailed information about Ipyrad, including instructions for installation and troubleshooting, can be found [here](https://ipyrad.readthedocs.io/en/master/).
+Detailed information about ipyrad, including instructions for installation and troubleshooting, can be found [here](https://ipyrad.readthedocs.io/en/master/).
 
 >**Note:** Assembling RADseq type sequence data requires a lot of different steps, and these steps generate a **lot** of intermediary files. Ipyrad organizes these files into directories, and it prepends the name of your assembly to each directory with data that belongs to it. One result of this is that you can have multiple assemblies of the same raw data with different parameter settings and you don't have to manage all the files yourself! Another result is that **you should not rename or move any of the directories inside your project directory**, unless you know what you're doing or you don't mind if your assembly breaks. This is an important point when using pipelines, as file paths are usually included within the pipeline, and there are assumptions where the different files are.
 
-## Running Ipyrad
+## Running ipyrad
 
-To better understand how to use Ipyrad, let's take a look at the help argument. We will use some of the Ipyrad arguments in this tutorial (for example: -n, -p, -s, -c, -r). But, the complete list of optional arguments and their explanation is below.
+Ipyrad needs a different environment, which was created from the yaml file in my input_files folder (if you haven't done so yet, see instructions [here](admin.md)). Load that environment first:
+```
+conda activate ipyrad
+```
+
+To better understand how to use ipyrad, let's take a look at the help argument. We will use some of the ipyrad arguments in this tutorial (for example: -n, -p, -s, -c, -r). But, the complete list of optional arguments and their explanation is below.
 
 ```
 ipyrad -h
@@ -137,7 +142,7 @@ In general the defaults are sensible, and we won't mess with them for now, but t
 * The dataype
 * The restriction overhang sequence(s)
 
-Because we're looking at population-level data, we suggest to increase the clustering threshold `[14] [clust_threshold]`. You can also change `[27] [output_formats]`. When you put `*`, Ipyrad will automatically save your output in all available formats, see [the manual](https://ipyrad.readthedocs.io/en/master/output_formats.html#full-output-formats).
+Because we're looking at population-level data, we suggest to increase the clustering threshold `[14] [clust_threshold]`. You can also change `[27] [output_formats]`. When you put `*`, ipyrad will automatically save your output in all available formats, see [the manual](https://ipyrad.readthedocs.io/en/master/output_formats.html#full-output-formats).
 
 You can edit your params file with a text editor, for example `nano`. Type the following:
 ```
@@ -155,11 +160,11 @@ CATGC                           ## [8] [restriction_overhang]: Restriction overh
 
 You exit the text editor with `CTRL + X` (note it lists the most common commands at the bottom of the screen). It will then ask you if you want to save the changes, so you'll have to say `Y`.
 
-Once we start running the analysis Ipyrad will create several new directories to hold the output of each step for this assembly. By default the new directories are created in the `project_dir` directory and use the prefix specified by the `assembly_name` parameter. For this example assembly all the intermediate directories will be of the form: `/Tutorial_RADseq/cheetah_*`. 
+Once we start running the analysis ipyrad will create several new directories to hold the output of each step for this assembly. By default the new directories are created in the `project_dir` directory and use the prefix specified by the `assembly_name` parameter. For this example assembly all the intermediate directories will be of the form: `/Tutorial_RADseq/cheetah_*`. 
 
 **Step 1: Loading/Demultiplexing the raw data**
 
-Sometimes, you'll receive your data as a huge pile of reads, and you'll need to split it up and assign each read to the sample it came from. This is called demultiplexing and is done by unique barcodes which allow you to recognize individual samples. In that case, you'll have to provide a path to the raw non-demultiplexed fastq files `[2]` and the path to the barcode file `[3]` in your params file. In our case, the samples are already demultiplexed and we have 1 file per sample. The path to these files is indicated in `[4]` in the params file. Even though we do not need to demultiplex our data here, we still need to run this step to import the data into Ipyrad.
+Sometimes, you'll receive your data as a huge pile of reads, and you'll need to split it up and assign each read to the sample it came from. This is called demultiplexing and is done by unique barcodes which allow you to recognize individual samples. In that case, you'll have to provide a path to the raw non-demultiplexed fastq files `[2]` and the path to the barcode file `[3]` in your params file. In our case, the samples are already demultiplexed and we have 1 file per sample. The path to these files is indicated in `[4]` in the params file. Even though we do not need to demultiplex our data here, we still need to run this step to import the data into ipyrad.
 
 >**Note on step 1:** If we would have data which need demultiplexing, Step 1 will create a new folder, called `cheetah_fastqs`. Because our data are already demultiplexed, this folder will not be created.
 
@@ -187,13 +192,13 @@ We use the following flags:
 -c    run on 4 cores  
 
 For those who are interested in what goes on under the hood:  
-Any time Ipyrad is invoked it performs a few housekeeping operations:   
+Any time ipyrad is invoked it performs a few housekeeping operations:   
 1. Load the assembly object - Since this is our first time running any steps we need to initialize our assembly.  
-2. Start the parallel cluster - Ipyrad uses a parallelization library called ipyparallel. Every time we start a step we fire up the parallel clients. This makes your assemblies go **smokin'** fast.  
+2. Start the parallel cluster - ipyrad uses a parallelization library called ipyparallel. Every time we start a step we fire up the parallel clients. This makes your assemblies go **smokin'** fast.  
 3. Do the work - Actually perform the work of the requested step(s) (in this case demultiplexing reads to samples). 
 4. Save, clean up, and exit - Save the state of the assembly, and spin down the ipyparallel cluster.  
 
-As a convenience Ipyrad internally tracks the state of all your steps in your current assembly, so at any time you can ask for results by invoking the `-r` flag. We also use the `-p` argument to tell it which params file (i.e., which assembly) we want it to print stats for.
+As a convenience ipyrad internally tracks the state of all your steps in your current assembly, so at any time you can ask for results by invoking the `-r` flag. We also use the `-p` argument to tell it which params file (i.e., which assembly) we want it to print stats for.
 
 ```
 ipyrad -p params-cheetah.txt -r
@@ -242,7 +247,7 @@ step 6: None
 step 7: None
 ```
 
-If you want to get even **more** info, Ipyrad tracks all kinds of wacky stats and saves them to a file inside the directories it creates for each step. 
+If you want to get even **more** info, ipyrad tracks all kinds of wacky stats and saves them to a file inside the directories it creates for each step. 
 
 **Step 2: Filter reads**
 
@@ -958,9 +963,9 @@ sequence matrix size: (24, 1571595), 65.34% missing sites.
 ```
 
 > **Note:** Sometimes you want to rerun a step that you've run before, and overwrite the results you already obtained. You can
-do that by adding the `-f` flag, **forcing** Ipyrad to overwrite already existing files. Remember that if you don't want to overwrite existing data, you may want to use [branching](https://ipyrad.readthedocs.io/en/latest/8-branching.html).
+do that by adding the `-f` flag, **forcing** ipyrad to overwrite already existing files. Remember that if you don't want to overwrite existing data, you may want to use [branching](https://ipyrad.readthedocs.io/en/latest/8-branching.html).
 
-**Congratulations!** You've completed your first RAD-Seq assembly. Now you can try applying what you've learned to assemble your own real data. Please consult the [Ipyrad online documentation](http://ipyrad.readthedocs.io) for details about many of the more powerful features of Ipyrad, including reference sequence mapping, assembly branching, and the extensive `analysis` toolkit, which includes extensive downstream analysis tools for such things as clustering and population assignment, phylogenetic tree inference, quartet-based species tree inference, and much more.
+**Congratulations!** You've completed your first RAD-Seq assembly. Now you can try applying what you've learned to assemble your own real data. Please consult the [ipyrad online documentation](http://ipyrad.readthedocs.io) for details about many of the more powerful features of ipyrad, including reference sequence mapping, assembly branching, and the extensive `analysis` toolkit, which includes extensive downstream analysis tools for such things as clustering and population assignment, phylogenetic tree inference, quartet-based species tree inference, and much more.
 
 There is also an exercise which explains branching in more detail [here](Exercises.md).
 
