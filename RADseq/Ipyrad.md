@@ -112,7 +112,7 @@ cheetah                                      ## [0] [assembly_name]: Assembly na
                                              ## [4] [sorted_fastq_path]: Location of demultiplexed/sorted fastq files
 denovo                                       ## [5] [assembly_method]: Assembly method (denovo, reference)
                                              ## [6] [reference_sequence]: Location of reference sequence file
-rad                                          ## [7] [datatype]: Datatype (see docs): rad, gbs, ddrad, etc.
+ddrad                                          ## [7] [datatype]: Datatype (see docs): rad, gbs, ddrad, etc.
 TGCAG,                                       ## [8] [restriction_overhang]: Restriction overhang (cut1,) or (cut1, cut2)
 5                                            ## [9] [max_low_qual_bases]: Max low quality base calls (Q<20) in a read
 33                                           ## [10] [phred_Qscore_offset]: phred Q score offset (33 is default and very standard)
@@ -153,6 +153,7 @@ Now you can move around with the arrow keys and adjust the content of the file. 
 
 ```
 ./input_files/*.fastq.gz        ## [4] [sorted_fastq_path]: Location of demultiplexed/sorted fastq files
+ddrad                           ## [7] [datatype]: Datatype (see docs): rad, gbs, ddrad, etc.
 CATGC                           ## [8] [restriction_overhang]: Restriction overhang (cut1,) or (cut1, cut2)
 0.9                             ## [14] [clust_threshold]: Clustering threshold for de novo assembly
 *                               ## [27] [output_formats]: Output formats (see docs)
