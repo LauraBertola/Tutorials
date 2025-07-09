@@ -114,6 +114,8 @@ Note that in the last step we filter on depth across **all** samples (`INFO/DP`)
 
 One more filtering step that may be relevant when working on your own data, is that you may want to remove sex chromosomes. They behave differently from autosomes, and can therefore create some noise in downstream analyses. Whether you have sex chromosomes in your data depends on the reference you have used, and if they are properly assigned in the reference. We won't go into detail about this now, but you can remove specific chromosomes by using the `--not-chr` flag in `vcftools`.
 
+Other filters which you'll encounter often are filters for including only SNPs which were successfully called in a specific % of the samples, e.g. --max-missing 0.5, and SNPs which follow expectations under the Hardy-Weinberg equilibrium (HWE), e.g. --hwe 0.001. The latter is a bit tricky;  often you'd like to remove sites with excess heterozygosity or homozygosity that suggests something weird (like mapping to repetitive regions, paralogs, or misalignments). However, in some cases, for example when you look for SNPs under selection, you'd expect them to deviate from Hardy-Weinberg and filtering those SNPs out may not be a good idea.
+
 ## Data exploration
 
 Now, we have our final dataset, and we can look at a few more things in detail. Some command expect the file to be indexed (again), so we'll do that first:
@@ -226,6 +228,14 @@ This creates the following files, which are needed for a lot of downstream analy
 | `plink_file.bim`       | Variant information file (text)                | One SNP per line: chromosome, SNP ID, genetic distance, physical position, allele 1, allele 2 |
 | `plink_file.fam`       | Sample information file (text)                 | One individual per line: family ID, individual ID, paternal/maternal ID, sex, phenotype |
 | `plink_file.nosex`     | Optional sample IDs file without sex info     | List of sample IDs when sex info is missing or irrelevant           |
+
+There is one more filter you may often encounter and which is typically applied at this stage, and that is a filter for sites in linkage disequilibrium (LD). However, note that some analyses, such as ROH, benefit from this information and you may want to keep it. For overall population structure it may be better to prune your data, so you infer structure only based on unlinked SNPs. You can run:
+
+```
+plink --bfile plink_missing075_file --indep-pairwise 50 10 0.2 --out plink_missing075_file_LDprune
+```
+
+This indicates that we look at windows of size 50 SNPs, sliding the window forward by 10 SNPs at the time, and removing one SNP if the correlation is >0.2 (i.e. 20% of the variance at one SNP explains the other). We won't go further into this now, but it is something you may encounter in some studies.
 
 Now we run the PCA:
 ```
