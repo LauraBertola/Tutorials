@@ -103,11 +103,11 @@ Note that in the last step we filter on depth across **all** samples (`INFO/DP`)
 
 ```
 /softwares/bcftools1.12/bcftools +setGT variants_snps_qual30_maf05_gq30_alldp18-60.vcf \
--Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3masked.vcf -- -t q -n "." -e 'FORMAT/DP < 3' 
+-Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3masked.vcf -- -t q -n "." -i 'FORMAT/DP < 3' 
 ```
 ```
 /softwares/bcftools1.12/bcftools +setGT variants_snps_qual30_maf05_gq30_alldp18-60_psdp3masked.vcf \
--Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf -- -t q -n "." -e 'FORMAT/DP > 10'
+-Ov -o variants_snps_qual30_maf05_gq30_alldp18-60_psdp3-10masked.vcf -- -t q -n "." -i 'FORMAT/DP > 10'
 ```
 
 >**Note:** these last step will not remove SNPs, so if you'd do `wc -l` there should be no change. They just mask those positions for which we feel we don't have reliable information.
