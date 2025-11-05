@@ -68,7 +68,7 @@ Variants which are indels (lots of downstream analyses don't like these, error-p
 Variants which are multi-allelic (lots of downstream analyses don't like these, error-prone):  
 ![variants](Images/multiallelic_variants.png)
 
-Variants which are variable within your samples (imaginge what happens if you use a reference genome of another species):  
+Variants which are variable within your samples (imagine what happens if you use a reference genome of another species):  
 ![variants](Images/ingroup_variants.png)
 
 We will now use some very common filters, and we'll count the number of line to monitor how many SNPs were retained. 
