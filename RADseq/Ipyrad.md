@@ -153,7 +153,7 @@ Now you can move around with the arrow keys and adjust the content of the file. 
 
 ```
 ./input_files/*.fastq.gz        ## [4] [sorted_fastq_path]: Location of demultiplexed/sorted fastq files
-rad                           ## [7] [datatype]: Datatype (see docs): rad, gbs, ddrad, etc.
+rad                             ## [7] [datatype]: Datatype (see docs): rad, gbs, ddrad, etc.
 CATGC                           ## [8] [restriction_overhang]: Restriction overhang (cut1,) or (cut1, cut2)
 0.9                             ## [14] [clust_threshold]: Clustering threshold for de novo assembly
 *                               ## [27] [output_formats]: Output formats (see docs)
