@@ -106,7 +106,7 @@ conda deactivate
 
 ## Trimming
 
-There are multiple softwares to trim your data, e.g. [Trimmomatic](http://www.usadellab.org/cms/index.php?page=trimmomatic), [cutadapt](https://cutadapt.readthedocs.io/en/stable/) and [TrimGalore!](https://github.com/FelixKrueger/TrimGalore) (which wraps around cutadapt and FastQC). We'll use Trimmomatic here.
+There are multiple softwares to trim your data, e.g. [Trimmomatic](http://www.usadellab.org/cms/index.php?page=trimmomatic), [cutadapt](https://cutadapt.readthedocs.io/en/stable/) and [TrimGalore!](https://github.com/FelixKrueger/TrimGalore) (which wraps around cutadapt and FastQC). We'll use TrimGalore! here.
 
 Run the following command:
 ```
