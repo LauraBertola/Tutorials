@@ -1,17 +1,17 @@
 ## Raw data
 
-We'll provide raw :tiger: data for three samples to illustrate the steps of quality control, trimming and mapping. I've put the data that we'll be using here: /home/uramakri/laurabertola/Tutorial_WGS_HD/input_files
-You don't have to copy the data (with large datasets, we'll run out of disk space real fast!), but it is also inconvenient if you have to navigate my folder all the time. You can create a symbolic link (or soft link) in your own directory, which will serve as a connection to my folder.
+We'll provide raw :lion: data for ten samples to illustrate the steps of quality control, trimming and mapping. I've put the data that we'll be using here: /home/uramakri/laurabertola/Tutorial_WGS_HD/input_files
+You don't have to copy the data (with large datasets, we'll run out of disk space real fast!), but it is also inconvenient if you have to navigate to my folder all the time. You can create a symbolic link (or soft link) in your own directory, which will serve as a connection to my folder.
 
 First make a folder in your directory for this Tutorial, using `mkdir`, check if it is there with `ls`, and then go to you're newly created folder, using `cd`.
 ```
-mkdir Tutorial_WGS_HD
+mkdir Tutorial_WGS_LD
 ```
 ```
 ls
 ```
 ```
-cd Tutorial_WGS_HD
+cd Tutorial_WGS_LD
 ```
 
 Now create the symbolic link to my folder by doing the following:
@@ -35,7 +35,7 @@ Now to the actual data. Each sequenced read is spread over four lines, one of wh
 It'll look something like this:
 ![fastq.gz](Images/fastq.gz.png)
 
-The first is the name of the read, with information about its location on the plate, or in this case the identified from NCBI, where the data were downloaded from. The second line contains the sequence data. The third line is unused (identified with +). And the fourth line is the quality scores for the base calls. The [FASTQ wikipedia page](https://en.wikipedia.org/wiki/FASTQ_format) has a good figure depicting the logic behind how quality scores are encoded.
+The first is the name of the read, with information about its location on the plate, or in this case the identifier from NCBI, where the data were downloaded from. The second line contains the sequence data. The third line is unused (identified with +). And the fourth line is the quality scores for the base calls. The [FASTQ wikipedia page](https://en.wikipedia.org/wiki/FASTQ_format) has a good figure depicting the logic behind how quality scores are encoded.
 
 ## FastQC for quality control
 
