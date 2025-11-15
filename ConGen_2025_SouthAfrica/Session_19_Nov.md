@@ -3,7 +3,7 @@ Here, we will familiarize ourselves with genomic data, typically arriving in the
 This section will use data from lions from [Bertola et al. (2022)](https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-022-08510-y). And below is a young lion I met on my last trip to Kruger, as few years ago.
 
 :camera: Lion in Kruger NP, South Africa
-![lion2](./Images/.jpg)
+![lion2](./Images/DSC_9287.JPG)
 ©Laura Bertola
 
 ## Raw data
@@ -15,10 +15,10 @@ cd Lions
 
 Imagine you're doing a project on lions and would like to include some previously published data in your analyses. For example, because it allows you to compare your population to other populations elsewhere in Africa. You may want to check [NCBI](https://www.ncbi.nlm.nih.gov/) or [ENA](https://www.ebi.ac.uk/ena/browser/home) if they have anything interesting online.
 
-Let's go to the ENA Browser, using the link above, and fill out 'Panthera leo' in the search box.
+Let's go to the ENA Browser, using the link above, and fill out "Panthera leo" in the search box.
 ![ENA_browser](./Images/ENA_browser.png)
 
-You'll get a lot of information, about available assemblies, sequences, projects etc. For this exercise, we will look at some specific lion genomes, so first click on 'Study' in the left column, then navigate to the second page, and find this:
+You'll get a lot of information, about available assemblies, sequences, projects etc. For this exercise, we will look at some specific lion genomes, so first click on `Study` in the left column, then navigate to the second page, and find this:
 ![project](./Images/project.png)
 
 Once you click on it, you'll see all sequencing runs from this project.
@@ -29,7 +29,7 @@ SAMN13674556 (Zambia)
 SAMN13674549 (Benin)
 SAMN13674549 (DRC)
 
-You'll see that for each samples there are two files ending with _1.fastq.gz and _2.fastq.gz. Most of the time, you'll be working with paired-end data, meaning that each sample has two files. These are usually identified by _R1 and _R2, or, like in this case, _1 and _2. Those two files contain the forward and reverse reads, respectively. We want to download these 6 files, but you'd like to get them onto the server directly, not download them to your computer first. There is an easy way to do that: check the boxes for each file you'd like to download, then click on 'Get download script' at the top. It should show you the following:
+You'll see that for each samples there are two files ending with _1.fastq.gz and _2.fastq.gz. Most of the time, you'll be working with paired-end data, meaning that each sample has two files. These are usually identified by _R1 and _R2, or, like in this case, _1 and _2. Those two files contain the forward and reverse reads, respectively. We want to download these 6 files, but you'd like to get them onto the server directly, not download them to your computer first. There is an easy way to do that: check the boxes for each file you'd like to download, then click on `Get download script` at the top. It should show you the following:
 
 ```
 wget -nc ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR107/007/SRR10764407/SRR10764407_1.fastq.gz
@@ -42,7 +42,7 @@ wget -nc ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR107/006/SRR10764406/SRR10764406_2
 
 Copy-paste this into your terminal. If the download takes a while, we can watch this short video about Illumina sequencing: [video](https://www.youtube.com/watch?v=fCd6B5HRaZ8).
 
->**Note:** If you want to download from NCBI directly, it's better to use 'sra-tools'. Here, we bypass this and use wget directly on the ENA url.
+>**Note:** If you want to download from NCBI directly, it's better to use `sra-tools`. Here, we bypass this and use wget directly on the ENA url.
 
 OK, now, the raw data are there, and we can take a look at one of the files.
 
@@ -63,6 +63,7 @@ If you'd like to see the messy format, with long lines wrapping, try using `head
 If you're really brave, try just using zcat, without `less` and see what happens. Press `CTRL+C` to escape the madness.
 
 >**Note:** `CTRL+C` is a very useful thing to know. This will allow you to interrupt whatever is running. Just remember, because it interrupts the process, it will probably create a problem with your output files because they are then truncated or otherwise corrupted.
+
 
 ## FastQC for quality control
 
