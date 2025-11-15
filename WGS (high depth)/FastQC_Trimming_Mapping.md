@@ -35,7 +35,7 @@ Now to the actual data. Each sequenced read is spread over four lines, one of wh
 It'll look something like this:
 ![fastq.gz](Images/fastq.gz.png)
 
-The first is the name of the read, with information about its location on the plate, or in this case the identified from NCBI, where the data were downloaded from. The second line contains the sequence data. The third line is unused (identified with +). And the fourth line is the quality scores for the base calls. The [FASTQ wikipedia page](https://en.wikipedia.org/wiki/FASTQ_format) has a good figure depicting the logic behind how quality scores are encoded.
+The first is the name of the read, with information about its location on the plate, or in this case the identifier from NCBI, where the data were downloaded from. The second line contains the sequence data. The third line is unused (identified with +). And the fourth line is the quality scores for the base calls. The [FASTQ wikipedia page](https://en.wikipedia.org/wiki/FASTQ_format) has a good figure depicting the logic behind how quality scores are encoded.
 
 ## FastQC for quality control
 
