@@ -3,9 +3,9 @@ This part will deal with processing of whole genome sequencing data (WGS) of low
 
 This section will use data from lions from [Bertola et al. (2022)](https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-022-08510-y). 
 
-You can find the steps for quality control, trimming and mapping [here]().
-Steps for variant calling and filtering are [here]().
-Note that there are exercises with additional information [here]().
+You can find the steps for quality control, trimming and mapping [here]().  
+Steps for variant calling and filtering are [here]().  
+Note that there are exercises with additional information [here]().  
 
 :camera: Lion in Okavango Delta, Botswana
 ![lion2](./Images/174_Okavango.jpg)
