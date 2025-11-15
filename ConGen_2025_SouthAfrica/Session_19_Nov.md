@@ -3,9 +3,7 @@ Here, we will familiarize ourselves with genomic data, typically arriving in the
 This section will use data from lions from [Bertola et al. (2022)](https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-022-08510-y). And below is a young lion I met on my last trip to Kruger, as few years ago.
 
 :camera: Lion in Kruger NP, South Africa
-<p align="center">
-  <img src="./Images/DSC_9287.JPG" alt="lion2" width="50%">
-</p>
+<img src="./Images/DSC_9287.JPG" alt="lion2" width="50%">
 ©Laura Bertola
 
 ## Raw data
