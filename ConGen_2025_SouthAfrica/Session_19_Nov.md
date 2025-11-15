@@ -3,7 +3,9 @@ Here, we will familiarize ourselves with genomic data, typically arriving in the
 This section will use data from lions from [Bertola et al. (2022)](https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-022-08510-y). And below is a young lion I met on my last trip to Kruger, as few years ago.
 
 :camera: Lion in Kruger NP, South Africa
-![lion2](./Images/DSC_9287.JPG)
+<p align="center">
+  <img src="./Images/DSC_9287.JPG" alt="lion2" width="50%">
+</p>
 ©Laura Bertola
 
 ## Raw data
@@ -57,7 +59,18 @@ Each sequenced read is spread over four lines, one of which contains sequence an
 It'll look something like this:
 ![fastq.gz](Images/fastq.gz.png)
 
-The first is the name of the read, with information about its location on the plate, or in this case the identifier from NCBI, where the data were downloaded from. The second line contains the sequence data. The third line is unused (identified with +). And the fourth line is the quality scores for the base calls. The [FASTQ wikipedia page](https://en.wikipedia.org/wiki/FASTQ_format) has a good figure depicting the logic behind how quality scores are encoded.
+The first is the name of the read, with information about its location on the plate, or in this case the identifier from NCBI, where the data were downloaded from (see more details in the table below). The second line contains the sequence data. The third line is unused (identified with +). And the fourth line is the quality scores for the base calls. The [FASTQ wikipedia page](https://en.wikipedia.org/wiki/FASTQ_format) has a good figure depicting the logic behind how quality scores are encoded.
+
+| Component          | Meaning                                      |
+|--------------------|----------------------------------------------|
+| SRR10764405.5      | SRA run ID + internal read index             |
+| D7MHBFN1           | Illumina sequencing instrument ID            |
+| 228                | Run number on that instrument                |
+| C1V86ACXX          | Flowcell ID                                  |
+| 8                  | Lane number                                  |
+| 1101               | Tile number within the lane                  |
+| 3230:1996          | X:Y coordinates of the cluster on the tile   |
+| /1                 | Read 1 of a paired-end sequencing run        |
 
 If you'd like to see the messy format, with long lines wrapping, try using `head -n 20` instead of the `less` command. `head` shows the first part of the file, and `-n 20` tells it to show the first 20 lines. 
 If you're really brave, try just using zcat, without `less` and see what happens. Press `CTRL+C` to escape the madness.
