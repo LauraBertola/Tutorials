@@ -19,7 +19,7 @@ Let's go to the ENA Browser, using the link above, and fill out "Panthera leo" i
 
 ![ENA_browser](./Images/ENA_browser.png)
 
-You'll get a lot of information, about available assemblies, sequences, projects etc. For this exercise, we will look at some specific lion genomes, so first click on `Study` in the left column, then navigate to the second page, and find this:
+You'll get a lot of information, about available assemblies, sequences, projects etc. For this exercise, we will look at some specific lion genomes, so first click on "Study" in the left column, then navigate to the second page, and find this:
 
 ![project](./Images/project.png)
 
@@ -27,10 +27,10 @@ Once you click on it, you'll see all sequencing runs from this project.
 
 ![samples](./Images/samples.png)
 
-Because it will take too much time to download and analyze all, we will focus on the following three:
-SAMN13674556 (Zambia)
-SAMN13674549 (Benin)
-SAMN13674549 (DRC)
+Because it will take too much time to download and analyze all, we will focus on the following three:  
+SAMN13674556 (Zambia)  
+SAMN13674549 (Benin)  
+SAMN13674549 (DRC)  
 
 You'll see that for each samples there are two files ending with _1.fastq.gz and _2.fastq.gz. Most of the time, you'll be working with paired-end data, meaning that each sample has two files. These are usually identified by _R1 and _R2, or, like in this case, _1 and _2. Those two files contain the forward and reverse reads, respectively. We want to download these 6 files, but you'd like to get them onto the server directly, not download them to your computer first. There is an easy way to do that: check the boxes for each file you'd like to download, then click on `Get download script` at the top. It should show you the following:
 
