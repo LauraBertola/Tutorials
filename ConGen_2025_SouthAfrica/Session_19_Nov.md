@@ -1,4 +1,4 @@
-# Genomic data, the fastq format and basic quality control
+<img width="507" height="242" alt="image" src="https://github.com/user-attachments/assets/e60277d0-fb7e-4a28-b842-a2b8f4c75ae4" /># Genomic data, the fastq format and basic quality control
 Here, we will familiarize ourselves with genomic data, typically arriving in the `fastq` format. We will run some analysis which allow us to get an idea of the quality of the data and to see if we need to do any pre-processing before moving on to the next step, like mapping the data to a reference genome.
 This section will use data from lions from [Bertola et al. (2022)](https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-022-08510-y). And below is a young lion I met on my last trip to Kruger, a few years ago.
 
@@ -27,20 +27,17 @@ Once you click on it, you'll see all sequencing runs from this project.
 
 ![samples](./Images/samples.png)
 
-Because it will take too much time to download and analyze all, we will focus on the following three:  
+Because it will take too much time to download and analyze all, we will focus on the following two:  
 SAMN13674556 (Zambia)  
 SAMN13674549 (Benin)  
-SAMN13674549 (DRC)  
 
 You'll see that for each samples there are two files ending with _1.fastq.gz and _2.fastq.gz. Most of the time, you'll be working with paired-end data, meaning that each sample has two files. These are usually identified by _R1 and _R2, or, like in this case, _1 and _2. Those two files contain the forward and reverse reads, respectively. We want to download these 6 files, but you'd like to get them onto the server directly, not download them to your computer first. There is an easy way to do that: check the boxes for each file you'd like to download, then click on "Get download script" at the top. It should show you the following:
 
 ```
-wget -nc ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR107/007/SRR10764407/SRR10764407_1.fastq.gz
-wget -nc ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR107/014/SRR10764414/SRR10764414_1.fastq.gz
 wget -nc ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR107/006/SRR10764406/SRR10764406_1.fastq.gz
-wget -nc ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR107/007/SRR10764407/SRR10764407_2.fastq.gz
-wget -nc ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR107/014/SRR10764414/SRR10764414_2.fastq.gz
 wget -nc ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR107/006/SRR10764406/SRR10764406_2.fastq.gz
+wget -nc ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR107/014/SRR10764414/SRR10764414_1.fastq.gz
+wget -nc ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR107/014/SRR10764414/SRR10764414_2.fastq.gz
 ```
 
 Copy-paste this into your terminal. If the download takes a while, we can watch this short video about Illumina sequencing in the meantime: [video](https://www.youtube.com/watch?v=fCd6B5HRaZ8)
@@ -51,7 +48,7 @@ Now, the raw data are there and we can take a look at one of the files.
 
 Type the following command:
 ```
-zcat SRR10764407_1.fastq.gz | less -S
+zcat SRR10764406_1.fastq.gz | less -S
 ```
 
 The `zcat` command is used to unzip the file (note it ends with .gz), and `less` allows you to view it. Here we add `-S` to chop off long lines. Otherwise it wraps around and becomes messy. Try scrolling right and down, using the arrow keys. To quit `less` type q. 
@@ -65,13 +62,13 @@ The first is the name of the read, with information about its location on the pl
 
 | Component          | Meaning                                      |
 |--------------------|----------------------------------------------|
-| SRR10764406.66      | SRA run ID + internal read index             |
+| SRR10764406.701      | SRA run ID + internal read index             |
 | D7MHBFN1           | Illumina sequencing instrument ID            |
 | 228                | Run number on that instrument                |
 | C1V86ACXX          | Flowcell ID                                  |
 | 8                  | Lane number                                  |
 | 1101               | Tile number within the lane                  |
-| 2126:2056          | X:Y coordinates of the cluster on the tile   |
+| 6387:2398          | X:Y coordinates of the cluster on the tile   |
 | /1                 | Read 1 of a paired-end sequencing run        |
 
 If you'd like to see the messy format, with long lines wrapping, try using `head -n 20` instead of the `less` command. `head` shows the first part of the file, and `-n 20` tells it to show the first 20 lines. 
@@ -86,7 +83,7 @@ The first step is to inspect your raw data to estimate overall quality. Scrollin
 
 Let's start the run now. Make sure that you're in the folder with the fastq.gz files, then run the `fastqc` command.
 ```
-/softwares/FastQC/fastqc *
+fastqc *
 ```
 
 On the screen, you'll see the progress of your FastQC run. 
@@ -105,27 +102,26 @@ In contrast, here is a somewhat typical base sequence quality report for R1 of a
 This figure depicts a common artifact of current Illumina chemistry, whereby quality scores per base drop off precipitously toward the ends of reads, with the effect being magnified for read lengths >150bp. The purpose of using FastQC to examine reads is to determine whether and how much to trim our reads to reduce sequencing error interfering with basecalling. In the above figure, as in most real dataset, we can see there is a tradeoff between throwing out data to increase overall quality by trimming for shorter length, and retaining data to increase value obtained from sequencing with the result of increasing noise toward the ends of reads.
 
 When everything is done, see what files were created with `ls`. 
-You'll see that for each input file, FastQC created an .html and a .zip file. You want to look into the html file, which contains all the information you need for now. If you're using Mobaxterm, you can download the .html files from the panel on the left side on the screen. Or simply open it by right clicking and selecting "Open with...", and then open it in Chrome or another browser. If you're on Linux/Mac, you have to download the file. Open a new terminal window and navigate to where you want to download it to, e.g. your Downloads folder. Then use the following command:
-```
-scp user@cluster:~/output_files/*.html .
-```
+You'll see that for each input file, FastQC created an .html and a .zip file. You want to look into the html file, which contains all the information you need for now. 
 
-You're now telling your computer to grab the files from the server. It will therefore ask you to provide your password again. The . at the end is the location the files will be downloaded to. It means *here, the current directory*, so if you're in the Downloads folder, this is where your html files will end up in.
+In this system, you can download (and upload!) files from the pane in the lower right hand corner with all folders and files. 
 
-Open one of the html file in your browser. You'll see plots like the one above. On the left side there is a summary of the results, highlighting those sections which require your attention. Is there anything in our data we should be concerned about?
+![files_pane](Images/files_pane.png)
+
+Navigate to your folder with the FastQC output and select the files you'd like to download to your computer, select the files, then "More" and "Export". For now, we'll only look at the the two files with the forward reads. After downloading, open them in your browser. You'll see plots like the one above. On the left side there is a summary of the results, highlighting those sections which require your attention. Is there anything in our data we should be concerned about?
 
 ![fastqc_summary](Images/fastqc-summary.png)
 
-Often, you'll have a large number of samples, and you don't want to waste time looking at tons of individual html files. [MultiQC](https://docs.seqera.io/multiqc) can help you summarize the results of multiple fastqc files. Unfortunately, MultiQC needs another python version than the one which is installed system-wide. We need to first activate an environment which allows MultiQC to run properly. Run the following lines:
+Often, you'll have a large number of samples, and you don't want to waste time looking at tons of individual html files. [MultiQC](https://docs.seqera.io/multiqc) can help you summarize the results of multiple fastqc files. Unfortunately, MultiQC needs another python version than the one which is installed system wide. We need to first activate an environment which allows MultiQC to run properly. Run the following lines:
 
 ```
-conda activate multiqc
+conda activate
 multiqc .
 ```
 
 ![multiqc](Images/multiqc.png)
 
-Look at the html file (download it to your computer, just like you did with the FastQC html files). It shows the results of all FastQC results in the same report. Note that the sample name appears when you hover with your cursor over a plot, so it is easy to identify which samples look strange and may require some more attention. 
+Look at the html file (download it to your computer, just like you did with the previous html files). It shows the results of all FastQC results in the same report. Note that the sample name appears when you hover with your cursor over a plot, so it is easy to identify which samples look strange and may require some more attention. 
 
 ![multiqc_result](Images/multiqc_result.png)
 
