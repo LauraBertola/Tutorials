@@ -90,7 +90,7 @@ Let's start the run now. Make sure that you're in the folder with the fastq.gz f
 ```
 
 On the screen, you'll see the progress of your FastQC run. 
-![fastqc_progress](Images/fastqc_progress.png)
+<img src="./Images/fastqc_progress.png" alt="fastq_progress" width="70%"> 
 
 >**Note:** we use *, which is a wildcard. It means *any file in your directory*. You can use wildcards also more specifically, for example `*.fastq.gz`, which means all fastq.gz files. Or `*_1*`, which is all files with _1 anywhere in their name, which comes in handy if you only want to process forward reads, for example.
 
