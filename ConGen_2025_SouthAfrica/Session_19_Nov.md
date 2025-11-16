@@ -135,5 +135,5 @@ conda deactivate
 ```
 
 :camera: White lion "Caspar" with two of his brothers, hunting buffalo in Kruger NP, South Africa
-<img src="./Images/DSC_9837_ConGen.jpg" alt="lion2" width="100%">  
+<img src="./Images/DSC_9837_ConGen.jpg" alt="lion2" width="80%">  
 ©Laura Bertola
