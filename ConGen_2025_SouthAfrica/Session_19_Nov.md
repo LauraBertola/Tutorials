@@ -1,5 +1,5 @@
 # Genomic data, the fastq format and basic quality control
-Here, we will familiarize ourselves with genomic data, typically arriving in the 'fastq' format. We will run some analysis which allow us to get an idea of the quality of the data and if we need to do any pre-processing before moving on to the next step, like mapping the data to a reference genome.
+Here, we will familiarize ourselves with genomic data, typically arriving in the 'fastq' format. We will run some analysis which allow us to get an idea of the quality of the data and to see if we need to do any pre-processing before moving on to the next step, like mapping the data to a reference genome.
 This section will use data from lions from [Bertola et al. (2022)](https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-022-08510-y). And below is a young lion I met on my last trip to Kruger, as few years ago.
 
 :camera: Lion in Kruger NP, South Africa
@@ -133,3 +133,7 @@ After we're done, deactivate the environment:
 ```
 conda deactivate
 ```
+
+:camera: White lion "Caspar" with two of his brothers, hunting buffalo in Kruger NP, South Africa
+<img src="./Images/DSC_9837_ConGen.jpg" alt="lion2" width="50%">
+©Laura Bertola
