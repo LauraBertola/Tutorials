@@ -16,12 +16,15 @@ cd Lions
 Imagine you're doing a project on lions and would like to include some previously published data in your analyses. For example, because it allows you to compare your population to other populations elsewhere in Africa. You may want to check [NCBI](https://www.ncbi.nlm.nih.gov/) or [ENA](https://www.ebi.ac.uk/ena/browser/home) if they have anything interesting online.
 
 Let's go to the ENA Browser, using the link above, and fill out "Panthera leo" in the search box.
+
 ![ENA_browser](./Images/ENA_browser.png)
 
 You'll get a lot of information, about available assemblies, sequences, projects etc. For this exercise, we will look at some specific lion genomes, so first click on `Study` in the left column, then navigate to the second page, and find this:
+
 ![project](./Images/project.png)
 
 Once you click on it, you'll see all sequencing runs from this project.
+
 ![samples](./Images/samples.png)
 
 Because it will take too much time to download and analyze all, we will focus on the following three:
