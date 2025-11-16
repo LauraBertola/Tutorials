@@ -3,7 +3,7 @@ This part will deal with processing of whole genome sequencing data (WGS) of low
 
 This section will use data from lions from [Bertola et al. (2022)](https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-022-08510-y). 
 
-You can find the steps for quality control, trimming and mapping [here](FastQC_Trimming_Mapping.md).  
+You can find the steps for downloading, quality control, trimming and mapping [here](FastQC_Trimming_Mapping.md).  
 Genotype-likelihood computation and probabilistic SNP filtering [here](Genotype_Likelihoods_Filtering.md).  
 Note that there are exercises with additional information [here](Exercises.md).  
 
