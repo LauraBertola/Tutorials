@@ -1,4 +1,4 @@
-<img width="507" height="242" alt="image" src="https://github.com/user-attachments/assets/e60277d0-fb7e-4a28-b842-a2b8f4c75ae4" /># Genomic data, the fastq format and basic quality control
+# Genomic data, the fastq format and basic quality control
 Here, we will familiarize ourselves with genomic data, typically arriving in the `fastq` format. We will run some analysis which allow us to get an idea of the quality of the data and to see if we need to do any pre-processing before moving on to the next step, like mapping the data to a reference genome.
 This section will use data from lions from [Bertola et al. (2022)](https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-022-08510-y). And below is a young lion I met on my last trip to Kruger, a few years ago.
 
