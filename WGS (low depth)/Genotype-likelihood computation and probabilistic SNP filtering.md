@@ -33,34 +33,34 @@ Let's go through the various parts of the ANGSD command one by one.
 First you tell it what BAM files to use, by referring to the list you made. You also tell it which reference to use.
 
 ### **Basic read filters**
-- **`-uniqueOnly 1`** — keep only uniquely mapping reads (no multimapping). Good for avoiding false SNPs, especially in genomes with repeats.  
-- **`-remove_bads 1`** — remove unmapped reads, secondary/supplementary alignments, QC-failed reads.  
-- **`-only_proper_pairs 1`** — keep only reads for which both forward and reverse are correctly mapped.  
-- **`-C 50`** — adjusts reads for excessive mismatches near indels, prevents false SNP calls due to alignment artifacts.  
-- **`-baq 2`** — BAQ (Base Alignment Quality) recalibration, reduces false positives near indels.
+- `-uniqueOnly 1` — keep only uniquely mapping reads (no multimapping). Good for avoiding false SNPs, especially in genomes with repeats.  
+- `-remove_bads 1` — remove unmapped reads, secondary/supplementary alignments, QC-failed reads.  
+- `-only_proper_pairs 1` — keep only reads for which both forward and reverse are correctly mapped.  
+- `-C 50` — adjusts reads for excessive mismatches near indels, prevents false SNP calls due to alignment artifacts.  
+- `-baq 2` — BAQ (Base Alignment Quality) recalibration, reduces false positives near indels.
 
 ### **Quality filters**
-- **`-minMapQ 30`** — minimum mapping quality, which makes sure that the mapped reads are confidently placed.  
-- **`-minQ 20`** — minimum base quality, ensures only reliable bases contribute to likelihoods.
+- `-minMapQ 30` — minimum mapping quality, which makes sure that the mapped reads are confidently placed.  
+- `-minQ 20` — minimum base quality, ensures only reliable bases contribute to likelihoods.
 
 ### **Genotype likelihood model**
-Further parameters include **`-GL 1`**, which refers to the SAMtools genotype likelihood model, suitable for low/medium coverage samples with not overly damaged DNA.
+Further parameters include `-GL 1`, which refers to the SAMtools genotype likelihood model, suitable for low/medium coverage samples with not overly damaged DNA.
 
 ### **Allele discovery**
-- **`-doMajorMinor 1`** — automatically infer major and minor alleles from data.  
-- **`-doMaf 1`** — calculate minor allele frequency.  
-- **`-SNP_pval 1e-4`** — site is considered polymorphic if likelihood of being invariant < 10⁻⁴. A lower value corresponds to more conservative SNP calling.
+- `-doMajorMinor 1` — automatically infer major and minor alleles from data.  
+- `-doMaf 1` — calculate minor allele frequency.  
+- `-SNP_pval 1e-4` — site is considered polymorphic if likelihood of being invariant < 10⁻⁴. A lower value corresponds to more conservative SNP calling.
 
 ### **Missing data threshold**
-Then comes an important parameter, which determines how much missing values you'll have in your output file.  
+Then comes an important parameter, `-minInd 5` which determines how much missing values you'll have in your output file.  
 Here, we allow for **50% missingness**, by asking to only include sites for which **at least 5 (out of 10) individuals** have data. This is something you might want to adjust to explore how missing data will affect downstream analyses, like PCA.
 
 ### **Other important parameters**
-- **`-nThreads`** — the number of threads used for the analysis.  
-- **`-doGlf 2`** — write genotype likelihoods in gzipped Beagle format.  
-- **`-out`** — determines the prefix for the output files.
+- `-nThreads` — the number of threads used for the analysis.  
+- `-doGlf 2` — write genotype likelihoods in gzipped Beagle format.  
+- `-out` — determines the prefix for the output files.
 
-There are tons of other options in ANGSD which may come in handy. For example, you can tell ANGSD to use only information from certain scaffolds in the reference genome. You may not want to include all the unplaced scaffolds and only include autosomes (i.e. excluding sex chromosomes). You can make a list with scaffold names (as they are named in the reference genome) and feed this to ANGSD using -rf.
+There are tons of other options in ANGSD which may come in handy. For example, you can tell ANGSD to use only information from certain scaffolds in the reference genome. You may not want to include all the unplaced scaffolds and only include autosomes (i.e. excluding sex chromosomes). You can make a list with scaffold names (as they are named in the reference genome) and feed this to ANGSD using `-rf`.
 
 
 
