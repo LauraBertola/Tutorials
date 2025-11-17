@@ -2,7 +2,7 @@
 
 Now we have all the genomes mapped, with reads sorted and deduplicated, and all .bam files indexed. We can now proceed to infer the genotype likelihoods. As we said, because these are low depth samples (~3X), we cannot call hard genotypes with certainty. Imagine you have a position with 2X or 3X coverage, how certain would you be this truly is homozogous if you only find 1 allele? So instead we'll use genotype likelihoods as implemented in [ANGSD](https://www.popgen.dk/angsd/index.php/ANGSD). 
 
-We want to give the command a list with all the bam files we'd like to include for ANGSD. Note that this also easily allows you to exclude a sample in case it has much lower quality than the rest. Run the following:
+We want to give ANGSD a list with all the bam files we'd like to include for ANGSD. Note that this also easily allows you to exclude a sample in case it has much lower quality than the rest. Run the following:
 ```
 find . -name "*deduplicated*.bam" > all_bams.list
 ```
@@ -11,23 +11,47 @@ You should now have a txt file which is called all_bams.list in your directory. 
 
 Now we can proceed to actually running ANGSD:
 ```
-/softwares/angsd/angsd -bam all_bams.list -ref /Reference/Panthera_leo_krugeri_HiC.fasta -out all_minind5 \
-  -uniqueOnly 1 -remove_bads 1 -only_proper_pairs 0 -C 50 -baq 2 \
+/softwares/angsd/angsd
+  -bam all_bams.list \
+  -ref /Reference/Panthera_leo_krugeri_HiC.fasta
+  -uniqueOnly 1 -remove_bads 1 -only_proper_pairs 1 -C 50 -baq 2 \
   -minMapQ 30 -minQ 20 \
-  -GL 1 \               	# SAMtools model (robust)
-  -doMajorMinor 1 \       	# infer major/minor from data
-  -doMaf 1 \               	# calculate MAF (helpful for filters)
-  -SNP_pval 1e-4 \         	# site discovery threshold (somewhat conservative)
-  -minInd 5 \             	# min number of individuals with data at site (tune)
-  -doGlf 2 \               	# write BEAGLE (GLs) gzipped
+  -GL 1 \               	
+  -doMajorMinor 1 \       	
+  -doMaf 1 \             
+  -SNP_pval 1e-4 \        
+  -minInd 5 \             
   -nThreads 16 \
+  -doGlf 2 \               
+  -out all_minind5
 ```
 
-We immediately apply some filters here. If you'd like brush up on some considerations regarding filtering, read the section on [filtering for high depth genomes](https://github.com/LauraBertola/Tutorials/blob/main/WGS%20(high%20depth)/Variant_Calling_Filtering.md). Obviously, we use a different approach for low depth genomes here, but a lot of the considerations are similar.
+In this command, we also apply some filters. If you'd like brush up on some considerations regarding filtering, read the section on [filtering for high depth genomes](https://github.com/LauraBertola/Tutorials/blob/main/WGS%20(high%20depth)/Variant_Calling_Filtering.md). Obviously, we use a different approach for low depth genomes here, but a lot of the considerations are similar.
 
-Let's go through the various parts of the ANGSD command one by one.
+Let's go through the various parts of the ANGSD command one by one. First you tell it what bam files to use, by referring to the list you made. You also tell it which reference to use.
+Then there is a stretch with basic read filters:
+  -uniqueOnly 1: keep only uniquely mapping reads (no multimapping). Good for avoiding false SNPs, especially in genomes with repeats.
+  -remove_bads 1: remove unmapped reads, secondary/supplementary alignments, QC-failed reads.
+  -only_proper_pairs 1: keep only reads for which both forward and reverse are correctly mapped.
+  -C 50: adjusts reads for excessive mismatches near indels, prevents false SNP calls due to alignment artifacts.
+  -baq 2: BAQ (Base Alignment Quality) recalibration, reduces false positives near indels.
+Next are some quality filters:
+  -minMapQ 30: minimum mapping quality, which makes sure that the mapped reads are confidently placed.
+  -minQ 20: minimum base quality, ensures only reliable bases contribute to likelihoods.
+Further parameters include -GL 1 which refers to the SAMtools genotype likelihood model, which is suitable for low/medium coverage samples with not overly damaged DNA.
+The next few variable refer to allele discovery:
+  -doMajorMinor 1: automatically infer major and minor alleles from data.
+  -doMaf 1: calculate minor allele frequency.
+  -SNP_pval 1e-4: site is considered polymorphic if likelihood of being invariant < 10⁻⁴. A lower value here corresponds to a more conservative SNP calling.
+Then comes an important parameter, which determines how much missing values you'll have in your output file. Here, we allow for 50% missingness, by asking to only include sites for which at least 5 (out of 10) individuals have data. This is something you might want to adjust to explore how missing data will affect downstream analyses, like PCA.
+-nThreads refers to the number of threads it uses for the analyses, -doGlf 2 refers to the output format (zipped Beagle format, in this case) and finally -out determines the prefix for the output files.
 
-There are tons of other options, which may come in handy. For example, you can tell ANGSD to use only information from certain scaffolds in the reference genome. You may not want to include all the unplaced scaffolds and only include autosomes (i.e. excluding sex chromosomes). You can make a list with scaffold names (as they are named in the reference genome) and feed this to ANGSD using -rf.
+There are tons of other options in ANGSD which may come in handy. For example, you can tell ANGSD to use only information from certain scaffolds in the reference genome. You may not want to include all the unplaced scaffolds and only include autosomes (i.e. excluding sex chromosomes). You can make a list with scaffold names (as they are named in the reference genome) and feed this to ANGSD using -rf.
+
+
+
+
+
 
 
 ```
