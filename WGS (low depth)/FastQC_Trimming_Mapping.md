@@ -1,6 +1,6 @@
 ## Raw data
 
-For this tutorial, we'll download some low coverage :lion: data for ten samples to illustrate the steps of quality control, trimming and mapping. While [ENA](https://www.ebi.ac.uk/ena/browser/home) allows using `wget` to download data (see and example [here](https://github.com/LauraBertola/Tutorials/blob/main/ConGen_2025_SouthAfrica/Session_19_Nov.md)), for [NCBI](https://www.ncbi.nlm.nih.gov/) you need to use their tool `sra-tools` or `parallel-fastq-dump`. I've prepared an environment with an installation of `parallel-fastq-dump`, so we'll use that here. Activate the environment first:
+For this tutorial, we'll download some low coverage :lion: data for ten samples to illustrate the steps of quality control, trimming and mapping. While [ENA](https://www.ebi.ac.uk/ena/browser/home) allows using `wget` to download data (see and example [here](https://github.com/LauraBertola/Tutorials/blob/main/ConGen_2025_SouthAfrica/Session_19_Nov.md)), for [NCBI](https://www.ncbi.nlm.nih.gov/) you need to use their tool sra-tools or parallel-fastq-dump. I've prepared an environment with an installation of parallel-fastq-dump, so we'll use that here. Activate the environment first:
 ```
 $conda activate parallel-fastq-dump
 ```
@@ -30,14 +30,14 @@ It'll look something like this:
 The first is the name of the read, with information about its location on the plate, or in this case the identifier from NCBI, where the data were downloaded from.
 | Component          | Meaning                                      |
 |--------------------|----------------------------------------------|
-| SRR10764406.701      | SRA run ID + internal read index             |
-| D7MHBFN1           | Illumina sequencing instrument ID            |
+| SRR10764405.177      | SRA run ID + internal read index             |
+| D7MHBFN1         | Illumina sequencing instrument ID            |
 | 228                | Run number on that instrument                |
 | C1V86ACXX          | Flowcell ID                                  |
 | 8                  | Lane number                                  |
 | 1101               | Tile number within the lane                  |
-| 6387:2398          | X:Y coordinates of the cluster on the tile   |
-| /1                 | Read 1 of a paired-end sequencing run        |
+| 4765:2182          | X:Y coordinates of the cluster on the tile   |
+| length=99          | Read length      |
 
 The second line contains the sequence data. The third line is unused (identified with +). And the fourth line is the quality scores for the base calls. The [FASTQ wikipedia page](https://en.wikipedia.org/wiki/FASTQ_format) has a good figure depicting the logic behind how quality scores are encoded.
 
@@ -50,7 +50,7 @@ Let's start the run now. First make an output folder, where you will store the r
 /softwares/FastQC/fastqc * -o output_files/
 ```
 
-On the screen, you'll see the progress of your FastQC run. 
+On the screen, you'll see the progress of your FastQC run.   
 ![fastqc_progress](Images/fastqc_progress.png)
 
 >**Note:** we use *, which is a wildcard. It means *any file in the directory input_files/*. You can use wildcards also more specifically, for example `*.fq.gz`, which means all fq.gz files. Or `*R1*`, which is all files with R1 anywhere in their name, which comes in handy if you only want to process forward reads, for example.
@@ -114,7 +114,7 @@ There are multiple softwares to trim your data, e.g. [Trimmomatic](http://www.us
 
 Run the following command:
 ```
-for file in input_files/*_1.fq.gz; do
+for file in *_1.fq.gz; do
   mate="${file/_1.fq.gz/_2.fq.gz}"
   /softwares/TrimGalore/trim_galore --paired --illumina "$file" "$mate" --output_dir output_files
 done
@@ -134,7 +134,7 @@ If we're happy with the quality of the reads that have made it through the trimm
 
 ## Mapping
 
-We'll use [this reference genome](https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_021130815.1/) to map our data to, but also in a downsampled version, since this is just for practice. If you've gone through the exercises successfully, you'll have the reference genome and the necessary index files in the folder where you downloaded it to. If you didn't go through the exercises, you should make softlink to my input_files folder as described at the beginning of this tutorial. The reference files with all index files can be found in input_files/reference/. 
+We'll use [this reference genome](https://www.dnazoo.org/assemblies/panthera_leo_krugeri)) to map our data to. The reference files with all index files can be found in a folder called Reference/. Alternatively, you can download it yourself  
 
 You can also look into the reference file, the one ending with .fna, using `less`. You probably don't want to scroll to an entire genome, so you can also look at the different scaffolds. They conveniently all start with a line starting with a >, so you can use `grep` to take a look at only those lines. Make sure you're in the right folder when running this command.
 ```
