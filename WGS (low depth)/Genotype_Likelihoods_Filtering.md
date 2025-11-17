@@ -88,7 +88,7 @@ pcangsd -b all_minind5.beagle.gz -o all_minind5 -t 8 --iter 1000
 
 You tell it the input file (-b), the output files prefix (-o), how many threads to use for computation (-t) and a number of iterations to run (--iter). When the run is finished, and hopefully converged (it will tell you on the screen), you should have the following files: .cov and .log. Some versions of PCAngsd also produce .eigenvec and .eigenval files, but we can easily compute them ourselves from the covariance matrix (.cov), so we don't really need them.
 
-Now, download the .cov file to your computer, as well as the all_bams.list files, so we can look at the results in R.
+Now, download the .cov file to your computer, as well as the all_bams.list file, so we can look at the results in R.
 
 In R studio, run the following:
 ```
@@ -107,7 +107,7 @@ print(variance_explained[1:6])  # first 6 PCs
 # Load sample names (from your bam list)
 samples <- basename(readLines("all_bams.list"))
 
-### Species PCA
+# Species PCA
 # Assign species manually
 species <- c(
   rep("Somalia", 1),
