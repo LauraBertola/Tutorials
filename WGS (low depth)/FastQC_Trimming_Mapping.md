@@ -4,10 +4,12 @@ For this tutorial, we'll download some low coverage :lion: data for ten samples 
 ```
 $conda activate parallel-fastq-dump
 ```
+
 Now, create a folder to download the data to and use `parallel-fastq-dump` to grab accession numbers SRR10764405-SRR10764414 from NCBI:
 ```
 $parallel-fastq-dump --sra-id SRR10764405 SRR10764406 SRR10764407 SRR10764408 SRR10764409 SRR10764410 SRR10764411 SRR10764412 SRR10764413 SRR10764414 --threads 4 --split-files --gzip
 ```
+
 After you've downloaded the data, deactivate the environment:
 ```
 conda deactivate
@@ -39,7 +41,7 @@ The first is the name of the read, with information about its location on the pl
 | 4765:2182          | X:Y coordinates of the cluster on the tile   |
 | length=99          | Read length      |
 
-The second line contains the sequence data. The third line is unused (identified with +). And the fourth line is the quality scores for the base calls. The [FASTQ wikipedia page](https://en.wikipedia.org/wiki/FASTQ_format) has a good figure depicting the logic behind how quality scores are encoded.
+The second line contains the sequence data. The third line is unused (identified with +, often this line is empty, but here it repeats the header from the first line). And the fourth line is the quality scores for the base calls. The [FASTQ wikipedia page](https://en.wikipedia.org/wiki/FASTQ_format) has a good figure depicting the logic behind how quality scores are encoded.
 
 ## FastQC for quality control
 
@@ -134,25 +136,11 @@ If we're happy with the quality of the reads that have made it through the trimm
 
 ## Mapping
 
-We'll use [this reference genome](https://www.dnazoo.org/assemblies/panthera_leo_krugeri)) to map our data to. The reference files with all index files can be found in a folder called Reference/. Alternatively, you can download it yourself  
+We'll use [this reference genome](https://www.dnazoo.org/assemblies/panthera_leo_krugeri) to map our data to. The reference files with all index files can be found in a folder called Reference/. Alternatively, you can download it yourself and index it, following the steps in [Exercise 2](https://github.com/LauraBertola/Tutorials/blob/main/WGS%20(high%20depth)/Exercises.md) (just make sure that you download the right reference genome, and not the tiger genome which is being used in Exercise 2!).
 
 You can also look into the reference file, the one ending with .fna, using `less`. You probably don't want to scroll to an entire genome, so you can also look at the different scaffolds. They conveniently all start with a line starting with a >, so you can use `grep` to take a look at only those lines. Make sure you're in the right folder when running this command.
 ```
-grep ">" GCA_021130815.1_PanTigT.MC.v3_genomic.fna
-```
-
-To avoid spending too much time on this, we'll proceed with the next step with only two samples: BEN_CI16 and LGS1. Check if these are the two files which are in your output_folder/. If you have more files in your output_folder/ please move them temporarily. E.g. make a new folder with `mkdir` and move them there with `mv`. For example, I used the commands below:
-```
-mkdir TEMP
-```
-```
-mv * TEMP
-```
-```
-cd TEMP
-```
-```
-mv BEN_CI16_sub_1_val_1.fq.gz BEN_CI16_sub_2_val_2.fq.gz LGS1_sub_1_val_1.fq.gz LGS1_sub_2_val_2.fq.gz ..
+grep ">" Panthera_leo_krugeri_HiC.fasta
 ```
 
 For the mapping, we'll use [BWA MEM](https://github.com/lh3/bwa) and a for loop to make it loop over all samples. The idea is the same as in the trimming step. We need to tell it which forward (_sub_1_val_1.fq.gz) and reverse (_sub_2_val_2.fq.gz) reads go together, tell it which reference genome to use, and where to store the output. The flag -t tells it how many cores it can use, so if you have a larger cluster and don't have a lot of people running things simultaneously, you can probably request more cores. You should be in your Tutorials folder when running this command.
@@ -160,7 +148,7 @@ For the mapping, we'll use [BWA MEM](https://github.com/lh3/bwa) and a for loop 
 for file1 in output_files/*_sub_1_val_1.fq.gz; do
   file2=${file1/_sub_1_val_1.fq.gz/_sub_2_val_2.fq.gz}
   sample_name=$(basename "$file1" _sub_1_val_1.fq.gz)
-  bwa mem input_files/reference/GCA_021130815.1_PanTigT.MC.v3_genomic.fna -t 2 "$file1" "$file2" > "output_files/${sample_name}_aligned_reads.sam"
+  bwa mem Reference/Panthera_leo_krugeri_HiC.fasta -t 2 "$file1" "$file2" > "output_files/${sample_name}_aligned_reads.sam"
 done
 ```
 
@@ -178,7 +166,7 @@ You'll see that there are two commands, separated by a pipe (|). The first part 
 
 Bam is a binary format, which is much faster to process. But because it is binary it is not human-readable anymore. If you'd like to see what it looks like anyway, take a peak into the .sam and .bam files using 'less'. For the .sam file, you're just seeing the header (the lines starting which @). If you'd like to see the actual alingment and don't have the patience to scroll past the header, try this:
 ```
-grep -v "^@" LGS1_aligned_reads.sam | less
+grep -v "^@" SRR10764405_aligned_reads.sam | less
 ```
 
 We used `grep` before to only grab lines starting with >, here we use -v to tell it to only grab lines which do **not** start with @.
@@ -220,6 +208,6 @@ done
 It will create an bunch of files, and store them in a qualimap_results folder (note that you asked it to create this folder to put all the output files in). Download the entire folder (just like you did with the FastQC results) and look at the html file it in your browser. Because Qualimap does not embed the images in their html files (unlike FastQC), you need to download the entire folder. Take a look at the images at the bottom of the report (you can click the links on the right side of the page), especially the depth across the coverage across the reference, and coverage histogram. It should look something like this:
 ![qualimap](Images/qualimap.png)
 
->**Note:** for the sake of this tutorial, we've used downsampled data, so this is expected to be very, very low. However, the next step of the pipeline assumes that you have medium-high (>6X) depth, so we can call heterozygote positions reliably. Go to the [next part](Variant_Calling_Filtering.md), in which we will create a vcf file with variants and filter the results for downstream analyses.
+The next step will be different from the variant filtering we've done for the high depth samples. Because these are low depth samples (~3X), we cannot call hard genotypes with certainty. Imagine you have a position with 2X or 3X coverage, how certain would you be this truly is homozogous if you only find 1 allele? So instead we'll use genotype likelihoods as implemented in ANGSD. The next section deals with [genotype-likelihood computation and probabilistic SNP filtering](https://github.com/LauraBertola/Tutorials/blob/main/WGS%20(low%20depth)/Genotype-likelihood%20computation%20and%20probabilistic%20SNP%20filtering.md).
 
 >**Housekeeping**: we have created quite a few large files, and it is good practice to delete what you don't need anymore. You could for example delete the .sam files, and the _sorted.bam files which were later deduplicated. You can remove files with `rm`, but be careful! It will not ask you if you're certain and it cannot be undone. Always keep the raw data, and keep the final .bam files as they will be needed for the variant calling.
