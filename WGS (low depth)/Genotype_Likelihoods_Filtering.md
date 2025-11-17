@@ -44,7 +44,7 @@ First you tell it what BAM files to use, by referring to the list you made with 
 - `-minMapQ 30` — minimum mapping quality, which makes sure that the mapped reads are confidently placed.  
 - `-minQ 20` — minimum base quality, ensures only reliable bases contribute to likelihoods.
 
-**Genotype likelihood model**
+**Genotype likelihood model**  
 Further parameters include `-GL 1`, which refers to the SAMtools genotype likelihood model, suitable for low/medium coverage samples with not overly damaged DNA.
 
 **Allele discovery**
