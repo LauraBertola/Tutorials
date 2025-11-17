@@ -30,7 +30,7 @@ In this command, we also apply some filters. If you'd like brush up on some cons
 
 Let's go through the various parts of the ANGSD command one by one.
 
-**Input**
+**Input**  
 First you tell it what BAM files to use, by referring to the list you made with `bam`. You also tell it which reference to use with `ref`.
 
 **Basic read filters**
