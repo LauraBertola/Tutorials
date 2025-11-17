@@ -53,8 +53,7 @@ Further parameters include `-GL 1`, which refers to the SAMtools genotype likeli
 - `-SNP_pval 1e-4` — site is considered polymorphic if likelihood of being invariant < 10⁻⁴. A lower value corresponds to more conservative SNP calling.
 
 **Missing data threshold**  
-Then comes an important parameter, `-minInd 5` which determines how much missing values you'll have in your output file.  
-Here, we allow for **50% missingness**, by asking to only include sites for which **at least 5 (out of 10) individuals** have data. This is something you might want to adjust to explore how missing data will affect downstream analyses, like PCA.
+Then comes an important parameter, `-minInd 5` which determines how much missing values you'll have in your output file. Here, we allow for **50% missingness**, by asking to only include sites for which **at least 5 (out of 10) individuals** have data. This is something you might want to adjust to explore how missing data will affect downstream analyses, like PCA.
 
 **Other important parameters**
 - `-nThreads` — the number of threads used for the analysis.  
@@ -68,7 +67,7 @@ Following the command we used, ANGSD will save three output files:
 - beagle.gz — BEAGLE-format genotype likelihoods (used by PCAngsd, ngsAdmix).
 - mafs.gz — MAF values for each site, with major/minor allele.
 
-If you'd like to know how many SNPs were retained, simply call the lines of the beagle or mafs file:
+If you'd like to know how many SNPs were retained, simply count the lines of the beagle or mafs file:
 ```
 zcat all_minind5.beagle.gz | wc -l
 ```
