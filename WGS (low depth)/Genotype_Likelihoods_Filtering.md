@@ -30,7 +30,8 @@ In this command, we also apply some filters. If you'd like brush up on some cons
 
 Let's go through the various parts of the ANGSD command one by one.
 
-First you tell it what BAM files to use, by referring to the list you made. You also tell it which reference to use.
+**Input**
+First you tell it what BAM files to use, by referring to the list you made with `bam`. You also tell it which reference to use with `ref`.
 
 **Basic read filters**
 - `-uniqueOnly 1` — keep only uniquely mapping reads (no multimapping). Good for avoiding false SNPs, especially in genomes with repeats.  
