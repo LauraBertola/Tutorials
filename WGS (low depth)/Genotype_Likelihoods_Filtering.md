@@ -52,7 +52,7 @@ Further parameters include `-GL 1`, which refers to the SAMtools genotype likeli
 - `-doMaf 1` — calculate minor allele frequency.  
 - `-SNP_pval 1e-4` — site is considered polymorphic if likelihood of being invariant < 10⁻⁴. A lower value corresponds to more conservative SNP calling.
 
-**Missing data threshold**
+**Missing data threshold**  
 Then comes an important parameter, `-minInd 5` which determines how much missing values you'll have in your output file.  
 Here, we allow for **50% missingness**, by asking to only include sites for which **at least 5 (out of 10) individuals** have data. This is something you might want to adjust to explore how missing data will affect downstream analyses, like PCA.
 
