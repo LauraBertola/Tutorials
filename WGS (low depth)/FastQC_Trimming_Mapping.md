@@ -1,49 +1,53 @@
 ## Raw data
 
-We'll provide raw :lion: data for ten samples to illustrate the steps of quality control, trimming and mapping. I've put the data that we'll be using here: /home/uramakri/laurabertola/Tutorial_WGS_HD/input_files
-You don't have to copy the data (with large datasets, we'll run out of disk space real fast!), but it is also inconvenient if you have to navigate to my folder all the time. You can create a symbolic link (or soft link) in your own directory, which will serve as a connection to my folder.
-
-First make a folder in your directory for this Tutorial, using `mkdir`, check if it is there with `ls`, and then go to you're newly created folder, using `cd`.
+For this tutorial, we'll download some low coverage :lion: data for ten samples to illustrate the steps of quality control, trimming and mapping. While [ENA](https://www.ebi.ac.uk/ena/browser/home) allows using `wget` to download data (see and example [here](https://github.com/LauraBertola/Tutorials/blob/main/ConGen_2025_SouthAfrica/Session_19_Nov.md)), for [NCBI](https://www.ncbi.nlm.nih.gov/) you need to use their tool `sra-tools` or `parallel-fastq-dump`. I've prepared an environment with an installation of `parallel-fastq-dump`, so we'll use that here. Activate the environment first:
 ```
-mkdir Tutorial_WGS_LD
+$conda activate parallel-fastq-dump
 ```
+Now, create a folder to download the data to and use `parallel-fastq-dump` to grab accession numbers SRR10764405-SRR10764414 from NCBI:
 ```
-ls
+$parallel-fastq-dump --sra-id SRR10764405 SRR10764406 SRR10764407 SRR10764408 SRR10764409 SRR10764410 SRR10764411 SRR10764412 SRR10764413 SRR10764414 --threads 4 --split-files --gzip
 ```
+After you've downloaded the data, deactivate the environment:
 ```
-cd Tutorial_WGS_LD
-```
-
-Now create the symbolic link to my folder by doing the following:
-```
-ln -s /home/uramakri/laurabertola/Tutorial_WGS_HD/input_files input_files
+conda deactivate
 ```
 
-You should now have something which *looks* like a folder, called input_files, in your directory, but actually it teleports you to *my* folder when you enter it.
-
-The raw data come in .fastq.gz (or .fq.gz) format. Now let's take a look at the data. Go to the folder where the data are stored, using `cd`, and use `ls` to display the contents of the folder. Most of the time, you'll be working with paired-end data, meaning that each sample has two files. These are usually identified by _R1 and _R2, or _1 and _2. Those two files contain the forward and reverse reads, respectively. For more information about paired-end Illumina sequencing, watch [this video](https://www.youtube.com/watch?v=fCd6B5HRaZ8).
+You should now have raw data for 10 individuals in your folder (paired-end, 20 files in total). Raw data come in .fastq.gz (or .fq.gz) format. Now let's take a look at the data. Go to the folder where the data are stored, using `cd`, and use `ls` to display the contents of the folder. Most of the time, you'll be working with paired-end data, meaning that each sample has two files. These are usually identified by _R1 and _R2, or _1 and _2. Those two files contain the forward and reverse reads, respectively. For more information about paired-end Illumina sequencing, watch [this video](https://www.youtube.com/watch?v=fCd6B5HRaZ8).
 
 Now let's take a look at what's inside these files. Type the following command:
 ```
-zcat yourfile.fq.gz | less -S
+zcat SRR10764405_1.fq.gz | less -S
 ```
 
 The `zcat` command is used to unzip the file (note it ends with .gz), and `less` allows you to view it. Here we add `-S` to chop off long lines. Otherwise it wraps around and becomes messy. Try scrolling right and down, using the arrow keys. To quit `less` type q. 
-If you'd like to see the messy format, with long lines wrapping, try using `head -n 20` instead of the `less` command. `head` shows the first part of the file, and `-n 20` tells it to show the first 20 lines. 
+If you'd like to see the messy format, with long lines wrapping, try using `head -n 20` instead of the `less` command. `head` shows the first part of the file, and `-n 20` tells it to show the first 20 lines. If you're really brave, try just using `zcat`, without `less` and see what happens. Press `CTRL+C` to escape the madness.
 
 Now to the actual data. Each sequenced read is spread over four lines, one of which contains sequence and another the quality scores stored as ASCII characters. The other two lines are used as headers to store information about the read.
 It'll look something like this:
 ![fastq.gz](Images/fastq.gz.png)
 
-The first is the name of the read, with information about its location on the plate, or in this case the identifier from NCBI, where the data were downloaded from. The second line contains the sequence data. The third line is unused (identified with +). And the fourth line is the quality scores for the base calls. The [FASTQ wikipedia page](https://en.wikipedia.org/wiki/FASTQ_format) has a good figure depicting the logic behind how quality scores are encoded.
+The first is the name of the read, with information about its location on the plate, or in this case the identifier from NCBI, where the data were downloaded from.
+| Component          | Meaning                                      |
+|--------------------|----------------------------------------------|
+| SRR10764406.701      | SRA run ID + internal read index             |
+| D7MHBFN1           | Illumina sequencing instrument ID            |
+| 228                | Run number on that instrument                |
+| C1V86ACXX          | Flowcell ID                                  |
+| 8                  | Lane number                                  |
+| 1101               | Tile number within the lane                  |
+| 6387:2398          | X:Y coordinates of the cluster on the tile   |
+| /1                 | Read 1 of a paired-end sequencing run        |
+
+The second line contains the sequence data. The third line is unused (identified with +). And the fourth line is the quality scores for the base calls. The [FASTQ wikipedia page](https://en.wikipedia.org/wiki/FASTQ_format) has a good figure depicting the logic behind how quality scores are encoded.
 
 ## FastQC for quality control
 
 The first step is to inspect your raw data to estimate overall quality. Scrolling through the data with `less` is obviously not going to work for this. So, we'll use a software called [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) to help us visualize overall data quality for each of our files. You can then attempt to improve your dataset by identifying and removing samples with failed sequencing. 
 
-Let's start the run now. First go out of the input_files folder by typing `cd ..` and then make an output folder, where you will store the results in. Use `mkdir` to do this. Then run the `fastqc` command, and direct it to your newly created output folder by using -o.
+Let's start the run now. First make an output folder, where you will store the results in. Use `mkdir` to do this. Then run the `fastqc` command, and direct it to your newly created output folder by using -o.
 ```
-/softwares/FastQC/fastqc input_files/* -o output_files/
+/softwares/FastQC/fastqc * -o output_files/
 ```
 
 On the screen, you'll see the progress of your FastQC run. 
