@@ -1,6 +1,35 @@
-## Variant calling
+## Genotype likelihood inference
 
-Now we have all the genomes mapped, with reads sorted and deduplicated, and all .bam files indexed. We can now proceed to call the variant positions that we'll be using for downstream analyses. There are different variant callers out there, but here we'll use [bcftools](https://samtools.github.io/bcftools/bcftools.html). Run the following:
+Now we have all the genomes mapped, with reads sorted and deduplicated, and all .bam files indexed. We can now proceed to infer the genotype likelihoods. As we said, because these are low depth samples (~3X), we cannot call hard genotypes with certainty. Imagine you have a position with 2X or 3X coverage, how certain would you be this truly is homozogous if you only find 1 allele? So instead we'll use genotype likelihoods as implemented in [ANGSD](https://www.popgen.dk/angsd/index.php/ANGSD). 
+
+We want to give the command a list with all the bam files we'd like to include for ANGSD. Note that this also easily allows you to exclude a sample in case it has much lower quality than the rest. Run the following:
+```
+find . -name "*deduplicated*.bam" > all_bams.list
+```
+
+You should now have a txt file which is called all_bams.list in your directory. If you'd like to check the contents, use `cat`.
+
+Now we can proceed to actually running ANGSD:
+```
+/softwares/angsd/angsd -bam all_bams.list -ref /Reference/Panthera_leo_krugeri_HiC.fasta -out all_minind5 \
+  -uniqueOnly 1 -remove_bads 1 -only_proper_pairs 0 -C 50 -baq 2 \
+  -minMapQ 30 -minQ 20 \
+  -GL 1 \               	# SAMtools model (robust)
+  -doMajorMinor 1 \       	# infer major/minor from data
+  -doMaf 1 \               	# calculate MAF (helpful for filters)
+  -SNP_pval 1e-4 \         	# site discovery threshold (somewhat conservative)
+  -minInd 5 \             	# min number of individuals with data at site (tune)
+  -doGlf 2 \               	# write BEAGLE (GLs) gzipped
+  -nThreads 16 \
+```
+
+We immediately apply some filters here. If you'd like brush up on some considerations regarding filtering, read the section on [filtering for high depth genomes](https://github.com/LauraBertola/Tutorials/blob/main/WGS%20(high%20depth)/Variant_Calling_Filtering.md). Obviously, we use a different approach for low depth genomes here, but a lot of the considerations are similar.
+
+Let's go through the various parts of the ANGSD command one by one.
+
+There are tons of other options, which may come in handy. For example, you can tell ANGSD to use only information from certain scaffolds in the reference genome. You may not want to include all the unplaced scaffolds and only include autosomes (i.e. excluding sex chromosomes). You can make a list with scaffold names (as they are named in the reference genome) and feed this to ANGSD using -rf.
+
+
 ```
 /softwares/bcftools1.12/bcftools mpileup -Ou -f input_files/reference/GCA_021130815.1_PanTigT.MC.v3_genomic.fna -a FORMAT/DP output_files/*deduplicated.bam | \
 /softwares/bcftools1.12/bcftools call -f GQ,GP -mv -Ov -o unfiltered_variants.vcf
