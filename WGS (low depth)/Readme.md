@@ -5,7 +5,6 @@ This section will use data from lions from [Bertola et al. (2022)](https://bmcge
 
 You can find the steps for downloading, quality control, trimming and mapping [here](FastQC_Trimming_Mapping.md).  
 Genotype-likelihood computation and probabilistic SNP filtering [here](Genotype_Likelihoods_Filtering.md).  
-Note that there are exercises with additional information [here](Exercises.md).  
 
 :camera: Lion in Okavango Delta, Botswana
 ![lion2](./Images/174_Okavango.jpg)
