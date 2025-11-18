@@ -119,7 +119,7 @@ species <- c(
   rep("Benin", 1),
   rep("South_Africa", 1),
   rep("Namibia", 1),
-  rep("Cameroon", 1),
+  rep("Cameroon", 1)
 )
 
 # Colors for species
@@ -144,13 +144,18 @@ pca_df <- data.frame(
 
 png("PCA.png", width = 1500, height = 1500, res = 300)
 
+xpad <- diff(range(pca_df$PC1)) * 0.05
+ypad <- diff(range(pca_df$PC2)) * 0.05
+
 # Plot
 plot(pca_df$PC1, pca_df$PC2, 
      col = species_colors[pca_df$Species],
      pch = 19, 
      cex = 1.5,
      xlab = paste0("PC1 (", round(eigval[1]/sum(eigval)*100, 1), "%)"),
-     ylab = paste0("PC2 (", round(eigval[2]/sum(eigval)*100, 1), "%)"))
+     ylab = paste0("PC2 (", round(eigval[2]/sum(eigval)*100, 1), "%)"),
+     xlim = range(pca_df$PC1) + c(-xpad, xpad),
+     ylim = range(pca_df$PC2) + c(-ypad, ypad))
 
 text(pca_df$PC1, pca_df$PC2, 
      labels = pca_df$Species, 
