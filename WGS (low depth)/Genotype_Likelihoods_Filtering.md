@@ -167,4 +167,4 @@ dev.off()
 ```
 
 This code will save two tables, one with eigenvectors and one with eigenvalues, calculated from the covariance matrix we got from PCAngsd. It also plots a PCA, with the population labels and colors defined in the code. It should look something like this:
-<img src="./Images/pca.png" alt="pca" width="50%">
+<img src="./Images/pca.png" alt="pca" width="80%">
