@@ -55,7 +55,7 @@ Let's start the run now. First make an output folder, where you will store the r
 On the screen, you'll see the progress of your FastQC run.   
 ![fastqc_progress](Images/fastqc_progress.png)
 
->**Note:** we use *, which is a wildcard. It means *any file in the directory*. You can use wildcards also more specifically, for example `*.fq.gz`, which means all fq.gz files. Or `*R1*`, which is all files with R1 anywhere in their name, which comes in handy if you only want to process forward reads, for example.
+>**Note:** we use *, which is a wildcard. It means *any file in the directory*. You can use wildcards also more specifically, for example `*.fq.gz`, which means all fq.gz files. Or `*_1*`, which is all files with R1 anywhere in their name, which comes in handy if you only want to process forward reads, for example.
 
 Another key QC procedure involves inspecting average quality scores per base position and trimming read edges, which is where low quality base-calls tend to accumulate. In this figure, the X-axis shows the position on the read in base-pairs and the Y-axis depicts information about [Phred quality score](https://en.wikipedia.org/wiki/Phred_quality_score) per base for all reads, including median (center red line), IQR (yellow box), and 10%-90% (whiskers). As an example, here is a very clean base sequence quality report for a 75bp library. These reads have generally high quality across their entire length, with only a slight (barely worth mentioning) dip toward the end of the reads:
 
