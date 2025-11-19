@@ -202,7 +202,7 @@ done
 
 Do `ls` to see what changed. You should now also have .bam.bai files.
 
-We now have .bam files which have been completely ready to go for downstream processing. But we haven't really looked at the mapping quality yet. We can do so with the tool [Qualimap](https://qualimap.conesalab.org/). Run the following:
+We now have .bam files which are ready to go for downstream processing. But we haven't really looked at the mapping quality yet. We can do so with the tool [Qualimap](https://qualimap.conesalab.org/). Run the following:
 ```
 for bam in output_files/*_deduplicated.bam; do
     sample=$(basename "$bam" .bam)
@@ -213,7 +213,7 @@ for bam in output_files/*_deduplicated.bam; do
 done
 ```
 
-It will create an bunch of files, and store them in a qualimap_results folder (note that you asked it to create this folder to put all the output files in). Download the entire folder (just like you did with the FastQC results) and look at the html file it in your browser. Because Qualimap does not embed the images in their html files (unlike FastQC), you need to download the entire folder. Take a look at the images at the bottom of the report (you can click the links on the right side of the page), especially the depth across the coverage across the reference, and coverage histogram. It should look something like this:
+It will create an bunch of files, and store them in a qualimap_results folder (note that you asked it to create this folder to put all the output files in). Download the entire folder (just like you did with the FastQC results) and look at the html file it in your browser. Because Qualimap does not embed the images in their html files (unlike FastQC), you need to download the entire folder. Take a look at the images at the bottom of the report (you can click the links on the right side of the page), especially the coverage across the reference and coverage histogram. It should look something like this:
 ![qualimap](Images/qualimap.png)
 
 >**Note:** for the sake of this tutorial, we've used downsampled data, so this is expected to be very, very low. However, the next step of the pipeline assumes that you have medium-high (>6X) depth, so we can call heterozygote positions reliably. Go to the [next part](Variant_Calling_Filtering.md), in which we will create a vcf file with variants and filter the results for downstream analyses.
