@@ -132,7 +132,7 @@ If we're happy with the quality of the reads that have made it through the trimm
 
 We'll use [this reference genome](https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_021130815.1/) to map our data to, but also in a downsampled version, since this is just for practice. If you've gone through the exercises successfully, you'll have the reference genome and the necessary index files in the folder where you downloaded it to. If you didn't go through the exercises, you should make softlink to my input_files folder as described at the beginning of this tutorial. The reference files with all index files can be found in input_files/reference/. 
 
-You can also look into the reference file, the one ending with .fna, using `less`. You probably don't want to scroll to an entire genome, so you can also look at the different scaffolds. They conveniently all start with a line starting with a >, so you can use `grep` to take a look at only those lines. Make sure you're in the right folder when running this command.
+You can also look into the reference file, the one ending with .fna, using `less`. You probably don't want to scroll through an entire genome, so you can also look at the different scaffolds. They conveniently all start with a line starting with a >, so you can use `grep` to take a look at only those lines. Make sure you're in the right folder when running this command.
 ```
 grep ">" GCA_021130815.1_PanTigT.MC.v3_genomic.fna
 ```
