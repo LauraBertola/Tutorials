@@ -44,7 +44,7 @@ Copy-paste this into your terminal. If the download takes a while, we can watch 
 
 >**Note:** If you want to download from NCBI directly, it's better to use `sra-tools`. Here, we bypass this and use `wget` to get the data directly from ENA.
 
-Now, the raw data are there and we can take a look at one of the files.
+Now, the raw data are there (check using `ls') and we can take a look at one of the files.
 
 Type the following command:
 ```
