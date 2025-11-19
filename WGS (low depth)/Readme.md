@@ -4,8 +4,8 @@ This part will deal with processing of whole genome sequencing data (WGS) of low
 This section will use data from lions from [Bertola et al. (2022)](https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-022-08510-y). 
 
 You can find the steps for downloading, quality control, trimming and mapping [here](FastQC_Trimming_Mapping.md).  
-Genotype-likelihood computation and probabilistic SNP filtering [here](Genotype_Likelihoods_Filtering.md).  
+Genotype-likelihood computation and probabilistic SNP filtering is [here](Genotype_Likelihoods_Filtering.md).  
 
-:camera: Lion in Okavango Delta, Botswana
+:camera: Lion (female!) in Okavango Delta, Botswana
 ![lion2](./Images/174_Okavango.jpg)
 ©Laura Bertola
