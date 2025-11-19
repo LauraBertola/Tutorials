@@ -138,7 +138,7 @@ If we're happy with the quality of the reads that have made it through the trimm
 
 We'll use [this reference genome](https://www.dnazoo.org/assemblies/panthera_leo_krugeri) to map our data to. The reference files with all index files can be found in a folder called Reference/. Alternatively, you can download it yourself and index it, following the steps in [Exercise 2](https://github.com/LauraBertola/Tutorials/blob/main/WGS%20(high%20depth)/Exercises.md) (just make sure that you download the right reference genome, and not the tiger genome which is being used in Exercise 2!).
 
-You can also look into the reference file, the one ending with .fna, using `less`. You probably don't want to scroll to an entire genome, so you can also look at the different scaffolds. They conveniently all start with a line starting with a >, so you can use `grep` to take a look at only those lines. Make sure you're in the right folder when running this command.
+You can also look into the reference file, the one ending with .fna, using `less`. You probably don't want to scroll through an entire genome, so you can also look at the different scaffolds. They conveniently all start with a line starting with a >, so you can use `grep` to take a look at only those lines. Make sure you're in the right folder when running this command.
 ```
 grep ">" Panthera_leo_krugeri_HiC.fasta
 ```
