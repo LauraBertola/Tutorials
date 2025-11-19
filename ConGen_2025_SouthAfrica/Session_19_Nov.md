@@ -104,11 +104,11 @@ This figure depicts a common artifact of current Illumina chemistry, whereby qua
 When everything is done, see what files were created with `ls`. 
 You'll see that for each input file, FastQC created an .html and a .zip file. You want to look into the html file, which contains all the information you need for now. 
 
-In this system, you can download (and upload!) files from the pane in the lower right hand corner with all folders and files. 
+In this system, you can download (and upload) files from the pane in the lower right hand corner with all folders and files. 
 
 ![files_pane](Images/files_pane.png)
 
-Navigate to your folder with the FastQC output and select the files you'd like to download to your computer, select the files, then "More" and "Export". For now, we'll only look at the the two files with the forward reads. After downloading, open them in your browser. You'll see plots like the one above. On the left side there is a summary of the results, highlighting those sections which require your attention. Is there anything in our data we should be concerned about?
+Navigate to your folder with the FastQC output and select the files you'd like to download to your computer, then "More" and "Export". For now, we'll only look at the the two files with the forward reads. After downloading, open them in your browser. You'll see plots like the one above. On the left side there is a summary of the results, highlighting those sections which require your attention. Is there anything in our data we should be concerned about?
 
 ![fastqc_summary](Images/fastqc-summary.png)
 
@@ -130,6 +130,6 @@ After we're done, deactivate the environment:
 conda deactivate
 ```
 
-:camera: White lion "Caspar" with two of his brothers, hunting buffalo in Kruger NP, South Africa
+:camera: White lion "Casper" with two of his brothers, hunting buffalo in Kruger NP, South Africa
 <img src="./Images/DSC_9837_ConGen.jpg" alt="lion2" width="80%">  
 ©Laura Bertola
