@@ -31,7 +31,7 @@ Because it will take too much time to download and analyze all, we will focus on
 SAMN13674556 (Zambia)  
 SAMN13674549 (Benin)  
 
-You'll see that for each sample there are two files ending with _1.fastq.gz and _2.fastq.gz. Most of the time, you'll be working with paired-end data, meaning that each sample has two files. These are usually identified by _R1 and _R2, or, like in this case, _1 and _2. Those two files contain the forward and reverse reads, respectively. We want to download these 6 files, but you'd like to get them onto the server directly, not download them to your computer first. There is an easy way to do that: check the boxes for each file you'd like to download, then click on "Get download script" at the top. It should show you the following:
+You'll see that for each sample there are two files ending with _1.fastq.gz and _2.fastq.gz. Most of the time, you'll be working with paired-end data, meaning that each sample has two files. These are usually identified by _R1 and _R2, or, like in this case, _1 and _2. Those two files contain the forward and reverse reads, respectively. We want to download these 4 files, but you'd like to get them onto the server directly, not download them to your computer first. There is an easy way to do that: check the boxes for each file you'd like to download, then click on "Get download script" at the top. It should show you the following:
 
 ```
 wget -nc ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR107/006/SRR10764406/SRR10764406_1.fastq.gz
