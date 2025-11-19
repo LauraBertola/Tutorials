@@ -194,7 +194,7 @@ done
 
 Do `ls` to see what changed. You should now also have .bam.bai files.
 
-We now have .bam files which have been completely ready to go for downstream processing. But we haven't really looked at the mapping quality yet. We can do so with the tool [Qualimap](https://qualimap.conesalab.org/). Run the following:
+We now have .bam files which are ready to go for downstream processing. But we haven't really looked at the mapping quality yet. We can do so with the tool [Qualimap](https://qualimap.conesalab.org/). Run the following:
 ```
 for bam in output_files/*_deduplicated.bam; do
     sample=$(basename "$bam" .bam)
@@ -205,7 +205,7 @@ for bam in output_files/*_deduplicated.bam; do
 done
 ```
 
-It will create an bunch of files, and store them in a qualimap_results folder (note that you asked it to create this folder to put all the output files in). Download the entire folder (just like you did with the FastQC results) and look at the html file it in your browser. Because Qualimap does not embed the images in their html files (unlike FastQC), you need to download the entire folder. Take a look at the images at the bottom of the report (you can click the links on the right side of the page), especially the depth across the coverage across the reference, and coverage histogram. It should look something like this:
+It will create an bunch of files, and store them in a qualimap_results folder (note that you asked it to create this folder to put all the output files in). Download the entire folder (just like you did with the FastQC results) and look at the html file it in your browser. Because Qualimap does not embed the images in their html files (unlike FastQC), you need to download the entire folder. Take a look at the images at the bottom of the report (you can click the links on the right side of the page), especially the coverage across the reference, and coverage histogram. It should look something like this:
 ![qualimap](Images/qualimap.png)
 
 The next step will be different from the variant filtering we've done for the high depth samples. Because these are low depth samples (~3X), we cannot call hard genotypes with certainty. Imagine you have a position with 2X or 3X coverage, how certain would you be this truly is homozogous if you only find 1 allele? So instead we'll use genotype likelihoods as implemented in ANGSD. The next section deals with [genotype-likelihood computation and probabilistic SNP filtering](https://github.com/LauraBertola/Tutorials/blob/main/WGS%20(low%20depth)/Genotype-likelihood%20computation%20and%20probabilistic%20SNP%20filtering.md).
