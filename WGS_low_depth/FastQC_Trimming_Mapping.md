@@ -1,6 +1,6 @@
 ## Raw data
 
-For this tutorial, we'll download some low coverage :lion: data for ten samples to illustrate the steps of quality control, trimming and mapping. While [ENA](https://www.ebi.ac.uk/ena/browser/home) allows using `wget` to download data (see and example [here](https://github.com/LauraBertola/Tutorials/blob/main/ConGen_2025_SouthAfrica/Session_19_Nov.md)), for [NCBI](https://www.ncbi.nlm.nih.gov/) you need to use their tool sra-tools or parallel-fastq-dump. I've prepared an environment with an installation of parallel-fastq-dump, so we'll use that here. Activate the environment first:
+For this tutorial, we'll download some low coverage 🦁 data for ten samples to illustrate the steps of quality control, trimming and mapping. While [ENA](https://www.ebi.ac.uk/ena/browser/home) allows using `wget` to download data (see and example [here](https://github.com/LauraBertola/Tutorials/blob/main/ConGen_2025_SouthAfrica/Session_19_Nov.md)), for [NCBI](https://www.ncbi.nlm.nih.gov/) you need to use their tool sra-tools or parallel-fastq-dump. I've prepared an environment with an installation of parallel-fastq-dump, so we'll use that here. Activate the environment first:
 ```
 $conda activate parallel-fastq-dump
 ```
@@ -124,7 +124,7 @@ done
 
 TrimGalore! does not like wildcards (*), so we have to loop over our files instead. For each file in the input_files directory which ends with _1.fq.gz, it finds the accompanying reverse reads file (mate="${file/_1.fq.gz/_2.fq.gz}"), and it runs TrimGalore over both files. You tell it that there are --paired data, it should use --ilumina adapters for trimming (check the manual for more options, in case you're using different adapters), and you also tell it to store the results in the --output_dir.
 
-This is going to take a few minutes... :hourglass:
+This is going to take a few minutes... ⌛
 
 Trimming can be done in different ways. You can look for specific motifs (like adapter sequences), you can pick a quality cut-off to get rid of low quality bases at the ends of the reads, you can set the minimum read length to discard reads that become too short after trimming etc. So, there is a lot of flexibility depending on your needs. Note that by default TrimGalore! is discarding reads which end up as singletons, meaning if a read is being discarded its mate with automatically be discarded too. However, you can ask TrimGalore! to keep singletons by telling it --retain_unpaired. Also, if your first FastQC file showed a lot of adapter contamination, and you'd like to check how this has changed after running TrimGalore!, you can add --fastqc, so TrimGalore! will automatically run FastQC after trimming.
 
@@ -152,7 +152,7 @@ for file1 in output_files/*_sub_1_val_1.fq.gz; do
 done
 ```
 
-This step will take some time... :hourglass:
+This step will take some time... ⌛
 
 When the mapping is finished, take a look at the files that were created using `ls`. Most downstream analyses use .bam files instead of .sam files. Also, most analyses like reads to be sorted by the order they occur on the genome, not by the order in which they were processed (which is the default .sam and .bam output). To convert .sam to .bam, and order the reads, do:
 ```
