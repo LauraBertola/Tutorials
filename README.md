@@ -54,14 +54,14 @@ qstat
 
 If your job is not appearing, it means that it has finished (or ended with an error :grimacing:). Otherwise, you can see in the status column what it is currently doing:
 | Code | Meaning               |
-|------|------------------------|
-| r    | Running               |
-| qw   | Queued and waiting    |
+|------|----------------------|
+| r    | Running              |
+| qw   | Queued and waiting   |
 | Eqw  | Error in queue waiting|
 | hqw  | Held in queue waiting |
-| t    | Transferring          |
-| d    | Deleting              |
-| s    | Suspended             |
+| t    | Transferring         |
+| d    | Deleting             |
+| s    | Suspended            |
 
 If you want delete a job, because it got stuck or because you realized you made a mistake in the script, use:
 ```
