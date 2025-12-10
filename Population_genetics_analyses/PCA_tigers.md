@@ -1,4 +1,4 @@
-**PCA on the :tiger: data from the WGS (high depth) tutorial**  
+**PCA on the 🐯 data from the WGS (high depth) tutorial**  
 
 Because the dataset we've been using so far only has 9 individuals, we'll use another, pre-filtered vcf with more populations. Download this datafile:
 ```
