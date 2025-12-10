@@ -35,12 +35,12 @@ You can create a small shell script with information about the job submission an
 #$ -cwd
 ```
 
-#!/bin/bash: This tells the system to run the script using the Bash shell.  
-#$ -pe smp 24: Requests a parallel environment (pe) named smp (shared memory parallel) with 24 CPU cores.  
-#$ -o output_log.txt: Redirects standard output (stdout) (i.e., printed messages, results) to a file called output_log.txt. This can be different from output files which are generated with your actual code, like a bam or a vcf file.  
-#$ -e error_log.txt: Redirects standard error (stderr) (i.e., error messages) to error_log.txt. Useful to see if the script was executed successfully.  
-#$ -N jobname: Assigns a job name (instead of a difficult to remember job ID).  
-#$ -cwd: Runs the job from the current working directory, instead of the default home directory or scratch.  
+* #!/bin/bash: This tells the system to run the script using the Bash shell.  
+* #$ -pe smp 24: Requests a parallel environment (pe) named smp (shared memory parallel) with 24 CPU cores.  
+* #$ -o output_log.txt: Redirects standard output (stdout) (i.e., printed messages, results) to a file called output_log.txt. This can be different from output files which are generated with your actual code, like a bam or a vcf file.  
+* #$ -e error_log.txt: Redirects standard error (stderr) (i.e., error messages) to error_log.txt. Useful to see if the script was executed successfully.  
+* #$ -N jobname: Assigns a job name (instead of a difficult to remember job ID).  
+* #$ -cwd: Runs the job from the current working directory, instead of the default home directory or scratch.  
 
 If you save this file as a `.sh` file, you can submit it to the scheduler like this:
 ```
