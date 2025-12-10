@@ -1,3 +1,6 @@
 **Population Genetics Analyses**
 
 This section is specifically about downstream analyses, once you have a files with SNPs or genotype likelihoods. 
+
+So far, a walk-through for the following topics are available:
+* [PCA tigers - High depth WGS SNPs](https://github.com/LauraBertola/Tutorials/blob/main/Population_genetics_analyses/PCA_tigers.md)
