@@ -8,6 +8,6 @@ You can find the steps for quality control, trimming and mapping [here](FastQC_T
 Steps for variant calling and filtering are [here](Variant_Calling_Filtering.md).  
 Note that there are exercises with additional information [here](Exercises.md).
 
-:camera: Tiger in Chitwan National Park, Nepal
+📷 Tiger in Chitwan National Park, Nepal
 ![tiger](./Images/DSC_8741b.jpg)
 ©Laura Bertola
