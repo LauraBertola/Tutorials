@@ -1,3 +1,5 @@
 theme: jekyll-theme-cayman
 title: "Tutorials"
 description: "Tutorials for people interested in population genomics"
+gems:
+  - jemoji
