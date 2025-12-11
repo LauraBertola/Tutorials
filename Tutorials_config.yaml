@@ -6,12 +6,8 @@ remote_theme: just-the-docs/just-the-docs
 plugins:
   - jekyll-remote-theme
 
-# Enable GitHub Pages compatibility
-plugins:
-  - jekyll-remote-theme
-
-# Optional: specify the remote theme explicitly
-remote_theme: just-the-docs/just-the-docs
+just_the_docs:
+  search_enabled: true
 
 # Enable emoji support
 gems:
