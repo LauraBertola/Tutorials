@@ -1,7 +1,5 @@
 **PCA on the 🦁 data from the WGS low depth tutorial**  
 
-## Population structure with PCAngsd
-
 Apart from knowing how many SNPs we have, we'd actually also like to know what the data look like, for example when plotting a PCA. There is a special tool, [PCAngsd](https://www.popgen.dk/software/index.php/PCAngsd), which allows you to estimate the covariance matrix and individual allele frequencies for low-depth data, directly from the beagle file you created in the previous step.
 
 First we need to activate the correct environment:
