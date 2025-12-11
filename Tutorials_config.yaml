@@ -1,5 +1,21 @@
-theme: jekyll-theme-time-machine
 title: "Tutorials"
 description: "Tutorials for people interested in population genomics"
+
+# Use the Just the Docs theme
+theme: "just-the-docs"
+
+# Enable GitHub Pages compatibility
+plugins:
+  - jekyll-remote-theme
+
+# Optional: specify the remote theme explicitly
+remote_theme: just-the-docs/just-the-docs
+
+# Enable emoji support
 gems:
   - jemoji
+
+# Build settings for Just the Docs
+just_the_docs:
+  search_enabled: true
+  heading_anchors: true
