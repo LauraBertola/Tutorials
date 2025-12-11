@@ -2,7 +2,9 @@ title: "Tutorials"
 description: "Tutorials for people interested in population genomics"
 
 # Use the Just the Docs theme
-theme: "just-the-docs"
+remote_theme: just-the-docs/just-the-docs
+plugins:
+  - jekyll-remote-theme
 
 # Enable GitHub Pages compatibility
 plugins:
