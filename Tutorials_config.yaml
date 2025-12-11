@@ -3,14 +3,13 @@ description: "Tutorials for people interested in population genomics"
 
 # Use the Just the Docs theme
 remote_theme: just-the-docs/just-the-docs
+
+# Plugins used by GitHub Pages
 plugins:
   - jekyll-remote-theme
-
-# Enable emoji support
-gems:
   - jemoji
 
-# Build settings for Just the Docs
+# Settings for Just the Docs
 just_the_docs:
   search_enabled: true
   heading_anchors: true
