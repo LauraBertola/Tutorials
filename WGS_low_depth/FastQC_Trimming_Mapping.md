@@ -30,16 +30,16 @@ It'll look something like this:
 ![fastq.gz](Images/fastq.gz.png)
 
 The first is the name of the read, with information about its location on the plate, or in this case the identifier from NCBI, where the data were downloaded from.
-| Component          | Meaning                                      |
-|--------------------|----------------------------------------------|
-| SRR10764405.177      | SRA run ID + internal read index             |
-| D7MHBFN1         | Illumina sequencing instrument ID            |
-| 228                | Run number on that instrument                |
-| C1V86ACXX          | Flowcell ID                                  |
-| 8                  | Lane number                                  |
-| 1101               | Tile number within the lane                  |
-| 4765:2182          | X:Y coordinates of the cluster on the tile   |
-| length=99          | Read length      |
+| Component           | Meaning                                     |
+|---------------------|---------------------------------------------|
+| `SRR10764405.177`   | SRA run ID + internal read index            |
+| `D7MHBFN1`          | Illumina sequencing instrument ID           |
+| `228`               | Run number on that instrument               |
+| `C1V86ACXX`         | Flowcell ID                                 |
+| `8`                 | Lane number                                 |
+| `1101`              | Tile number within the lane                 |
+| `4765:2182`         | X:Y coordinates of the cluster on the tile  |
+| `length=99`         | Read length                                 |
 
 The second line contains the sequence data. The third line is unused (identified with +, often this line is empty, but here it repeats the header from the first line). And the fourth line is the quality scores for the base calls. The [FASTQ wikipedia page](https://en.wikipedia.org/wiki/FASTQ_format) has a good figure depicting the logic behind how quality scores are encoded.
 
@@ -162,7 +162,7 @@ for file in output_files/*.sam; do
 done
 ```
 
-You'll see that there are two commands, separated by a pipe (|). The first part tells samtools to extract (view) the .sam (-S) reads and convert them to a .bam (-b) format. Those data are then piped into the next command, where samtools is told to sort (-sort) the reads and save the result as an output file (-o).
+You'll see that there are two commands, separated by a pipe (\|). The first part tells samtools to extract (view) the .sam (-S) reads and convert them to a .bam (-b) format. Those data are then piped into the next command, where samtools is told to sort (-sort) the reads and save the result as an output file (-o).
 
 Bam is a binary format, which is much faster to process. But because it is binary it is not human-readable anymore. If you'd like to see what it looks like anyway, take a peak into the .sam and .bam files using 'less'. For the .sam file, you're just seeing the header (the lines starting which @). If you'd like to see the actual alingment and don't have the patience to scroll past the header, try this:
 ```
