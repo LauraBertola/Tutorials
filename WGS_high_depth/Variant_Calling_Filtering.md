@@ -37,15 +37,15 @@ You should see something like this:
 ![vcf](Images/vcf.png)
 
 You can scroll through it, see what the reference allele and the alternative alleles are for each of the positions, and what information is available per sample. There is a lot of information in the INFO column:  
-| INFO Tag   | Description                                                                                   |
-|------------|--------------------------------------------------------------------------------------------|
-| `DP`       | Total read depth at this position (from all samples)                                      |
-| `SGB`      | Segregation-based score used internally by `bcftools` to penalize low-quality calls       |
-| `MQ0F`     | Fraction of reads with mapping quality zero — `0` means all reads were well-mapped        |
-| `AC`       | Allele count for the ALT allele                                                           |
-| `AN`       | Allele number — total number of called alleles (e.g., diploid × number of samples)        |
-| `DP4`      | Strand-specific read depth: REF-forward, REF-reverse, ALT-forward, ALT-reverse            |
-| `MQ`       | Average mapping quality of reads covering this site                                       |
+| INFO Tag | Description |
+|----------|-------------|
+| `DP`     | Total read depth at this position (from all samples) |
+| `SGB`    | Segregation-based score used internally by `bcftools` to penalize low-quality calls |
+| `MQ0F`   | Fraction of reads with mapping quality zero — `0` means all reads were well-mapped |
+| `AC`     | Allele count for the ALT allele |
+| `AN`     | Allele number — total number of called alleles (e.g., diploid × number of samples) |
+| `DP4`    | Strand-specific read depth: REF-forward, REF-reverse, ALT-forward, ALT-reverse |
+| `MQ`     | Average mapping quality of reads covering this site |
 
 We are not going to look at the content of the file in much more detail now, because there's still a lot of junk in there. First, we'll do some filtering. But before we move on, you may be curious how many variants are in your vcf file. We can do this by counting all the lines (`wc -l`) of all the data lines (i.e. not including the header):
 ```
@@ -222,12 +222,13 @@ Let's take a look what the effect of our filtering is when plotting a PCA. First
 ```
 
 This creates the following files, which are needed for a lot of downstream analyses:
-| File                  | Description                                   | Contents Summary                              |
-|-----------------------|-----------------------------------------------|-----------------------------------------------|
-| `plink_file.bed`       | Binary genotype data file                      | Genotype matrix (SNPs × individuals) stored in compact binary format |
-| `plink_file.bim`       | Variant information file (text)                | One SNP per line: chromosome, SNP ID, genetic distance, physical position, allele 1, allele 2 |
-| `plink_file.fam`       | Sample information file (text)                 | One individual per line: family ID, individual ID, paternal/maternal ID, sex, phenotype |
-| `plink_file.nosex`     | Optional sample IDs file without sex info     | List of sample IDs when sex info is missing or irrelevant           |
+| File               | Description                          | Contents Summary |
+|--------------------|--------------------------------------|------------------|
+| `plink_file.bed`   | Binary genotype data file            | Genotype matrix (SNPs × individuals) stored in compact binary format |
+| `plink_file.bim`   | Variant information file (text)      | One SNP per line: chromosome, SNP ID, genetic distance, physical position, allele 1, allele 2 |
+| `plink_file.fam`   | Sample information file (text)       | One individual per line: family ID, individual ID, paternal/maternal ID, sex, phenotype |
+| `plink_file.nosex` | Optional sample IDs file             | List of sample IDs used when sex information is missing or irrelevant |
+
 
 There is one more filter you may often encounter and which is typically applied at this stage, and that is a filter for sites in linkage disequilibrium (LD). However, note that some analyses, such as ROH, benefit from this information and you may want to keep it. For overall population structure it may be better to prune your data, so you infer structure only based on unlinked SNPs. You can run:
 
@@ -291,4 +292,4 @@ ggplot(pca_all, aes(x = PC1, y = PC2)) +
 
 Although we only have very few samples, you'll see that the filtering will impact patterns downstream.
 
-**Important!** Remember that we're using downsampled data, so we're only *pretending* that this is a high depth dataset. Your choice for the depth filters should always be based on actual depth. For how to process a low depth dataset, please refer to the [Tutorial WGS (low depth)](https://github.com/LauraBertola/Tutorials/tree/main/WGS%20(low%20depth)).
+>**Important!** Remember that we're using downsampled data, so we're only *pretending* that this is a high depth dataset. Your choice for the depth filters should always be based on actual depth. For how to process a low depth dataset, please refer to the [Tutorial WGS (low depth)](https://github.com/LauraBertola/Tutorials/tree/main/WGS%20(low%20depth)).
