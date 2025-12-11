@@ -170,7 +170,7 @@ for file in output_files/*.sam; do
 done
 ```
 
-You'll see that there are two commands, separated by a pipe (|). The first part tells samtools to extract (view) the .sam (-S) reads and convert them to a .bam (-b) format. Those data are then piped into the next command, where samtools is told to sort (-sort) the reads and save the result as an output file (-o).
+You'll see that there are two commands, separated by a pipe (\|). The first part tells samtools to extract (view) the .sam (-S) reads and convert them to a .bam (-b) format. Those data are then piped into the next command, where samtools is told to sort (-sort) the reads and save the result as an output file (-o).
 
 Bam is a binary format, which is much faster to process. But because it is binary it is not human-readable anymore. If you'd like to see what it looks like anyway, take a peak into the .sam and .bam files using 'less'. For the .sam file, you're just seeing the header (the lines starting which @). If you'd like to see the actual alingment and don't have the patience to scroll past the header, try this:
 ```
