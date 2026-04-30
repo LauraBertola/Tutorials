@@ -7,3 +7,4 @@ So far, a walk-through for the following topics are available:
 * [PCA lions - genotype likelihoods (WGS low depth)](PCA_tigers_genotype_likelihoods_(WGS_low_depth).md)
 
 ![Demo](../Images/dna_GIF.gif)
+>**Note:** I hope you appreciate the probably worst visual representation of what population genetic analyses look like &#128526;
