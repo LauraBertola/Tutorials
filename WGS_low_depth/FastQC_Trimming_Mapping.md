@@ -30,6 +30,7 @@ It'll look something like this:
 ![fastq.gz](Images/fastq.gz.png)
 
 The first is the name of the read, with information about its location on the plate, or in this case the identifier from NCBI, where the data were downloaded from.
+
 | Component           | Meaning                                     |
 |---------------------|---------------------------------------------|
 | `SRR10764405.177`   | SRA run ID + internal read index            |
