@@ -6,4 +6,4 @@ So far, a walk-through for the following topics are available:
 * [PCA tigers - genotype calls (WGS high depth)](PCA_tigers_genotype_calls_(WGS_high_depth).md)
 * [PCA lions - genotype likelihoods (WGS low depth)](PCA_tigers_genotype_likelihoods_(WGS_low_depth).md)
 
-![Demo](../images/dna_GIF.gif)
+![Demo](../Images/dna_GIF.gif)
